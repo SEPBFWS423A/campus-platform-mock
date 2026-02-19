@@ -6,6 +6,7 @@ import { renderSchedule } from './script/schedule.js';
 import { renderGrades } from './script/grades.js';
 import { renderExams } from './script/exams.js';
 import { renderDownloads } from './script/downloads.js';
+import { renderSubmissions } from './script/submissions.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     initTheme();
@@ -29,6 +30,7 @@ function initData() {
         renderGrades(mockData);
         renderExams(mockData);
         renderDownloads(mockData);
+        renderSubmissions(mockData);
 
         // Set User Info
         const userNameElements = document.querySelectorAll('.dropdown-user-name');

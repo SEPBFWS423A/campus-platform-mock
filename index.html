@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="css/grades.css">
     <link rel="stylesheet" href="css/exams.css">
     <link rel="stylesheet" href="css/downloads.css">
+    <link rel="stylesheet" href="css/submissions.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Material Icons for UI elements -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
@@ -41,6 +42,10 @@
                 <a href="#" class="nav-item" data-target="exams">
                     <span class="material-icons-round">event_note</span>
                     <span>Prüfungen</span>
+                </a>
+                <a href="#" class="nav-item" data-target="submissions">
+                    <span class="material-icons-round">upload_file</span>
+                    <span>Abgaben</span>
                 </a>
                 <a href="#" class="nav-item" data-target="downloads">
                     <span class="material-icons-round">folder</span>
@@ -260,6 +265,35 @@
                 </div>
             </section>
 
+            <!-- Submissions -->
+            <section id="submissions" class="content-section">
+                <header class="section-header">
+                    <div class="header-content">
+                        <h1>Abgaben</h1>
+                        <p>Praxisarbeiten, Bachelorarbeiten und Präsentationen</p>
+                    </div>
+                    <button class="btn btn-primary"><span class="material-icons-round">add</span>
+                        Neue Abgabe</button>
+                </header>
+
+                <div class="submissions-controls">
+                    <div class="filter-bar">
+                        <button class="filter-chip active" data-filter="all">Alle</button>
+                        <button class="filter-chip" data-filter="open">Offen</button>
+                        <button class="filter-chip" data-filter="submitted">Eingereicht</button>
+                        <button class="filter-chip" data-filter="graded">Bewertet</button>
+                    </div>
+                    <div class="search-wrapper">
+                        <span class="material-icons-round">search</span>
+                        <input type="text" id="submission-search" placeholder="Suche...">
+                    </div>
+                </div>
+
+                <div class="submissions-grid">
+                    <!-- Submission cards will be injected here -->
+                </div>
+            </section>
+
             <!-- Downloads -->
             <section id="downloads" class="content-section">
                 <header class="section-header">
@@ -360,6 +394,10 @@
                 <a href="#" class="nav-item" data-target="exams">
                     <span class="material-icons-round">event_note</span>
                     <span>Prüfungen</span>
+                </a>
+                <a href="#" class="nav-item" data-target="submissions">
+                    <span class="material-icons-round">upload_file</span>
+                    <span>Abgaben</span>
                 </a>
                 <a href="#" class="nav-item" data-target="downloads">
                     <span class="material-icons-round">folder</span>

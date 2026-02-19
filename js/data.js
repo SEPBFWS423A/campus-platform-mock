@@ -141,6 +141,44 @@ const mockData = {
             ]
         }
     ],
+    submissions: [
+        {
+            id: 1,
+            title: "Projektarbeit Wirtschaftsinformatik",
+            type: "Praxisarbeit",
+            module: "WIN-302 Projekt Wirtschaftsinformatik",
+            dueDate: "2025-07-15",
+            status: "graded",
+            grade: 1.3,
+            feedback: "Sehr gute Analyse, technischer Teil könnte detaillierter sein."
+        },
+        {
+            id: 2,
+            title: "Entwicklung einer Web-Applikation",
+            type: "Praxisarbeit",
+            module: "WIN-402 ERP-Systeme",
+            dueDate: "2026-03-01",
+            status: "submitted",
+            dateSubmitted: "2026-02-18"
+        },
+        {
+            id: 3,
+            title: "Bachelor Thesis: AI in Healthcare",
+            type: "Bachelorarbeit",
+            module: "Bachelor Thesis",
+            dueDate: "2026-05-30",
+            status: "pending",
+            progress: 35
+        },
+        {
+            id: 4,
+            title: "Präsentation: IT-Sicherheit",
+            type: "Präsentation",
+            module: "WIN-403 IT-Recht & Compliance",
+            dueDate: "2026-02-25",
+            status: "upcoming"
+        }
+    ],
     // Activity Log could be derived, but difficult to mock "history" from static current state.
     // We will keep a small static list or generate it.
     notifications: [

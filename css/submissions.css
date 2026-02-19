@@ -1,0 +1,382 @@
+/* Submissions Grid & Layout */
+.submissions-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.filter-bar {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    scrollbar-width: thin;
+}
+
+.filter-chip {
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.filter-chip:hover {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    transform: translateY(-1px);
+}
+
+.filter-chip.active {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+}
+
+.search-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-width: 250px;
+}
+
+.search-wrapper .material-icons-round {
+    position: absolute;
+    left: 12px;
+    color: var(--text-secondary);
+    font-size: 1.25rem;
+    pointer-events: none;
+}
+
+.search-wrapper input {
+    width: 100%;
+    padding: 0.6rem 1rem 0.6rem 2.5rem;
+    border-radius: 999px;
+    border: 1px solid var(--border-color);
+    background-color: var(--surface-color);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.search-wrapper input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    background-color: var(--surface-color);
+}
+
+.submissions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+    padding-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+    .submissions-controls {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+    }
+
+    .filter-bar {
+        padding-bottom: 0;
+        margin-bottom: 0;
+        order: 2;
+        /* Search on top usually? Or filters? Let's keep filters order 2 if we want search first, or default */
+    }
+
+    .search-wrapper {
+        min-width: 100%;
+        order: 1;
+    }
+}
+
+/* Card Entry Animation */
+@keyframes slideUpFade {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.submission-card {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+    padding: 0;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+}
+
+.submission-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    border-color: rgba(99, 102, 241, 0.3);
+}
+
+/* Header Section */
+.submission-header {
+    padding: 1.75rem 1.5rem 1.25rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+    position: relative;
+    z-index: 1;
+}
+
+/* Decorative Background element */
+.submission-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.03), transparent 70%);
+    z-index: -1;
+    opacity: 0.6;
+}
+
+/* Icons with Gradients */
+.submission-type-icon {
+    width: 3.75rem;
+    height: 3.75rem;
+    border-radius: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: white;
+    font-size: 1.75rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    transition: transform 0.4s ease;
+    background-size: 200% 200%;
+    animation: gradientMove 5s ease infinite alternate;
+}
+
+@keyframes gradientMove {
+    0% {
+        background-position: 0% 50%
+    }
+
+    100% {
+        background-position: 100% 50%
+    }
+}
+
+.submission-card:hover .submission-type-icon {
+    transform: scale(1.1) rotate(-5deg);
+}
+
+.type-project {
+    background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%);
+    box-shadow: 0 8px 20px rgba(6, 182, 212, 0.3);
+}
+
+.type-thesis {
+    background: linear-gradient(135deg, #8b5cf6 0%, #ec4899 100%);
+    box-shadow: 0 8px 20px rgba(236, 72, 153, 0.3);
+}
+
+.type-presentation {
+    background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+    box-shadow: 0 8px 20px rgba(249, 115, 22, 0.3);
+}
+
+.type-default {
+    background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+}
+
+/* Info Section */
+.submission-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    z-index: 1;
+}
+
+.submission-type {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--primary-color);
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.35rem;
+    opacity: 0.9;
+}
+
+.submission-info h3 {
+    font-size: 1.25rem;
+    font-weight: 800;
+    margin: 0 0 0.5rem 0;
+    color: var(--text-primary);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+}
+
+.submission-module {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-weight: 500;
+}
+
+/* Status Badges */
+.status-badge {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: currentColor;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
+}
+
+.status-badge.success {
+    color: #059669;
+    background-color: rgba(16, 185, 129, 0.15);
+}
+
+.status-badge.warning {
+    color: #d97706;
+    background-color: rgba(245, 158, 11, 0.15);
+}
+
+.status-badge.info {
+    color: #2563eb;
+    background-color: rgba(37, 99, 235, 0.15);
+}
+
+.status-badge.neutral {
+    color: var(--text-secondary);
+    background-color: var(--bg-color);
+}
+
+/* Footer Section */
+.submission-footer {
+    padding: 1.25rem 1.75rem 1.75rem;
+    margin-top: auto;
+    /* Removed dashed border for cleaner look */
+    /* border-top: 1px solid var(--border-color); */
+    background: rgba(var(--surface-color), 0.5);
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.submission-footer.upcoming {
+    background-color: transparent;
+}
+
+.submission-footer.graded {
+    background: linear-gradient(to top, rgba(16, 185, 129, 0.03), transparent);
+}
+
+/* Graded State */
+.grade-box {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    background: var(--bg-color);
+    padding: 1rem;
+    border-radius: var(--radius-md);
+    border: 1px solid rgba(16, 185, 129, 0.1);
+}
+
+.grade-circle {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 800;
+    box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3);
+    flex-shrink: 0;
+    /* Prevent squishing into an oval */
+}
+
+/* ... existing code ... */
+
+/* Buttons */
+.btn-action-glow {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: none;
+    background: var(--primary-color);
+    /* Removed gradient */
+    box-shadow: 0 4px 6px -1px rgba(67, 56, 202, 0.4);
+    color: white;
+}
+
+.btn-action-glow:hover {
+    box-shadow: 0 10px 15px -3px rgba(67, 56, 202, 0.5);
+    background: var(--primary-hover);
+    /* Removed gradient */
+    transform: translateY(-2px);
+}
+
+.btn-sm {
+    padding: 0.6rem 1.25rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+/* Empty State */
+.empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 5rem 1rem;
+    color: var(--text-secondary);
+    background: var(--surface-color);
+    border-radius: 1.5rem;
+    border: 1px dashed var(--border-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
