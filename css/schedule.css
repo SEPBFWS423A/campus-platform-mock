@@ -1,0 +1,297 @@
+/* === Detailed Calendar Styles === */
+
+.calendar-wrapper {
+    padding: 0;
+    /* Use both X and Y overflow for 2D scrolling */
+    overflow: auto;
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    /* Constrain height to allow vertical stickiness */
+    max-height: 70vh;
+    height: 600px;
+    /* Fallback/Base */
+    position: relative;
+    /* Improved scroll behavior */
+    scrollbar-width: thin;
+    overscroll-behavior: contain;
+}
+
+.calendar-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.calendar-controls h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    min-width: 180px;
+    text-align: center;
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 0.35rem 1rem;
+    font-size: 0.85rem;
+    border-radius: 999px;
+    transition: all 0.2s;
+}
+
+.btn-outline:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    background-color: rgba(37, 99, 235, 0.05);
+}
+
+/* Detailed Grid */
+.calendar-grid-detailed {
+    display: grid;
+    grid-template-columns: 50px repeat(5, minmax(150px, 1fr));
+    min-width: 800px;
+    background-color: var(--surface-color);
+}
+
+/* Time Column - Sticky Left */
+.time-column {
+    position: sticky;
+    left: 0;
+    z-index: 30;
+    border-right: 1px solid var(--border-color);
+    background-color: var(--surface-color);
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.05);
+}
+
+.time-slot-header {
+    height: 60px;
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    /* Align to container top */
+    z-index: 40;
+    /* Corner must be on top of everything */
+    background-color: var(--surface-color);
+    /* Fix for corner transparency if any */
+    background-image: linear-gradient(var(--surface-color), var(--surface-color));
+}
+
+.time-slot {
+    height: 60px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    color: var(--text-secondary);
+    font-size: 0.7rem;
+    font-weight: 500;
+}
+
+.time-slot span {
+    transform: translateY(-50%);
+    background-color: var(--surface-color);
+    padding: 0 4px;
+    height: fit-content;
+}
+
+/* Day Columns */
+.day-column {
+    border-right: 1px dashed var(--border-color);
+    display: flex;
+    flex-direction: column;
+}
+
+.day-column:last-child {
+    border-right: none;
+}
+
+.day-header {
+    height: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    border-bottom: 1px solid var(--border-color);
+    background-color: var(--surface-color);
+    position: sticky;
+    top: 0;
+    /* Align to container top */
+    z-index: 20;
+    /* Above events, below corner */
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.day-header .date {
+    font-weight: 400;
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    margin-top: 0.1rem;
+}
+
+.day-header.current-day {
+    color: var(--primary-color);
+    background-color: var(--surface-color);
+    /* Maintain opacity for sticky */
+    border-bottom: 2px solid var(--primary-color);
+}
+
+.day-header.current-day .date {
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+.day-content {
+    flex: 1;
+    position: relative;
+    /* Clean grid lines */
+    background-image: linear-gradient(to bottom, var(--border-color) 1px, transparent 1px);
+    background-size: 100% 60px;
+    height: 600px;
+}
+
+/* Events */
+.calendar-event {
+    position: absolute;
+    left: 4px;
+    right: 4px;
+    padding: 0.5rem 0.5rem;
+    /* Reduced padding slightly */
+    border-radius: 6px;
+    border-left: 3px solid;
+    font-size: 0.75rem;
+    /* Slightly smaller for mobile density */
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    transition: transform 0.2s, z-index 0.2s, box-shadow 0.2s;
+    overflow: hidden;
+    cursor: pointer;
+    line-height: 1.1;
+}
+
+.calendar-event:hover {
+    transform: translateY(-2px);
+    z-index: 10;
+    box-shadow: var(--shadow-md);
+}
+
+.calendar-event.blue {
+    background-color: #EFF6FF;
+    border-color: #3B82F6;
+    color: #1E3A8A;
+}
+
+.calendar-event.green {
+    background-color: #ECFDF5;
+    border-color: #10B981;
+    color: #064E3B;
+}
+
+.calendar-event.orange {
+    background-color: #FFFBEB;
+    border-color: #F59E0B;
+    color: #78350F;
+}
+
+.calendar-event.purple {
+    background-color: #F5F3FF;
+    border-color: #8B5CF6;
+    color: #4C1D95;
+}
+
+/* Dark mode tweaks */
+body.dark-mode .calendar-event.blue {
+    background-color: rgba(59, 130, 246, 0.15);
+    color: #DBEAFE;
+}
+
+body.dark-mode .calendar-event.green {
+    background-color: rgba(16, 185, 129, 0.15);
+    color: #D1FAE5;
+}
+
+body.dark-mode .calendar-event.orange {
+    background-color: rgba(245, 158, 11, 0.15);
+    color: #FEF3C7;
+}
+
+body.dark-mode .calendar-event.purple {
+    background-color: rgba(139, 92, 246, 0.15);
+    color: #EDE9FE;
+}
+
+.event-time {
+    font-size: 0.65rem;
+    /* Smaller time */
+    font-weight: 500;
+    opacity: 0.8;
+}
+
+.event-title {
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    /* Limit lines */
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+.event-loc {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.7rem;
+    opacity: 0.9;
+    margin-top: auto;
+}
+
+.event-loc::before {
+    content: 'location_on';
+    font-family: 'Material Icons Round';
+    font-size: 0.8rem;
+}
+
+.event-type {
+    display: none;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+
+    /* Controls better alignment */
+    .calendar-controls {
+        flex-direction: row;
+        /* Keep row but wrap specific items if needed */
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 0.5rem;
+    }
+
+    .calendar-controls h3 {
+        width: 100%;
+        order: -1;
+        margin-bottom: 0.25rem;
+        text-align: center;
+        font-size: 1rem;
+    }
+
+    /* Adjust button sizes */
+    .calendar-controls .icon-btn {
+        padding: 0.5rem;
+    }
+
+    /* Ensure grid is touch-friendly */
+    .calendar-grid-detailed {
+        min-width: 700px;
+        /* Reduction allowed */
+    }
+}

@@ -1,0 +1,390 @@
+/* === Grades Section Styles === */
+
+/* Grades Stats Header */
+.grades-stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.grade-stat {
+    background-color: var(--surface-color);
+    padding: 1.5rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.grade-stat-icon {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    background-color: var(--bg-color);
+    color: var(--text-secondary);
+}
+
+.grade-stat-icon.primary {
+    background-color: rgba(37, 99, 235, 0.1);
+    color: var(--primary-color);
+}
+
+.grade-stat-icon.success {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: var(--success-color);
+}
+
+.grade-stat-icon.purple {
+    background-color: rgba(139, 92, 246, 0.1);
+    color: #8b5cf6;
+}
+
+.grade-stat-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.grade-stat-label {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.grade-stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+/* Semester Sections */
+.semester-section {
+    margin-bottom: 2rem;
+}
+
+.semester-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+    cursor: pointer;
+    /* Clickable */
+    user-select: none;
+}
+
+.semester-header h3 {
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.semester-header h3::before {
+    content: 'expand_more';
+    font-family: 'Material Icons Round';
+    font-size: 1.25rem;
+    transition: transform 0.3s;
+}
+
+/* Collapsed State */
+.semester-section.collapsed .semester-header h3::before {
+    transform: rotate(-90deg);
+}
+
+.semester-section.collapsed .grades-card {
+    display: none;
+}
+
+.semester-stats {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+/* Enhanced Table */
+.grades-card {
+    background-color: var(--surface-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border-color);
+    overflow-x: auto;
+}
+
+.grades-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.grades-table th {
+    background-color: var(--bg-color);
+    padding: 1rem 1.5rem;
+    text-align: left;
+    font-weight: 600;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.grades-table td {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-primary);
+    vertical-align: middle;
+}
+
+.grades-table tr:last-child td {
+    border-bottom: none;
+}
+
+.grades-table tr:hover td {
+    background-color: rgba(0, 0, 0, 0.01);
+}
+
+/* Module Column */
+.module-cell {
+    display: flex;
+    flex-direction: column;
+}
+
+.module-code {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.2rem;
+}
+
+.module-name {
+    font-weight: 500;
+}
+
+/* Grade Column */
+.grade-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+.grade-badge.excellent {
+    background-color: rgba(16, 185, 129, 0.15);
+    color: #059669;
+}
+
+/* 1.0 - 1.5 */
+.grade-badge.good {
+    background-color: rgba(59, 130, 246, 0.15);
+    color: #2563EB;
+}
+
+/* 1.6 - 2.5 */
+.grade-badge.average {
+    background-color: rgba(245, 158, 11, 0.15);
+    color: #D97706;
+}
+
+/* 2.6 - 3.5 */
+.grade-badge.passed {
+    background-color: rgba(107, 114, 128, 0.15);
+    color: #4B5563;
+}
+
+/* 3.6 - 4.0 */
+.grade-badge.failed {
+    background-color: rgba(239, 68, 68, 0.15);
+    color: #DC2626;
+}
+
+/* 5.0 */
+.grade-badge.pending {
+    background-color: var(--bg-color);
+    color: var(--text-secondary);
+    font-size: 1.2rem;
+}
+
+/* Status Column */
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.status-indicator.passed {
+    color: var(--success-color);
+}
+
+.status-indicator.failed {
+    color: var(--error-color);
+}
+
+.status-indicator.pending {
+    color: var(--warning-color);
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: currentColor;
+}
+
+/* Credits Progress (Visual ECTS) */
+.credits-pill {
+    background-color: var(--bg-color);
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+
+    /* Stats Row - Horizontal Scroll matching Dashboard */
+    .grades-stats-row {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        gap: 1rem;
+        padding-bottom: 0.5rem;
+        margin-right: -1rem;
+        padding-right: 1rem;
+        scrollbar-width: none;
+        grid-template-columns: none;
+    }
+
+    .grades-stats-row::-webkit-scrollbar {
+        display: none;
+    }
+
+    .grade-stat {
+        min-width: 75%;
+        scroll-snap-align: start;
+        flex-shrink: 0;
+        padding: 1rem;
+    }
+
+    /* Semester Header Stack */
+    .semester-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+
+    .semester-stats {
+        font-size: 0.8rem;
+    }
+
+    /* Table to Card Transformation */
+    .grades-card {
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        overflow: visible;
+    }
+
+    .grades-table {
+        background: transparent;
+    }
+
+    .grades-table thead {
+        display: none;
+    }
+
+    .grades-table tbody {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .grades-table tr {
+        display: flex;
+        flex-direction: column;
+        background-color: var(--surface-color);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-md);
+        padding: 1rem;
+        position: relative;
+        box-shadow: var(--shadow-sm);
+    }
+
+    .grades-table td {
+        display: block;
+        padding: 0;
+        border: none;
+        width: 100%;
+    }
+
+    .grades-table tr:hover td {
+        background: transparent;
+    }
+
+    /* Cell 1: Module Info */
+    .grades-table td:nth-child(1) {
+        margin-bottom: 0.75rem;
+        padding-right: 3.5rem;
+        /* Space for grade */
+    }
+
+    .module-code {
+        font-size: 0.7rem;
+    }
+
+    .module-name {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+
+    /* Cell 2 (Date) & 3 (ECTS) - Inline metadata */
+    .grades-table td:nth-child(2),
+    .grades-table td:nth-child(3) {
+        display: inline-block;
+        width: auto;
+        margin-right: 0.75rem;
+        margin-bottom: 0.5rem;
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+    }
+
+    /* Cell 3 specific: ensure it looks like a tag if needed */
+    .credits-pill {
+        padding: 0.1rem 0.5rem;
+        font-size: 0.75rem;
+        background-color: var(--bg-color);
+        border: 1px solid var(--border-color);
+    }
+
+    /* Cell 4: Status */
+    .grades-table td:nth-child(4) {
+        margin-top: 0.25rem;
+    }
+
+    /* Cell 5: Grade - Top Right Absolute */
+    .grades-table td:last-child {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        width: auto;
+    }
+
+    .grade-badge {
+        font-size: 1.1rem;
+        width: 40px;
+        height: 40px;
+    }
+}

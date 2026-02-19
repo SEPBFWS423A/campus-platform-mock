@@ -1,0 +1,453 @@
+/* === New Dashboard Styles === */
+
+/* Header Improvements */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 2rem;
+}
+
+.current-date {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+/* Stats Row */
+.stats-row {
+    margin-bottom: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.stat-card {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1.5rem;
+}
+
+.stat-icon {
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.primary-bg {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+}
+
+.success-bg {
+    background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.warning-bg {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+.stat-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-label {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.25rem;
+}
+
+.stat-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.2;
+}
+
+.stat-trend {
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-top: 0.25rem;
+}
+
+.stat-trend.positive {
+    color: var(--success-color);
+}
+
+.stat-trend.negative {
+    color: var(--error-color);
+}
+
+/* Progress Bar */
+.progress-bar {
+    height: 6px;
+    background-color: var(--bg-color);
+    border-radius: 999px;
+    margin-top: 0.5rem;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: var(--success-color);
+    border-radius: 999px;
+}
+
+/* Dashboard Grid Layout */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 1.5rem;
+}
+
+@media (max-width: 1024px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Timeline/Schedule Card */
+.schedule-card {
+    height: 100%;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.card-header h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.text-btn {
+    font-size: 0.85rem;
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0;
+}
+
+.timeline {
+    position: relative;
+    padding-left: 1rem;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 2rem;
+    /* Aligned with marker center */
+    top: 5px;
+    bottom: 5px;
+    width: 2px;
+    background-color: var(--border-color);
+}
+
+.timeline-item {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.timeline-item:last-child {
+    margin-bottom: 0;
+}
+
+.timeline-item .time {
+    font-weight: 600;
+    color: var(--text-secondary);
+    width: 45px;
+    text-align: right;
+    font-size: 0.9rem;
+    padding-top: 0.1rem;
+}
+
+.timeline-item .marker {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background-color: var(--bg-color);
+    border: 3px solid var(--border-color);
+    z-index: 2;
+    margin-top: 0.3rem;
+}
+
+.timeline-item.past .marker {
+    background-color: var(--border-color);
+}
+
+.timeline-item.past .content {
+    opacity: 0.6;
+}
+
+.timeline-item.current .marker {
+    background-color: var(--primary-color);
+    border-color: rgba(37, 99, 235, 0.3);
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
+}
+
+.timeline-item .content {
+    background-color: var(--bg-color);
+    padding: 1rem;
+    border-radius: var(--radius-md);
+    flex: 1;
+    position: relative;
+    transition: transform 0.2s;
+}
+
+.timeline-item .content:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+}
+
+.timeline-item.current .content {
+    background-color: rgba(37, 99, 235, 0.05);
+    /* Slight blue tint */
+    border-left: 3px solid var(--primary-color);
+}
+
+.timeline-item h4 {
+    margin-bottom: 0.25rem;
+    font-size: 1rem;
+}
+
+.timeline-item p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.badge-sm {
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background-color: var(--primary-color);
+    color: white;
+    display: inline-block;
+    margin-bottom: 0.5rem;
+}
+
+/* Activity List */
+.right-col-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.activity-list {
+    list-style: none;
+}
+
+.activity-list li {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    align-items: flex-start;
+}
+
+.activity-list li:last-child {
+    margin-bottom: 0;
+}
+
+.activity-icon {
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.activity-icon.success {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: var(--success-color);
+}
+
+.activity-icon.primary {
+    background-color: rgba(37, 99, 235, 0.1);
+    color: var(--primary-color);
+}
+
+.activity-icon.warning {
+    background-color: rgba(245, 158, 11, 0.1);
+    color: var(--warning-color);
+}
+
+.activity-content {
+    flex: 1;
+}
+
+.activity-text {
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    line-height: 1.4;
+    margin-bottom: 0.25rem;
+}
+
+.activity-time {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+/* Quick Actions Grid */
+.action-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.btn-action {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    background-color: var(--bg-color);
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--text-primary);
+}
+
+.btn-action span.material-icons-round {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+}
+
+.btn-action:hover {
+    background-color: var(--surface-color);
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow-sm);
+    transform: translateY(-2px);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+
+    /* Header Stack */
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .current-date {
+        width: 100%;
+        padding-top: 0.5rem;
+        border-top: 1px solid var(--border-color);
+    }
+
+    /* Stats Row - Compact Horizontal Scroll */
+    .stats-row {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        gap: 0.75rem;
+        padding-bottom: 0.5rem;
+        margin-right: -1rem;
+        padding-right: 1rem;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        grid-template-columns: none;
+    }
+
+    .stats-row::-webkit-scrollbar {
+        display: none;
+    }
+
+    .stat-card {
+        min-width: 65%;
+        /* Smaller width to show more cards */
+        scroll-snap-align: start;
+        flex-shrink: 0;
+        padding: 0.75rem;
+        /* Compact padding */
+        gap: 0.75rem;
+    }
+
+    .stat-icon {
+        width: 2.5rem;
+        height: 2.5rem;
+        font-size: 1.2rem;
+        border-radius: 0.75rem;
+    }
+
+    .stat-value {
+        font-size: 1.25rem;
+    }
+
+    .stat-label {
+        font-size: 0.75rem;
+    }
+
+    /* Schedule Card - Prominent */
+    .schedule-card {
+        min-height: 400px;
+        /* Ensure visual prominence */
+    }
+
+    .timeline-item {
+        gap: 1.25rem;
+        /* Restore/Increase gap for better readability */
+        padding: 0.5rem 0;
+    }
+
+    .timeline-item .time {
+        width: auto;
+        min-width: 50px;
+        font-size: 0.95rem;
+        /* Slightly larger time text */
+        text-align: left;
+        font-weight: 700;
+    }
+
+    .timeline-item .content {
+        padding: 1.25rem;
+        /* Larger touch area/content box */
+    }
+
+    .timeline-item h4 {
+        font-size: 1.1rem;
+        /* Larger title */
+    }
+
+    .timeline::before {
+        left: 0.5rem;
+    }
+
+    .timeline-item .marker {
+        margin-left: -3px;
+        width: 16px;
+        /* Slightly larger marker */
+        height: 16px;
+    }
+
+    /* Activity List */
+    .activity-list li {
+        padding: 0.5rem 0;
+    }
+
+    .btn-action {
+        padding: 1rem 0.5rem;
+    }
+}
