@@ -1,3 +1,4 @@
+import { escapeHTML } from './utils.js';
 
 let submissionsData = [];
 let currentDate = null;
@@ -25,9 +26,13 @@ function setupEventListeners() {
     const filterBtns = document.querySelectorAll('.submissions-controls .filter-chip');
     filterBtns.forEach(btn => {
         btn.addEventListener('click', () => {
-            // Update UI
-            filterBtns.forEach(b => b.classList.remove('active'));
+            // Update UI and ARIA
+            filterBtns.forEach(b => {
+                b.classList.remove('active');
+                b.setAttribute('aria-pressed', 'false');
+            });
             btn.classList.add('active');
+            btn.setAttribute('aria-pressed', 'true');
 
             // Update State
             currentFilter = btn.dataset.filter;
@@ -108,7 +113,7 @@ function renderList() {
                         </div>
                         <div class="grade-meta">
                             <span class="grade-label">Bewertet</span>
-                            <span class="feedback-preview">"${sub.feedback}"</span>
+                            <span class="feedback-preview">&ldquo;${escapeHTML(sub.feedback)}&rdquo;</span>
                         </div>
                     </div>
                 </div>
@@ -164,15 +169,15 @@ function renderList() {
         }
 
         return `
-            <div class="card submission-card" style="animation-delay: ${animationDelay}s">
+            <div class="card submission-card" style="animation-delay: ${animationDelay}s" role="article" aria-label="${escapeHTML(sub.title)}">
                 <div class="card-header submission-header">
                     <div class="submission-type-icon ${typeClass}">
-                        <span class="material-icons-round">${icon}</span>
+                        <span class="material-icons-round" aria-hidden="true">${icon}</span>
                     </div>
                     <div class="submission-info">
-                        <span class="submission-type">${sub.type}</span>
-                        <h3>${sub.title}</h3>
-                        <span class="submission-module">${sub.module}</span>
+                        <span class="submission-type">${escapeHTML(sub.type)}</span>
+                        <h3>${escapeHTML(sub.title)}</h3>
+                        <span class="submission-module">${escapeHTML(sub.module)}</span>
                     </div>
                     <div class="status-badge ${statusClass}">
                         <span class="status-dot"></span>

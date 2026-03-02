@@ -1,3 +1,5 @@
+import { escapeHTML } from './utils.js';
+
 export function renderExams(data) {
     const examsGrid = document.querySelector('.exams-grid');
     if (!examsGrid) return;
@@ -62,24 +64,24 @@ export function renderExams(data) {
     });
 
     examsGrid.innerHTML = exams.map(exam => `
-        <div class="exam-card-enhanced ${exam.statusClass}">
+        <div class="exam-card-enhanced ${exam.statusClass}" role="article" aria-label="${escapeHTML(exam.title)}">
             <div class="exam-body">
                 <div class="exam-date-box">
-                    <span class="exam-day">${exam.day}</span>
-                    <span class="exam-month">${exam.month}</span>
-                    <span class="exam-year">${exam.year}</span>
+                    <span class="exam-day">${escapeHTML(exam.day)}</span>
+                    <span class="exam-month">${escapeHTML(exam.month)}</span>
+                    <span class="exam-year">${escapeHTML(exam.year)}</span>
                 </div>
                 <div class="exam-info">
                     <div class="exam-meta">
-                        <span class="exam-tag">${exam.type}</span>
-                        <span class="exam-tag">${exam.code}</span>
+                        <span class="exam-tag">${escapeHTML(exam.type)}</span>
+                        <span class="exam-tag">${escapeHTML(exam.code)}</span>
                     </div>
-                    <h3 class="exam-title">${exam.title}</h3>
+                    <h3 class="exam-title">${escapeHTML(exam.title)}</h3>
                     <div class="exam-details-list">
                         ${exam.details.map(d => `
                             <div class="exam-detail-item">
-                                <span class="material-icons-round">${d.icon}</span>
-                                <span>${d.text}</span>
+                                <span class="material-icons-round" aria-hidden="true">${d.icon}</span>
+                                <span>${escapeHTML(d.text)}</span>
                             </div>
                         `).join('')}
                     </div>
@@ -87,10 +89,10 @@ export function renderExams(data) {
             </div>
             <div class="exam-footer">
                 <div class="exam-status ${exam.footerColorClass}" style="${exam.footerStyle}">
-                    <span class="material-icons-round">${exam.footerIcon}</span>
+                    <span class="material-icons-round" aria-hidden="true">${exam.footerIcon}</span>
                     ${exam.footerStatus}
                 </div>
-                <a href="#" class="action-link">${exam.actionText} <span class="material-icons-round">${exam.actionIcon}</span></a>
+                <a href="#" class="action-link">${exam.actionText} <span class="material-icons-round" aria-hidden="true">${exam.actionIcon}</span></a>
             </div>
         </div>
     `).join('');

@@ -1,14 +1,28 @@
+/**
+ * Converts a time string (HH:MM) to total minutes since midnight.
+ * @param {string} timeStr - Time in "HH:MM" format.
+ * @returns {number} Total minutes since midnight, or 0 if invalid.
+ */
 export function timeToMinutes(timeStr) {
-    if (!timeStr) return 0;
-    const [hours, minutes] = timeStr.split(':').map(Number);
+    if (!timeStr || typeof timeStr !== 'string') return 0;
+    const parts = timeStr.split(':');
+    if (parts.length !== 2) return 0;
+    const [hours, minutes] = parts.map(Number);
+    if (Number.isNaN(hours) || Number.isNaN(minutes)) return 0;
     return hours * 60 + minutes;
 }
 
+/**
+ * Calculates the weighted average grade of passed modules.
+ * @param {Array<{grade?: number}>} modules - Array of module objects.
+ * @returns {string} Average grade formatted to one decimal, or "-" if no grades.
+ */
 export function calculateAverage(modules) {
+    if (!Array.isArray(modules) || modules.length === 0) return "-";
     let sum = 0;
     let count = 0;
     modules.forEach(m => {
-        if (m.grade && typeof m.grade === 'number') {
+        if (m.grade && typeof m.grade === 'number' && !Number.isNaN(m.grade)) {
             sum += m.grade;
             count++;
         }
@@ -16,6 +30,30 @@ export function calculateAverage(modules) {
     return count > 0 ? (sum / count).toFixed(1) : "-";
 }
 
+/**
+ * Calculates total ECTS from passed modules.
+ * @param {Array<{status: string, ects: number}>} modules - Array of module objects.
+ * @returns {number} Total ECTS credits earned.
+ */
 export function calculateECTS(modules) {
-    return modules.reduce((sum, m) => m.status === 'passed' ? sum + m.ects : sum, 0);
+    if (!Array.isArray(modules)) return 0;
+    return modules.reduce((sum, m) => m.status === 'passed' ? sum + (m.ects || 0) : sum, 0);
+}
+
+/**
+ * Escapes HTML special characters to prevent XSS when inserting
+ * user-controlled data into innerHTML templates.
+ * @param {string} str - The string to escape.
+ * @returns {string} The escaped string safe for HTML insertion.
+ */
+export function escapeHTML(str) {
+    if (typeof str !== 'string') return '';
+    const escapeMap = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;',
+    };
+    return str.replace(/[&<>"']/g, (char) => escapeMap[char]);
 }

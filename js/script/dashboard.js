@@ -1,4 +1,4 @@
-import { timeToMinutes, calculateAverage, calculateECTS } from './utils.js';
+import { timeToMinutes, calculateAverage, calculateECTS, escapeHTML } from './utils.js';
 
 export function renderDashboard(data) {
     // 1. Stats
@@ -64,12 +64,12 @@ export function renderDashboard(data) {
     if (timelineContainer) {
         timelineContainer.innerHTML = todaysEvents.length > 0 ? todaysEvents.map(item => `
             <div class="timeline-item ${item.status}">
-                <div class="time">${item.time}</div>
+                <div class="time">${escapeHTML(item.time)}</div>
                 <div class="marker"></div>
                 <div class="content">
                     ${item.status === 'current' ? `<span class="badge badge-sm">Jetzt</span>` : ''}
-                    <h4>${item.title}</h4>
-                    <p>${item.desc}</p>
+                    <h4>${escapeHTML(item.title)}</h4>
+                    <p>${escapeHTML(item.desc)}</p>
                 </div>
             </div>
         `).join('') : '<div class="timeline-item"><div class="content"><p>Keine Veranstaltungen heute.</p></div></div>';

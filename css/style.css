@@ -43,7 +43,9 @@ body.dark-mode {
 }
 
 /* Reset & Base Styles */
-* {
+*,
+*::before,
+*::after {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -56,6 +58,41 @@ body {
     transition: background-color var(--transition-speed), color var(--transition-speed);
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Skip Link for Accessibility */
+.skip-link {
+    position: absolute;
+    top: -100%;
+    left: 1rem;
+    padding: 0.75rem 1.25rem;
+    background-color: var(--primary-color);
+    color: #fff;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    z-index: 9999;
+    transition: top 0.2s;
+    text-decoration: none;
+}
+
+.skip-link:focus {
+    top: 1rem;
+}
+
+/* Hidden utility (replaces inline display:none) */
+.hidden {
+    display: none !important;
+}
+
+/* Focus Visible Styles for Keyboard Navigation */
+:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+:focus:not(:focus-visible) {
+    outline: none;
 }
 
 /* Layout */
@@ -803,5 +840,68 @@ body.dark-mode .navbar {
 
     .exam-date .day {
         font-size: 1.25rem;
+    }
+}
+
+/* Footer */
+.app-footer {
+    text-align: center;
+    padding: 1.5rem;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    border-top: 1px solid var(--border-color);
+    margin-top: 2rem;
+}
+
+/* Address styling in contact section */
+address.contact-list {
+    font-style: normal;
+}
+
+address.contact-list ul {
+    list-style: none;
+    margin-top: 1rem;
+}
+
+address.contact-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+    color: var(--text-secondary);
+}
+
+address.contact-list a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+address.contact-list a:hover {
+    text-decoration: underline;
+}
+
+/* Prefer Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Auto color scheme detection */
+@media (prefers-color-scheme: dark) {
+    body:not(.light-mode):not(.dark-mode) {
+        --bg-color: #0B1121;
+        --surface-color: #151E32;
+        --text-primary: #f1f5f9;
+        --text-secondary: #94a3b8;
+        --border-color: #1e293b;
+        --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+        --primary-color: #60A5FA;
     }
 }

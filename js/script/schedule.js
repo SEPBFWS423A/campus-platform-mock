@@ -1,4 +1,4 @@
-import { timeToMinutes } from './utils.js';
+import { timeToMinutes, escapeHTML } from './utils.js';
 
 export function renderSchedule(data) {
     const weekHeader = document.querySelector('.calendar-controls h3');
@@ -38,9 +38,9 @@ export function renderSchedule(data) {
                     <div class="day-content">
                         ${dayEvents.map(event => `
                             <div class="calendar-event ${event.color}" style="top: ${event.top}px; height: ${event.height}px;">
-                                <span class="event-time">${event.time}</span>
-                                <span class="event-title">${event.title}</span>
-                                <span class="event-loc">${event.loc}</span>
+                                <span class="event-time">${escapeHTML(event.time)}</span>
+                                <span class="event-title">${escapeHTML(event.title)}</span>
+                                <span class="event-loc">${escapeHTML(event.loc)}</span>
                             </div>
                         `).join('')}
                     </div>

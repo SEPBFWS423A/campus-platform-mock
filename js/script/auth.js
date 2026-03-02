@@ -8,12 +8,23 @@ export function initAuth() {
     if (profileBtn && userDropdown) {
         profileBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            userDropdown.classList.toggle('active');
+            const isOpen = userDropdown.classList.toggle('active');
+            profileBtn.setAttribute('aria-expanded', String(isOpen));
         });
 
         document.addEventListener('click', (e) => {
             if (!userDropdown.contains(e.target) && !profileBtn.contains(e.target)) {
                 userDropdown.classList.remove('active');
+                profileBtn.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        // Close dropdown on Escape
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && userDropdown.classList.contains('active')) {
+                userDropdown.classList.remove('active');
+                profileBtn.setAttribute('aria-expanded', 'false');
+                profileBtn.focus();
             }
         });
     }
@@ -21,17 +32,22 @@ export function initAuth() {
     if (logoutBtn) {
         logoutBtn.addEventListener('click', () => {
             userDropdown.classList.remove('active');
-            if (mainContent) mainContent.style.display = 'none';
+            profileBtn.setAttribute('aria-expanded', 'false');
+            if (mainContent) mainContent.classList.add('hidden');
             if (loginOverlay) {
                 loginOverlay.classList.remove('fade-out');
                 loginOverlay.classList.add('active');
                 loginOverlay.style.display = 'flex';
                 loginOverlay.style.opacity = '1';
+                // Focus the username input for re-login
+                const usernameInput = document.getElementById('username');
+                if (usernameInput) {
+                    usernameInput.value = '';
+                    setTimeout(() => usernameInput.focus(), 100);
+                }
             }
 
-            const usernameInput = document.getElementById('username');
             const passwordInput = document.getElementById('password');
-            if (usernameInput) usernameInput.value = '';
             if (passwordInput) passwordInput.value = '';
         });
     }
@@ -42,6 +58,12 @@ export function initLogin(onLoginSuccess) {
     const loginOverlay = document.getElementById('login');
     const mainContent = document.getElementById('main-content');
 
+    // Focus username input on page load
+    const usernameInput = document.getElementById('username');
+    if (usernameInput && loginOverlay && loginOverlay.classList.contains('active')) {
+        setTimeout(() => usernameInput.focus(), 300);
+    }
+
     if (loginForm) {
         loginForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -50,6 +72,7 @@ export function initLogin(onLoginSuccess) {
             if (submitBtn) {
                 submitBtn.textContent = 'Wird angemeldet...';
                 submitBtn.disabled = true;
+                submitBtn.setAttribute('aria-busy', 'true');
             }
 
             setTimeout(() => {
@@ -58,15 +81,20 @@ export function initLogin(onLoginSuccess) {
 
                 setTimeout(() => {
                     loginOverlay.style.display = 'none';
+                    mainContent.classList.remove('hidden');
                     mainContent.style.display = 'block';
                     mainContent.style.animation = 'fadeIn 0.5s ease-out';
 
                     if (submitBtn) {
                         submitBtn.textContent = 'Anmelden';
                         submitBtn.disabled = false;
+                        submitBtn.removeAttribute('aria-busy');
                     }
 
                     if (onLoginSuccess) onLoginSuccess();
+
+                    // Focus main content for screen readers
+                    mainContent.focus();
 
                 }, 500);
             }, 1000);

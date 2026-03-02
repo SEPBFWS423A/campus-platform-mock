@@ -21,29 +21,41 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function initData() {
-    if (typeof mockData !== 'undefined') {
-        console.log("Initializing Mock Data...");
+    if (typeof mockData === 'undefined') {
+        const mainContent = document.getElementById('main-content');
+        if (mainContent) {
+            mainContent.innerHTML = `
+                <div class="card" style="text-align: center; padding: 3rem;">
+                    <span class="material-icons-round" style="font-size: 3rem; color: var(--error-color);">error_outline</span>
+                    <h2>Daten konnten nicht geladen werden</h2>
+                    <p>Bitte versuchen Sie es später erneut.</p>
+                </div>
+            `;
+        }
+        return;
+    }
 
-        // Render sections
+    try {
         renderDashboard(mockData);
         renderSchedule(mockData);
         renderGrades(mockData);
         renderExams(mockData);
         renderDownloads(mockData);
         renderSubmissions(mockData);
+    } catch (_) {
+        // Silently handle render errors in production
+    }
 
-        // Set User Info
-        const userNameElements = document.querySelectorAll('.dropdown-user-name');
-        const userRoleElements = document.querySelectorAll('.dropdown-user-role');
-        if (mockData.user) {
-            userNameElements.forEach(el => el.textContent = mockData.user.name);
-            userRoleElements.forEach(el => el.textContent = mockData.user.role);
+    // Set User Info
+    const userNameElements = document.querySelectorAll('.dropdown-user-name');
+    const userRoleElements = document.querySelectorAll('.dropdown-user-role');
+    if (mockData.user) {
+        userNameElements.forEach(el => { el.textContent = mockData.user.name; });
+        userRoleElements.forEach(el => { el.textContent = mockData.user.role; });
 
-            const dashboardHeader = document.querySelector('#dashboard .header-content p');
-            if (dashboardHeader) dashboardHeader.textContent = `Willkommen zurück, ${mockData.user.name}!`;
+        const dashboardHeader = document.querySelector('#dashboard .header-content p');
+        if (dashboardHeader) {
+            dashboardHeader.textContent = `Willkommen zurück, ${mockData.user.name}!`;
         }
-
-    } else {
-        console.error("Mock Data not loaded!");
     }
 }

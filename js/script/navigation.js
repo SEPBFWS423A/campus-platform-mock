@@ -13,6 +13,15 @@ export function initNavigation() {
             const targetId = item.getAttribute('data-target');
             setActiveTab(targetId);
         });
+
+        // Keyboard support for tab navigation
+        item.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                const targetId = item.getAttribute('data-target');
+                setActiveTab(targetId);
+            }
+        });
     });
 
     // Mobile Menu
@@ -22,17 +31,33 @@ export function initNavigation() {
         if (isActive) {
             sidebar.classList.remove('active');
             overlay.classList.remove('active');
+            sidebar.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+            // Return focus to mobile menu button
+            if (mobileMenuBtn) mobileMenuBtn.focus();
             setTimeout(() => {
                 overlay.style.display = 'none';
             }, 300);
         } else {
             overlay.style.display = 'block';
+            document.body.style.overflow = 'hidden';
             setTimeout(() => {
                 sidebar.classList.add('active');
                 overlay.classList.add('active');
+                sidebar.setAttribute('aria-hidden', 'false');
+                // Focus first nav item in sidebar
+                const firstLink = sidebar.querySelector('.nav-item');
+                if (firstLink) firstLink.focus();
             }, 10);
         }
     }
+
+    // Close sidebar on Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && sidebar && sidebar.classList.contains('active')) {
+            toggleSidebar();
+        }
+    });
 
     if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', toggleSidebar);
     if (closeSidebarBtn) closeSidebarBtn.addEventListener('click', toggleSidebar);
@@ -49,21 +74,30 @@ export function initNavigation() {
         });
     });
 
+    /**
+     * Activates a tab and its corresponding content section.
+     * Updates ARIA attributes for accessibility.
+     * @param {string} targetId - The ID of the section to activate.
+     */
     function setActiveTab(targetId) {
         navItems.forEach(nav => {
-            if (nav.getAttribute('data-target') === targetId) {
-                nav.classList.add('active');
-            } else {
-                nav.classList.remove('active');
-            }
+            const isTarget = nav.getAttribute('data-target') === targetId;
+            nav.classList.toggle('active', isTarget);
+            // Update ARIA attributes for tabs
+            nav.setAttribute('aria-selected', String(isTarget));
         });
 
         sections.forEach(section => {
-            section.classList.remove('active');
-            if (section.id === targetId) {
-                section.classList.add('active');
-            }
+            const isTarget = section.id === targetId;
+            section.classList.toggle('active', isTarget);
+            section.setAttribute('aria-hidden', String(!isTarget));
         });
+
+        // Update document title
+        const sectionTitle = document.querySelector(`#${targetId} .section-header h1`);
+        if (sectionTitle) {
+            document.title = `CampusPlatform - ${sectionTitle.textContent}`;
+        }
     }
 
     return { setActiveTab };

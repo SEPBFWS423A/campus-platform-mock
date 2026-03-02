@@ -1,4 +1,4 @@
-import { calculateAverage, calculateECTS } from './utils.js';
+import { calculateAverage, calculateECTS, escapeHTML } from './utils.js';
 
 export function renderGrades(data) {
     const passedModules = data.modules.filter(m => m.status === 'passed');
@@ -44,45 +44,45 @@ export function renderGrades(data) {
 
         return `
         <div class="semester-section">
-            <div class="semester-header" onclick="this.parentElement.classList.toggle('collapsed')">
-                <h3>${semKey}</h3>
-                <span class="semester-stats">Ø ${semAvg} • ${semECTS} ECTS</span>
+            <div class="semester-header" role="button" tabindex="0" aria-expanded="true" aria-label="Semester ${semKey} ein-/ausklappen">
+                <h3>${escapeHTML(semKey)}</h3>
+                <span class="semester-stats">&Oslash; ${escapeHTML(String(semAvg))} &bull; ${escapeHTML(String(semECTS))} ECTS</span>
             </div>
             <div class="grades-card">
                 <table class="grades-table">
                     <thead>
                         <tr>
-                            <th width="40%">Modul</th>
-                            <th width="15%">Prüfungsdatum</th>
-                            <th width="15%">ECTS</th>
-                            <th width="15%">Status</th>
-                            <th width="15%" style="text-align: center;">Note</th>
+                            <th scope="col" width="40%">Modul</th>
+                            <th scope="col" width="15%">Pr&uuml;fungsdatum</th>
+                            <th scope="col" width="15%">ECTS</th>
+                            <th scope="col" width="15%">Status</th>
+                            <th scope="col" width="15%" style="text-align: center;">Note</th>
                         </tr>
                     </thead>
                     <tbody>
                         ${mods.map(mod => {
-            let statusClass = mod.status === 'passed' ? 'passed' : (mod.status === 'registered' ? 'pending' : 'pending');
+            let statusClass = mod.status === 'passed' ? 'passed' : 'pending';
             let statusText = mod.status === 'passed' ? 'Bestanden' : (mod.status === 'registered' ? 'Angemeldet' : 'Laufend');
             let gradeClass = mod.grade ? (mod.grade <= 1.5 ? 'excellent' : (mod.grade <= 2.5 ? 'good' : 'average')) : 'pending';
             let gradeDisplay = mod.grade ? mod.grade.toFixed(1) : '-';
-            let dateDisplay = mod.exam ? mod.exam.date : '-';
+            let dateDisplay = mod.exam ? escapeHTML(mod.exam.date) : '-';
 
             return `
                             <tr>
                                 <td>
                                     <div class="module-cell">
-                                        <span class="module-code">${mod.code}</span>
-                                        <span class="module-name">${mod.name}</span>
+                                        <span class="module-code">${escapeHTML(mod.code)}</span>
+                                        <span class="module-name">${escapeHTML(mod.name)}</span>
                                     </div>
                                 </td>
                                 <td>${dateDisplay}</td>
-                                <td><span class="credits-pill">${mod.ects} CP</span></td>
+                                <td><span class="credits-pill">${escapeHTML(String(mod.ects))} CP</span></td>
                                 <td>
                                     <div class="status-indicator ${statusClass}">
                                         <span class="status-dot"></span> ${statusText}
                                     </div>
                                 </td>
-                                <td align="center"><span class="grade-badge ${gradeClass}">${gradeDisplay}</span></td>
+                                <td align="center"><span class="grade-badge ${gradeClass}">${escapeHTML(gradeDisplay)}</span></td>
                             </tr>
                             `;
         }).join('')}
@@ -100,7 +100,7 @@ export function renderGrades(data) {
             <header class="section-header">
                 <div class="header-content">
                     <h1>Notenübersicht</h1>
-                    <p>Bachelor ${data.user.courseOfStudy} (B.Sc.) ${data.user.semester ? '- ' + data.user.semester + '. Semester' : ''}</p>
+                    <p>Bachelor ${escapeHTML(data.user.courseOfStudy)} (B.Sc.) ${data.user.semester ? '- ' + data.user.semester + '. Semester' : ''}</p>
                 </div>
                 <button class="btn btn-primary"><span class="material-icons-round">print</span>
                     Leistungsspiegel</button>
@@ -108,5 +108,28 @@ export function renderGrades(data) {
         }
         const statsRowHTML = gradesSection.querySelector('.grades-stats-row') ? gradesSection.querySelector('.grades-stats-row').outerHTML : '';
         gradesSection.innerHTML = header + statsRowHTML + semesterTables;
+
+        // Event delegation for semester collapse toggle (replaces inline onclick)
+        gradesSection.addEventListener('click', (e) => {
+            const semesterHeader = e.target.closest('.semester-header');
+            if (semesterHeader) {
+                const section = semesterHeader.parentElement;
+                const isCollapsed = section.classList.toggle('collapsed');
+                semesterHeader.setAttribute('aria-expanded', String(!isCollapsed));
+            }
+        });
+
+        // Keyboard support for semester headers
+        gradesSection.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                const semesterHeader = e.target.closest('.semester-header');
+                if (semesterHeader) {
+                    e.preventDefault();
+                    const section = semesterHeader.parentElement;
+                    const isCollapsed = section.classList.toggle('collapsed');
+                    semesterHeader.setAttribute('aria-expanded', String(!isCollapsed));
+                }
+            }
+        });
     }
 }

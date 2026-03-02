@@ -1,3 +1,5 @@
+import { escapeHTML } from './utils.js';
+
 export function renderDownloads(data) {
     const filesContent = document.querySelector('.files-content');
     if (!filesContent) return;
@@ -81,29 +83,29 @@ export function renderDownloads(data) {
         if (files.length === 0) return '';
 
         return `
-            <section class="file-section" data-category="${catName}">
+            <section class="file-section" data-category="${escapeHTML(catName)}">
                 <header class="file-section-header">
-                    <h3><span class="material-icons-round">${categoryIcons[catName] || 'folder'}</span> ${catName}</h3>
-                    <button class="btn-icon-sm"><span class="material-icons-round">more_horiz</span></button>
+                    <h3><span class="material-icons-round" aria-hidden="true">${categoryIcons[catName] || 'folder'}</span> ${escapeHTML(catName)}</h3>
+                    <button class="btn-icon-sm" aria-label="Weitere Optionen"><span class="material-icons-round" aria-hidden="true">more_horiz</span></button>
                 </header>
-                <div class="file-list-group">
+                <div class="file-list-group" role="list">
                     ${files.map(file => `
-                        <div class="file-list-item">
+                        <div class="file-list-item" role="listitem">
                             <div class="file-type-icon-sm ${file.type}">
-                                <span class="material-icons-round">${file.icon}</span>
+                                <span class="material-icons-round" aria-hidden="true">${file.icon}</span>
                             </div>
                             <div class="file-info-row">
                                 <div class="file-main-info">
-                                    <span class="file-name">${file.name}</span>
+                                    <span class="file-name">${escapeHTML(file.name)}</span>
                                     <div class="file-meta-row">
-                                        <span class="meta-pill">${file.source}</span>
-                                        <span class="meta-pill">${file.size}</span>
-                                        <span>${file.date}</span>
+                                        <span class="meta-pill">${escapeHTML(file.source)}</span>
+                                        <span class="meta-pill">${escapeHTML(file.size)}</span>
+                                        <span>${escapeHTML(file.date)}</span>
                                     </div>
                                 </div>
                                 <div class="file-actions-row">
-                                    <button class="btn-icon-sm" title="Vorschau"><span class="material-icons-round">visibility</span></button>
-                                    <button class="btn-icon-sm" title="Download"><span class="material-icons-round">download</span></button>
+                                    <button class="btn-icon-sm" title="Vorschau" aria-label="Vorschau von ${escapeHTML(file.name)}"><span class="material-icons-round" aria-hidden="true">visibility</span></button>
+                                    <button class="btn-icon-sm" title="Download" aria-label="Download ${escapeHTML(file.name)}"><span class="material-icons-round" aria-hidden="true">download</span></button>
                                 </div>
                             </div>
                         </div>
