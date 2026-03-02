@@ -3,7 +3,7 @@
 /* Helper for grid */
 .exams-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
     gap: 1.5rem;
     margin-bottom: 2rem;
 }
@@ -11,19 +11,20 @@
 /* Exam Card Enhanced */
 .exam-card-enhanced {
     background-color: var(--surface-color);
-    border-radius: var(--radius-lg);
-    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--border-color-subtle);
     box-shadow: var(--shadow-sm);
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s, border-color 0.25s;
     position: relative;
 }
 
 .exam-card-enhanced:hover {
     transform: translateY(-4px);
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--border-color);
 }
 
 .exam-card-enhanced::before {
@@ -31,10 +32,10 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 6px;
+    width: 4px;
     height: 100%;
     background-color: var(--border-color);
-    /* Default */
+    border-radius: 4px 0 0 4px;
 }
 
 .exam-card-enhanced.registered::before {
@@ -63,19 +64,25 @@
     align-items: center;
     justify-content: center;
     background-color: var(--bg-color);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-lg);
     padding: 0.75rem;
     min-width: 80px;
     height: fit-content;
     text-align: center;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--border-color-subtle);
+    transition: background-color 0.2s;
+}
+
+.exam-card-enhanced:hover .exam-date-box {
+    background-color: var(--primary-light);
 }
 
 .exam-day {
     font-size: 1.75rem;
-    font-weight: 700;
+    font-weight: 800;
     color: var(--text-primary);
     line-height: 1;
+    letter-spacing: -0.03em;
 }
 
 .exam-month {
@@ -104,13 +111,15 @@
 }
 
 .exam-tag {
-    font-size: 0.7rem;
-    padding: 2px 8px;
+    font-size: 0.65rem;
+    padding: 3px 8px;
     border-radius: 999px;
     background-color: var(--bg-color);
     color: var(--text-secondary);
-    font-weight: 600;
+    font-weight: 700;
     text-transform: uppercase;
+    letter-spacing: 0.04em;
+    border: 1px solid var(--border-color-subtle);
 }
 
 .exam-title {
@@ -119,6 +128,7 @@
     color: var(--text-primary);
     margin-bottom: 0.75rem;
     line-height: 1.3;
+    letter-spacing: -0.015em;
 }
 
 .exam-details-list {
@@ -142,9 +152,9 @@
 
 /* Footer Actions */
 .exam-footer {
-    padding: 1rem 1.5rem;
+    padding: 0.85rem 1.5rem;
     background-color: var(--bg-color);
-    border-top: 1px solid var(--border-color);
+    border-top: 1px solid var(--border-color-subtle);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -184,33 +194,38 @@
 /* Filter Bar */
 .filter-bar {
     display: flex;
-    gap: 1rem;
+    gap: 0.75rem;
     margin-bottom: 1.5rem;
     overflow-x: auto;
     padding-bottom: 0.5rem;
 }
 
 .filter-chip {
-    padding: 0.5rem 1rem;
+    padding: 0.45rem 1.1rem;
     border-radius: 999px;
     background-color: var(--surface-color);
-    border: 1px solid var(--border-color);
+    border: 1.5px solid var(--border-color);
     color: var(--text-secondary);
-    font-size: 0.9rem;
+    font-size: 0.875rem;
+    font-weight: 500;
     cursor: pointer;
     white-space: nowrap;
-    transition: all 0.2s;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    font-family: inherit;
 }
 
 .filter-chip.active {
     background-color: var(--primary-color);
     color: white;
     border-color: var(--primary-color);
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+    font-weight: 600;
 }
 
 .filter-chip:hover:not(.active) {
-    background-color: var(--bg-color);
-    color: var(--text-primary);
+    background-color: var(--primary-light);
+    color: var(--primary-color);
+    border-color: rgba(37, 99, 235, 0.3);
 }
 
 /* Mobile Responsiveness */

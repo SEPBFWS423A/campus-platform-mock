@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CampusPlatform - Dashboard</title>
+    <meta name="description" content="CampusPlatform – Ihr digitales Campus-Portal für Vorlesungen, Noten, Prüfungen und mehr.">
+    <meta name="theme-color" content="#2563EB">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/schedule.css">
@@ -31,34 +33,34 @@
                     <span class="material-icons-round" aria-hidden="true">dashboard</span>
                     <span>Dashboard</span>
                 </a>
-                <a href="#" class="nav-item" data-target="schedule">
-                    <span class="material-icons-round">calendar_today</span>
+                <a href="#" class="nav-item" data-target="schedule" role="tab" aria-selected="false" aria-controls="schedule">
+                    <span class="material-icons-round" aria-hidden="true">calendar_today</span>
                     <span>Vorlesungen</span>
                 </a>
-                <a href="#" class="nav-item" data-target="grades">
-                    <span class="material-icons-round">grade</span>
+                <a href="#" class="nav-item" data-target="grades" role="tab" aria-selected="false" aria-controls="grades">
+                    <span class="material-icons-round" aria-hidden="true">grade</span>
                     <span>Noten</span>
                 </a>
-                <a href="#" class="nav-item" data-target="exams">
-                    <span class="material-icons-round">event_note</span>
+                <a href="#" class="nav-item" data-target="exams" role="tab" aria-selected="false" aria-controls="exams">
+                    <span class="material-icons-round" aria-hidden="true">event_note</span>
                     <span>Prüfungen</span>
                 </a>
-                <a href="#" class="nav-item" data-target="submissions">
-                    <span class="material-icons-round">upload_file</span>
+                <a href="#" class="nav-item" data-target="submissions" role="tab" aria-selected="false" aria-controls="submissions">
+                    <span class="material-icons-round" aria-hidden="true">upload_file</span>
                     <span>Abgaben</span>
                 </a>
-                <a href="#" class="nav-item" data-target="downloads">
-                    <span class="material-icons-round">folder</span>
+                <a href="#" class="nav-item" data-target="downloads" role="tab" aria-selected="false" aria-controls="downloads">
+                    <span class="material-icons-round" aria-hidden="true">folder</span>
                     <span>Downloads</span>
                 </a>
-                <a href="#" class="nav-item" data-target="info">
-                    <span class="material-icons-round">info</span>
+                <a href="#" class="nav-item" data-target="info" role="tab" aria-selected="false" aria-controls="info">
+                    <span class="material-icons-round" aria-hidden="true">info</span>
                     <span>Info</span>
                 </a>
             </div>
             <div class="nav-actions">
-                <button id="theme-toggle" class="icon-btn" aria-label="Toggle Dark Mode">
-                    <span class="material-icons-round">dark_mode</span>
+                <button id="theme-toggle" class="icon-btn" aria-label="Design-Modus wechseln" title="Dark Mode umschalten">
+                    <span class="material-icons-round" aria-hidden="true">dark_mode</span>
                 </button>
                 <div class="user-menu-container">
                     <button id="profile-btn" class="icon-btn" aria-label="Benutzermenu öffnen" aria-expanded="false" aria-haspopup="true">
@@ -86,36 +88,13 @@
                     </div>
                 </div>
             </div>
-            <button id="mobile-menu-btn" class="icon-btn mobile-only" aria-label="Open Menu">
-                <span class="material-icons-round">menu</span>
+            <button id="mobile-menu-btn" class="icon-btn mobile-only" aria-label="Menü öffnen" aria-expanded="false">
+                <span class="material-icons-round" aria-hidden="true">menu</span>
             </button>
         </nav>
 
-        <!-- Login Screen (Overlay) -->
-        <section id="login" class="login-overlay active" role="dialog" aria-modal="true" aria-labelledby="login-title">
-            <div class="login-container">
-                <div class="login-header">
-                    <span class="material-icons-round login-logo" aria-hidden="true">school</span>
-                    <h2 id="login-title">Willkommen</h2>
-                    <p>Bitte melden Sie sich an</p>
-                </div>
-                <form id="login-form" novalidate>
-                    <div class="form-group">
-                        <label for="username">Matrikelnummer / E-Mail</label>
-                        <input type="text" id="username" placeholder="12345678" required autocomplete="username" aria-required="true">
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Passwort</label>
-                        <input type="password" id="password" placeholder="••••••••" required autocomplete="current-password" aria-required="true">
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block">Anmelden</button>
-                    <a href="#" class="forgot-password">Passwort vergessen?</a>
-                </form>
-            </div>
-        </section>
-
         <!-- Main Content Area -->
-        <main id="main-content" class="hidden" tabindex="-1">
+        <main id="main-content" tabindex="-1">
             <!-- Dashboard -->
             <section id="dashboard" class="content-section active" role="tabpanel" aria-labelledby="tab-dashboard">
                 <header class="section-header">
@@ -253,11 +232,11 @@
                 </header>
 
                 <!-- Filter Chips -->
-                <div class="filter-bar" role="group" aria-label="Prüfungsfilter">
-                    <button class="filter-chip active" aria-pressed="true">Alle</button>
-                    <button class="filter-chip" aria-pressed="false">Angemeldet</button>
-                    <button class="filter-chip" aria-pressed="false">Bestanden</button>
-                    <button class="filter-chip" aria-pressed="false">Offen</button>
+                <div class="filter-bar exams-filter-bar" role="group" aria-label="Prüfungsfilter">
+                    <button class="filter-chip active" data-filter="all" aria-pressed="true">Alle</button>
+                    <button class="filter-chip" data-filter="registered" aria-pressed="false">Angemeldet</button>
+                    <button class="filter-chip" data-filter="completed" aria-pressed="false">Bestanden</button>
+                    <button class="filter-chip" data-filter="open" aria-pressed="false">Offen</button>
                 </div>
 
                 <div class="exams-grid" aria-live="polite">
@@ -344,31 +323,52 @@
             <!-- Info -->
             <section id="info" class="content-section" role="tabpanel" aria-labelledby="tab-info">
                 <header class="section-header">
-                    <h1>Universität Info</h1>
+                    <div class="header-content">
+                        <h1>Universität Info</h1>
+                        <p>Wichtige Kontakte und Informationen</p>
+                    </div>
                 </header>
                 <div class="grid-container">
                     <div class="card">
-                        <h3>Kontakt Studierendensekretariat</h3>
+                        <h3><span class="material-icons-round" aria-hidden="true" style="vertical-align: middle; margin-right: 0.5rem; color: var(--primary-color);">support_agent</span>Kontakt Studierendensekretariat</h3>
                         <address class="contact-list">
                             <ul>
                                 <li><span class="material-icons-round" aria-hidden="true">email</span> <a href="mailto:sekr@university.edu">sekr@university.edu</a></li>
                                 <li><span class="material-icons-round" aria-hidden="true">call</span> <a href="tel:+49123456789">+49 123 456789</a></li>
                                 <li><span class="material-icons-round" aria-hidden="true">schedule</span> Mo-Fr 09:00 - 12:00</li>
+                                <li><span class="material-icons-round" aria-hidden="true">location_on</span> Gebäude A, Raum 1.01</li>
                             </ul>
                         </address>
                     </div>
                     <div class="card">
-                        <h3>Campus Plan</h3>
-                        <div class="placeholder-map" aria-label="Campus-Karte">
-                            <span class="material-icons-round" aria-hidden="true">map</span>
+                        <h3><span class="material-icons-round" aria-hidden="true" style="vertical-align: middle; margin-right: 0.5rem; color: var(--primary-color);">map</span>Campus Plan</h3>
+                        <div class="placeholder-map" role="img" aria-label="Campus-Karte">
+                            <span class="material-icons-round" aria-hidden="true" style="font-size: 3rem; opacity: 0.4;">map</span>
                             <p>Karte wird geladen...</p>
                         </div>
+                    </div>
+                    <div class="card">
+                        <h3><span class="material-icons-round" aria-hidden="true" style="vertical-align: middle; margin-right: 0.5rem; color: var(--primary-color);">link</span>Wichtige Links</h3>
+                        <ul style="list-style: none; margin-top: 1rem;">
+                            <li style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; color: var(--text-secondary);">
+                                <span class="material-icons-round" aria-hidden="true">language</span>
+                                <a href="#" style="color: var(--primary-color); text-decoration: none;">University Website</a>
+                            </li>
+                            <li style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; color: var(--text-secondary);">
+                                <span class="material-icons-round" aria-hidden="true">local_library</span>
+                                <a href="#" style="color: var(--primary-color); text-decoration: none;">Online-Bibliothek</a>
+                            </li>
+                            <li style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; color: var(--text-secondary);">
+                                <span class="material-icons-round" aria-hidden="true">restaurant</span>
+                                <a href="#" style="color: var(--primary-color); text-decoration: none;">Mensa Speiseplan</a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </section>
         </main>
 
-        <footer class="app-footer">
+        <footer class="app-footer" role="contentinfo">
             <p>&copy; 2026 CampusPlatform. Alle Rechte vorbehalten.</p>
         </footer>
 
@@ -379,8 +379,8 @@
                     <span class="material-icons-round">school</span>
                     <span>Campus</span>
                 </div>
-                <button id="close-sidebar-btn" class="icon-btn" aria-label="Close Menu">
-                    <span class="material-icons-round">close</span>
+                <button id="close-sidebar-btn" class="icon-btn" aria-label="Menü schließen">
+                    <span class="material-icons-round" aria-hidden="true">close</span>
                 </button>
             </div>
             <nav class="sidebar-links" aria-label="Mobile Navigation">

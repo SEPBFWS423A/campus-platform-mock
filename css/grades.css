@@ -11,22 +11,28 @@
 .grade-stat {
     background-color: var(--surface-color);
     padding: 1.5rem;
-    border-radius: var(--radius-lg);
-    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--border-color-subtle);
     box-shadow: var(--shadow-sm);
     display: flex;
     align-items: center;
     gap: 1rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.grade-stat:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
 }
 
 .grade-stat-icon {
     width: 3rem;
     height: 3rem;
-    border-radius: 50%;
+    border-radius: var(--radius-lg);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     background-color: var(--bg-color);
     color: var(--text-secondary);
 }
@@ -58,8 +64,9 @@
 
 .grade-stat-value {
     font-size: 1.5rem;
-    font-weight: 700;
+    font-weight: 800;
     color: var(--text-primary);
+    letter-spacing: -0.03em;
 }
 
 /* Semester Sections */
@@ -72,11 +79,15 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid var(--border-color);
+    padding: 0.75rem 0;
+    border-bottom: 2px solid var(--border-color-subtle);
     cursor: pointer;
-    /* Clickable */
     user-select: none;
+    transition: border-color 0.2s;
+}
+
+.semester-header:hover {
+    border-bottom-color: var(--primary-color);
 }
 
 .semester-header h3 {
@@ -112,9 +123,9 @@
 /* Enhanced Table */
 .grades-card {
     background-color: var(--surface-color);
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius-xl);
     box-shadow: var(--shadow-sm);
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--border-color-subtle);
     overflow-x: auto;
 }
 
@@ -125,13 +136,13 @@
 
 .grades-table th {
     background-color: var(--bg-color);
-    padding: 1rem 1.5rem;
+    padding: 0.85rem 1.5rem;
     text-align: left;
     font-weight: 600;
-    color: var(--text-secondary);
-    font-size: 0.8rem;
+    color: var(--text-tertiary);
+    font-size: 0.75rem;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.06em;
 }
 
 .grades-table td {
@@ -146,7 +157,7 @@
 }
 
 .grades-table tr:hover td {
-    background-color: rgba(0, 0, 0, 0.01);
+    background-color: var(--primary-light);
 }
 
 /* Module Column */
@@ -170,11 +181,16 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 36px;
-    height: 36px;
-    border-radius: 8px;
-    font-weight: 700;
+    min-width: 38px;
+    height: 38px;
+    border-radius: var(--radius-md);
+    font-weight: 800;
     font-size: 0.95rem;
+    transition: transform 0.2s ease;
+}
+
+.grade-badge:hover {
+    transform: scale(1.1);
 }
 
 .grade-badge.excellent {
@@ -246,9 +262,10 @@
     background-color: var(--bg-color);
     padding: 0.25rem 0.75rem;
     border-radius: 999px;
-    font-size: 0.85rem;
-    font-weight: 500;
+    font-size: 0.8rem;
+    font-weight: 600;
     color: var(--text-secondary);
+    border: 1px solid var(--border-color-subtle);
 }
 
 /* Mobile Responsiveness */

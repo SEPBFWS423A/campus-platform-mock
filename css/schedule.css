@@ -2,18 +2,14 @@
 
 .calendar-wrapper {
     padding: 0;
-    /* Use both X and Y overflow for 2D scrolling */
     overflow: auto;
     background-color: var(--surface-color);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color-subtle);
+    border-radius: var(--radius-xl);
     box-shadow: var(--shadow-sm);
-    /* Constrain height to allow vertical stickiness */
     max-height: 70vh;
     height: 600px;
-    /* Fallback/Base */
     position: relative;
-    /* Improved scroll behavior */
     scrollbar-width: thin;
     overscroll-behavior: contain;
 }
@@ -33,18 +29,22 @@
 
 .btn-outline {
     background: transparent;
-    border: 1px solid var(--border-color);
+    border: 1.5px solid var(--border-color);
     color: var(--text-primary);
     padding: 0.35rem 1rem;
     font-size: 0.85rem;
     border-radius: 999px;
-    transition: all 0.2s;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
 }
 
 .btn-outline:hover {
     border-color: var(--primary-color);
     color: var(--primary-color);
-    background-color: rgba(37, 99, 235, 0.05);
+    background-color: var(--primary-light);
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
 }
 
 /* Detailed Grid */
@@ -117,13 +117,11 @@
     background-color: var(--surface-color);
     position: sticky;
     top: 0;
-    /* Align to container top */
     z-index: 20;
-    /* Above events, below corner */
     color: var(--text-secondary);
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.06em;
 }
 
 .day-header .date {
@@ -159,48 +157,47 @@
     position: absolute;
     left: 4px;
     right: 4px;
-    padding: 0.5rem 0.5rem;
-    /* Reduced padding slightly */
-    border-radius: 6px;
+    padding: 0.5rem;
+    border-radius: var(--radius-md);
     border-left: 3px solid;
     font-size: 0.75rem;
-    /* Slightly smaller for mobile density */
     display: flex;
     flex-direction: column;
-    gap: 0.1rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
-    transition: transform 0.2s, z-index 0.2s, box-shadow 0.2s;
+    gap: 0.15rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), z-index 0.2s, box-shadow 0.2s;
     overflow: hidden;
     cursor: pointer;
-    line-height: 1.1;
+    line-height: 1.15;
+    backdrop-filter: blur(4px);
 }
 
 .calendar-event:hover {
-    transform: translateY(-2px);
+    transform: translateY(-2px) scale(1.02);
     z-index: 10;
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--shadow-lg);
 }
 
 .calendar-event.blue {
-    background-color: #EFF6FF;
+    background-color: rgba(239, 246, 255, 0.95);
     border-color: #3B82F6;
     color: #1E3A8A;
 }
 
 .calendar-event.green {
-    background-color: #ECFDF5;
+    background-color: rgba(236, 253, 245, 0.95);
     border-color: #10B981;
     color: #064E3B;
 }
 
 .calendar-event.orange {
-    background-color: #FFFBEB;
+    background-color: rgba(255, 251, 235, 0.95);
     border-color: #F59E0B;
     color: #78350F;
 }
 
 .calendar-event.purple {
-    background-color: #F5F3FF;
+    background-color: rgba(245, 243, 255, 0.95);
     border-color: #8B5CF6;
     color: #4C1D95;
 }
@@ -240,9 +237,9 @@ body.dark-mode .calendar-event.purple {
     overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 2;
-    /* Limit lines */
     line-clamp: 2;
     -webkit-box-orient: vertical;
+    letter-spacing: -0.01em;
 }
 
 .event-loc {

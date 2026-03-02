@@ -1,5 +1,5 @@
 import { initTheme } from './script/theme.js';
-import { initAuth, initLogin } from './script/auth.js';
+import { initAuth, checkAuth } from './script/auth.js';
 import { initNavigation } from './script/navigation.js';
 import { renderDashboard } from './script/dashboard.js';
 import { renderSchedule } from './script/schedule.js';
@@ -9,15 +9,14 @@ import { renderDownloads } from './script/downloads.js';
 import { renderSubmissions } from './script/submissions.js';
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Redirect to login page if not authenticated
+    if (!checkAuth()) return;
+
     initTheme();
     initAuth();
     const navigation = initNavigation();
-
-    initLogin(() => {
-        initData();
-        const defaultTarget = 'dashboard';
-        navigation.setActiveTab(defaultTarget);
-    });
+    initData();
+    navigation.setActiveTab('dashboard');
 });
 
 function initData() {
