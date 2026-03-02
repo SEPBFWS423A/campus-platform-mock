@@ -1,8 +1,7 @@
 ---
-name: modern-web-development
+name: CampusPlatformMock
 description: Enforces universal coding standards and best practices for modern web development (TypeScript, React, Next.js, Node.js).
-user-invocable: true
-allowed-tools: [Read, Grep, Glob, Bash, Edit]
+user-invokable: true
 ---
 
 # Modern Web Development Skill
