@@ -100,22 +100,23 @@ function renderList() {
         const statusClass = getStatusClass(sub.status);
         const statusLabel = getStatusLabel(sub.status);
         const typeClass = getTypeClass(sub.type);
-        const animationDelay = index * 0.05; // Fast stagger
 
-        let footerContent = '';
+        let metaContent = '';
 
         if (sub.status === 'graded') {
-            footerContent = `
-                <div class="submission-footer graded">
+            metaContent = `
+                <div class="submission-meta">
                     <div class="grade-box">
                         <div class="grade-circle">
                             <span class="grade-value">${sub.grade.toFixed(1).replace('.', ',')}</span>
                         </div>
                         <div class="grade-meta">
-                            <span class="grade-label">Bewertet</span>
-                            <span class="feedback-preview">&ldquo;${escapeHTML(sub.feedback)}&rdquo;</span>
+                            <span class="grade-label">Note</span>
                         </div>
                     </div>
+                </div>
+                <div class="submission-actions">
+                    <button class="btn btn-outline btn-sm">Details</button>
                 </div>
             `;
         } else if (sub.status === 'upcoming' || sub.status === 'pending') {
@@ -123,28 +124,14 @@ function renderList() {
             const urgentClass = daysLeft < 7 ? 'urgent' : '';
             const daysLabel = daysLeft < 0 ? 'Überfällig' : (daysLeft === 0 ? 'Heute fällig' : `Noch ${daysLeft} Tage`);
 
-            let progressBar = '';
-            if (sub.progress) {
-                progressBar = `
-                    <div class="progress-wrapper">
-                        <div class="progress-info">
-                            <span>Fortschritt</span>
-                            <span>${sub.progress}%</span>
-                        </div>
-                        <div class="progress-container">
-                            <div class="progress-bar" style="width: ${sub.progress}%"></div>
-                        </div>
-                    </div>
-                 `;
-            }
-
-            footerContent = `
-                <div class="submission-footer upcoming">
+            metaContent = `
+                <div class="submission-meta">
                     <div class="due-date-badge ${urgentClass}">
                         <span class="material-icons-round">event</span>
-                        <span>${daysLabel} (${formatDate(sub.dueDate)})</span>
+                        <span>${daysLabel}</span>
                     </div>
-                    ${progressBar}
+                </div>
+                <div class="submission-actions">
                     <button class="btn btn-primary btn-sm btn-action-glow">
                         <span class="material-icons-round">upload</span>
                         Abgeben
@@ -152,25 +139,22 @@ function renderList() {
                 </div>
              `;
         } else if (sub.status === 'submitted') {
-            footerContent = `
-                <div class="submission-footer submitted">
-                     <div class="submitted-state">
-                        <div class="submitted-icon-circle">
-                            <span class="material-icons-round">check</span>
-                        </div>
-                        <div class="submitted-text">
-                            <strong>Eingereicht</strong>
-                            <span>am ${formatDate(sub.dateSubmitted)}</span>
-                        </div>
+            metaContent = `
+                <div class="submission-meta">
+                    <div class="submitted-state">
+                        <span class="material-icons-round" style="font-size:1rem;color:var(--primary-color)">check_circle</span>
+                        <span class="submitted-text">${formatDate(sub.dateSubmitted)}</span>
                     </div>
+                </div>
+                <div class="submission-actions">
                     <button class="btn btn-outline btn-sm">Ansehen</button>
                 </div>
             `;
         }
 
         return `
-            <div class="card submission-card" style="animation-delay: ${animationDelay}s" role="article" aria-label="${escapeHTML(sub.title)}">
-                <div class="card-header submission-header">
+            <div class="submission-card" role="article" aria-label="${escapeHTML(sub.title)}">
+                <div class="submission-header">
                     <div class="submission-type-icon ${typeClass}">
                         <span class="material-icons-round" aria-hidden="true">${icon}</span>
                     </div>
@@ -179,12 +163,14 @@ function renderList() {
                         <h3>${escapeHTML(sub.title)}</h3>
                         <span class="submission-module">${escapeHTML(sub.module)}</span>
                     </div>
+                </div>
+                <div class="submission-right">
                     <div class="status-badge ${statusClass}">
                         <span class="status-dot"></span>
                         ${statusLabel}
                     </div>
+                    ${metaContent}
                 </div>
-                ${footerContent}
             </div>
         `;
     }).join('');
