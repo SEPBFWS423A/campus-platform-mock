@@ -16,9 +16,9 @@
     font-size: 0.875rem;
     font-weight: 500;
     padding: 0.4rem 0.85rem;
-    background: var(--primary-light);
-    border-radius: 999px;
-    border: 1px solid rgba(37, 99, 235, 0.08);
+    background: var(--surface-color);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
 }
 
 .current-date .material-icons-round {
@@ -78,15 +78,15 @@
 }
 
 .primary-bg {
-    background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+    background: var(--primary-color);
 }
 
 .success-bg {
-    background: linear-gradient(135deg, #10b981, #059669);
+    background: var(--success-color);
 }
 
 .warning-bg {
-    background: linear-gradient(135deg, #f59e0b, #d97706);
+    background: var(--warning-color);
 }
 
 .stat-info {
@@ -102,11 +102,11 @@
 }
 
 .stat-value {
-    font-size: 1.65rem;
-    font-weight: 800;
+    font-size: 1.5rem;
+    font-weight: 700;
     color: var(--text-primary);
     line-height: 1.2;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.02em;
 }
 
 .stat-trend {
@@ -144,9 +144,9 @@
 
 .progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, var(--success-color), #34d399);
+    background: var(--success-color);
     border-radius: 999px;
-    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: width 0.6s ease;
 }
 
 /* Dashboard Grid Layout */
@@ -258,7 +258,6 @@
 }
 
 .timeline-item .content:hover {
-    transform: translateY(-2px);
     box-shadow: var(--shadow-sm);
     border-color: var(--border-color);
 }
@@ -391,12 +390,11 @@
 .btn-action:hover {
     background-color: var(--primary-light);
     border-color: rgba(37, 99, 235, 0.2);
-    box-shadow: var(--shadow-md);
-    transform: translateY(-3px);
+    box-shadow: var(--shadow-sm);
 }
 
 .btn-action:hover span.material-icons-round {
-    transform: scale(1.15);
+    color: var(--primary-hover);
 }
 
 /* Mobile Responsiveness */

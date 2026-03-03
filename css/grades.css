@@ -21,7 +21,6 @@
 }
 
 .grade-stat:hover {
-    transform: translateY(-2px);
     box-shadow: var(--shadow-md);
 }
 
@@ -64,9 +63,9 @@
 
 .grade-stat-value {
     font-size: 1.5rem;
-    font-weight: 800;
+    font-weight: 700;
     color: var(--text-primary);
-    letter-spacing: -0.03em;
+    letter-spacing: -0.02em;
 }
 
 /* Semester Sections */
@@ -190,7 +189,7 @@
 }
 
 .grade-badge:hover {
-    transform: scale(1.1);
+    opacity: 0.9;
 }
 
 .grade-badge.excellent {

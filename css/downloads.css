@@ -51,7 +51,6 @@
 .category-item:hover {
     background-color: var(--primary-light);
     color: var(--primary-color);
-    transform: translateX(2px);
 }
 
 .category-item.active {
@@ -59,7 +58,6 @@
     color: var(--primary-color);
     font-weight: 600;
     box-shadow: none;
-    transform: translateX(2px);
 }
 
 .category-item .material-icons-round {
@@ -109,8 +107,7 @@
 .upload-zone:hover {
     border-color: var(--primary-color);
     background-color: var(--primary-light);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
+    box-shadow: var(--shadow-sm);
 }
 
 .upload-icon {
@@ -305,7 +302,6 @@
     background-color: var(--primary-color);
     border-color: var(--primary-color);
     color: white;
-    transform: translateY(-2px);
 
 }
 

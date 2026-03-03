@@ -44,7 +44,6 @@
     border-color: var(--primary-color);
     color: var(--primary-color);
     background-color: var(--primary-light);
-    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.1);
 }
 
 /* Detailed Grid */
@@ -173,9 +172,8 @@
 }
 
 .calendar-event:hover {
-    transform: translateY(-2px) scale(1.02);
     z-index: 10;
-    box-shadow: var(--shadow-lg);
+    box-shadow: var(--shadow-md);
 }
 
 .calendar-event.blue {

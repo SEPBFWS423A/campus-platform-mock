@@ -20,11 +20,11 @@
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
     --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
-    --radius-sm: 0.375rem;
-    --radius-md: 0.5rem;
-    --radius-lg: 0.875rem;
-    --radius-xl: 1.25rem;
-    --radius-2xl: 1.5rem;
+    --radius-sm: 0.25rem;
+    --radius-md: 0.375rem;
+    --radius-lg: 0.5rem;
+    --radius-xl: 0.625rem;
+    --radius-2xl: 0.75rem;
     --transition-speed: 0.3s;
     --transition-fast: 0.15s;
     --font-family: 'Inter', sans-serif;
@@ -160,10 +160,7 @@ body.dark-mode .navbar {
 
 .nav-brand .material-icons-round {
     font-size: 1.6rem;
-    background: linear-gradient(135deg, var(--primary-color), #7c3aed);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    color: var(--primary-color);
 }
 
 .nav-links {
@@ -228,11 +225,11 @@ body.dark-mode .navbar {
 @keyframes dropdownAppear {
     from {
         opacity: 0;
-        transform: translateY(-4px) scale(0.98);
+        transform: translateY(-2px);
     }
     to {
         opacity: 1;
-        transform: translateY(0) scale(1);
+        transform: translateY(0);
     }
 }
 
@@ -324,11 +321,11 @@ body.dark-mode .navbar {
 }
 
 .section-header h1 {
-    font-size: 1.875rem;
-    font-weight: 800;
+    font-size: 1.65rem;
+    font-weight: 700;
     color: var(--text-primary);
     margin-bottom: 0.25rem;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.02em;
 }
 
 .section-header p {
@@ -354,8 +351,7 @@ body.dark-mode .navbar {
 }
 
 .card:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-lg);
+    box-shadow: var(--shadow-md);
     border-color: var(--border-color);
 }
 
@@ -370,7 +366,7 @@ body.dark-mode .navbar {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, var(--bg-color) 0%, rgba(37, 99, 235, 0.04) 50%, var(--bg-color) 100%);
+    background: var(--bg-color);
     z-index: 200;
     display: flex;
     justify-content: center;
@@ -397,8 +393,8 @@ body.dark-mode .navbar {
     top: 0;
     left: 0;
     right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, var(--primary-color), #7c3aed, #ec4899);
+    height: 3px;
+    background: var(--primary-color);
 }
 
 .login-header {
@@ -406,13 +402,9 @@ body.dark-mode .navbar {
 }
 
 .login-logo {
-    font-size: 3.5rem;
-    background: linear-gradient(135deg, var(--primary-color), #7c3aed);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    font-size: 3rem;
+    color: var(--primary-color);
     margin-bottom: 1rem;
-    filter: drop-shadow(0 2px 4px rgba(37, 99, 235, 0.2));
 }
 
 .form-group {
@@ -478,13 +470,11 @@ body.dark-mode .navbar {
 
 .btn-primary:hover {
     background-color: var(--primary-hover);
-    transform: translateY(-1px);
-    box-shadow: 0 2px 4px rgba(37, 99, 235, 0.25), 0 8px 16px -4px rgba(37, 99, 235, 0.2);
+    box-shadow: 0 2px 4px rgba(37, 99, 235, 0.2);
 }
 
 .btn-primary:active {
-    transform: translateY(0);
-    box-shadow: 0 1px 2px rgba(37, 99, 235, 0.2);
+    box-shadow: 0 1px 2px rgba(37, 99, 235, 0.15);
 }
 
 .btn-block {
@@ -603,7 +593,7 @@ body.dark-mode .navbar {
 }
 
 .event-card:hover {
-    transform: translateX(2px);
+    background-color: rgba(37, 99, 235, 0.06);
 }
 
 .event-card .title {
@@ -887,12 +877,10 @@ body.dark-mode .navbar {
 @keyframes fadeIn {
     from {
         opacity: 0;
-        transform: translateY(6px);
     }
 
     to {
         opacity: 1;
-        transform: translateY(0);
     }
 }
 
