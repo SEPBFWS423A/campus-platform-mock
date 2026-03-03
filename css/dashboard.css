@@ -243,8 +243,8 @@
 
 .timeline-item.current .marker {
     background-color: var(--primary-color);
-    border-color: rgba(37, 99, 235, 0.3);
-    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.2);
+    border-color: rgba(59, 130, 246, 0.3);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
 }
 
 .timeline-item .content {
@@ -265,7 +265,7 @@
 .timeline-item.current .content {
     background-color: var(--primary-light);
     border-left: 3px solid var(--primary-color);
-    border-color: rgba(37, 99, 235, 0.15);
+    border-color: rgba(59, 130, 246, 0.15);
 }
 
 .timeline-item h4 {
@@ -330,7 +330,7 @@
 }
 
 .activity-icon.primary {
-    background-color: rgba(37, 99, 235, 0.1);
+    background-color: rgba(59, 130, 246, 0.1);
     color: var(--primary-color);
 }
 
@@ -389,12 +389,35 @@
 
 .btn-action:hover {
     background-color: var(--primary-light);
-    border-color: rgba(37, 99, 235, 0.2);
+    border-color: rgba(59, 130, 246, 0.2);
     box-shadow: var(--shadow-sm);
 }
 
 .btn-action:hover span.material-icons-round {
     color: var(--primary-hover);
+}
+
+/* Dark mode glassmorphism for dashboard elements */
+body.dark-mode .stat-card {
+    background-color: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+}
+
+body.dark-mode .timeline-item .content {
+    background-color: rgba(15, 23, 42, 0.4);
+    border-color: var(--glass-border);
+}
+
+body.dark-mode .btn-action {
+    background-color: rgba(15, 23, 42, 0.4);
+    border-color: var(--glass-border);
+}
+
+body.dark-mode .btn-action:hover {
+    background-color: rgba(59, 130, 246, 0.08);
+    border-color: rgba(59, 130, 246, 0.2);
 }
 
 /* Mobile Responsiveness */

@@ -202,23 +202,56 @@
 
 /* Dark mode tweaks */
 body.dark-mode .calendar-event.blue {
-    background-color: rgba(59, 130, 246, 0.15);
-    color: #DBEAFE;
+    background-color: rgba(59, 130, 246, 0.12);
+    color: #93bbfd;
 }
 
 body.dark-mode .calendar-event.green {
-    background-color: rgba(16, 185, 129, 0.15);
-    color: #D1FAE5;
+    background-color: rgba(16, 185, 129, 0.12);
+    color: #6ee7b7;
 }
 
 body.dark-mode .calendar-event.orange {
-    background-color: rgba(245, 158, 11, 0.15);
-    color: #FEF3C7;
+    background-color: rgba(245, 158, 11, 0.12);
+    color: #fcd34d;
 }
 
 body.dark-mode .calendar-event.purple {
-    background-color: rgba(139, 92, 246, 0.15);
-    color: #EDE9FE;
+    background-color: rgba(139, 92, 246, 0.12);
+    color: #c4b5fd;
+}
+
+body.dark-mode .calendar-wrapper {
+    background-color: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-color: var(--glass-border);
+}
+
+body.dark-mode .calendar-grid-detailed {
+    background-color: transparent;
+}
+
+body.dark-mode .time-column {
+    background-color: rgba(8, 14, 30, 0.8);
+}
+
+body.dark-mode .time-slot-header {
+    background-color: rgba(8, 14, 30, 0.8);
+    background-image: none;
+}
+
+body.dark-mode .day-header {
+    background-color: rgba(8, 14, 30, 0.8);
+}
+
+body.dark-mode .time-slot span {
+    background-color: transparent;
+}
+
+body.dark-mode .calendar-event {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 
 .event-time {

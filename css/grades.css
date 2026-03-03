@@ -37,7 +37,7 @@
 }
 
 .grade-stat-icon.primary {
-    background-color: rgba(37, 99, 235, 0.1);
+    background-color: rgba(59, 130, 246, 0.1);
     color: var(--primary-color);
 }
 
@@ -265,6 +265,26 @@
     font-weight: 600;
     color: var(--text-secondary);
     border: 1px solid var(--border-color-subtle);
+}
+
+/* Dark mode glassmorphism for grades */
+body.dark-mode .grade-stat {
+    background-color: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-color: var(--glass-border);
+}
+
+body.dark-mode .grades-card {
+    background-color: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-color: var(--glass-border);
+}
+
+body.dark-mode .grade-badge.good {
+    background-color: rgba(59, 130, 246, 0.12);
+    color: #60A5FA;
 }
 
 /* Mobile Responsiveness */

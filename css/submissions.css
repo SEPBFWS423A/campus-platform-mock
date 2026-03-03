@@ -44,7 +44,7 @@
 .search-wrapper input:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.08);
     background-color: var(--surface-color);
 }
 
@@ -371,6 +371,40 @@
     align-items: center;
     justify-content: center;
     gap: 0.75rem;
+}
+
+/* Dark mode glassmorphism for submissions */
+body.dark-mode .submissions-grid {
+    background-color: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-color: var(--glass-border);
+}
+
+body.dark-mode .submission-card {
+    background-color: transparent;
+    border-bottom-color: var(--glass-border);
+}
+
+body.dark-mode .submission-card:hover {
+    background-color: rgba(59, 130, 246, 0.05);
+}
+
+body.dark-mode .status-badge.info {
+    color: #60A5FA;
+    background-color: rgba(59, 130, 246, 0.1);
+}
+
+body.dark-mode .type-project {
+    background: #2563eb;
+}
+
+body.dark-mode .type-thesis {
+    background: #7c3aed;
+}
+
+body.dark-mode .type-presentation {
+    background: #b45309;
 }
 
 /* Mobile */

@@ -223,7 +223,34 @@
 .filter-chip:hover:not(.active) {
     background-color: var(--primary-light);
     color: var(--primary-color);
-    border-color: rgba(37, 99, 235, 0.3);
+    border-color: rgba(59, 130, 246, 0.3);
+}
+
+/* Dark mode glassmorphism for exam cards */
+body.dark-mode .exam-card-enhanced {
+    background-color: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-color: var(--glass-border);
+}
+
+body.dark-mode .exam-card-enhanced:hover {
+    border-color: rgba(100, 130, 200, 0.2);
+}
+
+body.dark-mode .exam-date-box {
+    background-color: rgba(8, 14, 30, 0.5);
+    border-color: var(--glass-border);
+}
+
+body.dark-mode .exam-footer {
+    background-color: rgba(8, 14, 30, 0.4);
+    border-top-color: var(--glass-border);
+}
+
+body.dark-mode .filter-chip {
+    background-color: rgba(15, 23, 42, 0.5);
+    border-color: var(--glass-border);
 }
 
 /* Mobile Responsiveness */
