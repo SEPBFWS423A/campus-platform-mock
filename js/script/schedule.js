@@ -30,7 +30,7 @@ export function renderSchedule(data) {
                 }
             });
 
-            const isCurrent = dayIndex === 1;
+            const isCurrent = dayIndex === (new Date(data.config.currentDate).getDay() + 6) % 7;
 
             return `
                 <div class="day-column">

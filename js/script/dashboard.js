@@ -33,11 +33,12 @@ export function renderDashboard(data) {
     }
 
     // 2. Timeline
+    const currentDayIndex = (new Date(data.config.currentDate).getDay() + 6) % 7;
     let todaysEvents = [];
     data.modules.forEach(m => {
         if (m.schedule) {
             m.schedule.forEach(s => {
-                if (s.day === 1) { // 1 = Tuesday
+                if (s.day === currentDayIndex) {
                     todaysEvents.push({
                         time: s.start,
                         title: m.name,

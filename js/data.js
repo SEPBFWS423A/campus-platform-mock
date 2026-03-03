@@ -1,9 +1,9 @@
 const mockData = {
     config: {
-        currentDate: "2024-02-18", // Simulated Today (Tuesday)
+        currentDate: "2026-03-04",
         currentTime: "14:00",
-        weekLabel: "KW 8 (17.02 - 21.02)",
-        weekDays: ["Mo 17.02", "Di 18.02", "Mi 19.02", "Do 20.02", "Fr 21.02"]
+        weekLabel: "KW 10 (02.03 - 06.03)",
+        weekDays: ["Mo 02.03", "Di 03.03", "Mi 04.03", "Do 05.03", "Fr 06.03"]
     },
     user: {
         name: "Max Mustermann",
@@ -97,7 +97,8 @@ const mockData = {
         {
             code: "WIN-402", name: "ERP-Systeme (SAP)", semester: "WiSe 25/26", ects: 6, status: "active",
             schedule: [
-                { day: 1, start: "14:00", end: "17:15", room: "PC-Labor 1", type: "Praktikum", color: "orange" }
+                { day: 1, start: "13:45", end: "17:00", room: "PC-Labor 1", type: "Praktikum", color: "orange" },
+                { day: 0, start: "13:45", end: "17:00", room: "R 1.02", type: "Vorlesung", color: "orange" }
             ],
             exam: {
                 status: "upcoming", date: "2026-03-22", time: "10:00 - 13:00",
@@ -108,8 +109,8 @@ const mockData = {
         {
             code: "INF-405", name: "Künstliche Intelligenz", semester: "WiSe 25/26", ects: 5, status: "active",
             schedule: [
-                { day: 2, start: "11:30", end: "13:00", room: "Hörsaal 1", type: "Vorlesung", color: "purple" },
-                { day: 4, start: "08:15", end: "09:45", room: "R 1.04", type: "Übung", color: "purple" }
+                { day: 2, start: "09:45", end: "13:00", room: "Hörsaal 1", type: "Vorlesung", color: "purple" },
+                { day: 4, start: "09:45", end: "13:00", room: "R 1.04", type: "Übung", color: "purple" }
             ],
             exam: {
                 status: "open", date: "2026-03-18", time: "14:00 - 15:30",
@@ -123,7 +124,8 @@ const mockData = {
         {
             code: "WIN-403", name: "IT-Recht & Compliance", semester: "WiSe 25/26", ects: 5, status: "registered",
             schedule: [
-                { day: 3, start: "09:45", end: "13:00", room: "R 2.10", type: "Vorlesung", color: "green" }
+                { day: 3, start: "09:45", end: "13:00", room: "R 2.10", type: "Vorlesung", color: "green" },
+                { day: 2, start: "13:45", end: "17:00", room: "R 2.10", type: "Übung", color: "green" }
             ],
             exam: {
                 status: "registered", date: "2026-02-28", time: "10:00 - 11:30",
