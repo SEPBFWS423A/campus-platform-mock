@@ -942,6 +942,11 @@ body.dark-mode .sidebar {
         border-radius: var(--radius-lg);
     }
 
+    /* Fix grid-container overflow on small screens */
+    .grid-container {
+        grid-template-columns: 1fr;
+    }
+
     /* Reduce header size */
     .section-header h1 {
         font-size: 1.5rem;
@@ -1041,6 +1046,26 @@ address.contact-list a:hover {
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
+    }
+}
+
+/* Reduce glass-morphism blur on mobile for performance */
+@media (max-width: 768px) {
+    body.dark-mode {
+        --glass-blur: blur(8px);
+        --surface-color: rgba(15, 23, 42, 0.85);
+        --surface-elevated: rgba(20, 30, 52, 0.9);
+        --glass-bg: rgba(15, 23, 42, 0.75);
+    }
+
+    body.dark-mode .navbar {
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+    }
+
+    body.dark-mode .card {
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
     }
 }
 
