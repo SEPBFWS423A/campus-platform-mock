@@ -16,6 +16,8 @@ const mockData = {
     users: [
         {
             id: 1,
+            username: "max.mustermann",
+            password: "student123",
             name: "Max Mustermann",
             role: "student",
             roleLabel: "Student (B.Sc.)",
@@ -26,6 +28,8 @@ const mockData = {
         },
         {
             id: 2,
+            username: "weber",
+            password: "dozent123",
             name: "Prof. Dr. Weber",
             role: "dozent",
             roleLabel: "Dozent",
@@ -34,11 +38,79 @@ const mockData = {
         },
         {
             id: 3,
+            username: "schmidt",
+            password: "admin123",
             name: "Anna Schmidt",
             role: "verwaltung",
             roleLabel: "Verwaltung",
             email: "schmidt@university.edu",
             department: "Studierendensekretariat"
+        },
+        {
+            id: 4,
+            username: "testuser",
+            password: "password",
+            name: "Test Benutzer",
+            role: "student",
+            roleLabel: "Student (B.Sc.)",
+            matriculationNumber: "87654321",
+            email: "test.benutzer@university.edu",
+            courseOfStudy: "Informatik",
+            semester: 3
+        },
+        {
+            id: 5,
+            username: "otheruser",
+            password: "secret",
+            name: "Other User",
+            role: "student",
+            roleLabel: "Student (B.Sc.)",
+            matriculationNumber: "11223344",
+            email: "other.user@university.edu",
+            courseOfStudy: "Medieninformatik",
+            semester: 2
+        },
+        {
+            id: 6,
+            username: "rektor",
+            password: "rektor123",
+            name: "Dr. Thomas Rektor",
+            role: "verwaltung",
+            roleLabel: "Hochschulleitung",
+            email: "rektor@university.edu",
+            department: "Hochschulleitung"
+        },
+        {
+            id: 7,
+            username: "lisa.mueller",
+            password: "pass456",
+            name: "Lisa Mueller",
+            role: "student",
+            roleLabel: "Studentin (B.Sc.)",
+            matriculationNumber: "260563",
+            email: "lisa.mueller@university.edu",
+            courseOfStudy: "Wirtschaftsinformatik",
+            semester: 4
+        },
+        {
+            id: 8,
+            username: "mueller",
+            password: "dozent456",
+            name: "Prof. Dr. Mueller",
+            role: "dozent",
+            roleLabel: "Dozent",
+            email: "mueller@university.edu",
+            department: "Informatik"
+        },
+        {
+            id: 9,
+            username: "bauer",
+            password: "mit123",
+            name: "Klaus Bauer",
+            role: "verwaltung",
+            roleLabel: "Verwaltung",
+            email: "bauer@university.edu",
+            department: "Raumverwaltung"
         }
     ],
 
@@ -270,7 +342,94 @@ const mockData = {
         { text: "Neue Note in <strong>Mathematik II</strong>", time: "Vor 2 Stunden", icon: "grade", colorClass: "success" },
         { text: "Skript für <strong>Web Tech</strong> hochgeladen", time: "Gestern, 15:30", icon: "upload_file", colorClass: "primary" },
         { text: "Prüfungsanmeldung <strong>Betriebssysteme</strong>", time: "15. Feb", icon: "event", colorClass: "warning" }
-    ]
+    ],
+
+    // -------------------------------------------------------------------------
+    // Räume – Verwaltung der Hörsäle und Seminarräume
+    // -------------------------------------------------------------------------
+    rooms: [
+        { id: 1, name: "Hörsaal 1", seats: 200, examSeats: 100, bookings: [
+            { day: 2, start: "09:45", end: "13:00", title: "Künstliche Intelligenz", eventSeriesId: 3, eventId: 1 }
+        ]},
+        { id: 2, name: "Hörsaal 2", seats: 150, examSeats: 75, bookings: [
+            { day: 3, start: "09:00", end: "10:30", title: "Klausur IT-PM", eventSeriesId: 2, eventId: 3 }
+        ]},
+        { id: 3, name: "M-208", seats: 23, examSeats: 7, bookings: [] },
+        { id: 4, name: "R 2.05", seats: 35, examSeats: 18, bookings: [
+            { day: 0, start: "09:45", end: "11:15", title: "VL Grundlagen SE", eventSeriesId: 1, eventId: 1 },
+            { day: 0, start: "13:45", end: "15:15", title: "VL Projektmanagement", eventSeriesId: 2, eventId: 1 }
+        ]},
+        { id: 5, name: "PC-Labor 1", seats: 25, examSeats: 25, bookings: [
+            { day: 1, start: "13:45", end: "17:00", title: "ERP-Systeme Praktikum", eventSeriesId: null, eventId: null }
+        ]},
+        { id: 6, name: "R 1.02", seats: 40, examSeats: 20, bookings: [
+            { day: 1, start: "09:45", end: "11:15", title: "Übung PM", eventSeriesId: 2, eventId: 2 }
+        ]},
+        { id: 7, name: "R 1.04", seats: 30, examSeats: 15, bookings: [
+            { day: 4, start: "09:45", end: "13:00", title: "Übung KI", eventSeriesId: 3, eventId: 2 }
+        ]},
+        { id: 8, name: "R 2.10", seats: 45, examSeats: 22, bookings: [
+            { day: 3, start: "09:45", end: "13:00", title: "IT-Recht Vorlesung", eventSeriesId: null, eventId: null },
+            { day: 2, start: "13:45", end: "17:00", title: "IT-Recht Übung", eventSeriesId: null, eventId: null }
+        ]},
+        { id: 9, name: "Audimax", seats: 500, examSeats: 250, bookings: [] }
+    ],
+
+    // -------------------------------------------------------------------------
+    // Veranstaltungsreihen – Verwaltung von Lehrveranstaltungen und Klausuren
+    // -------------------------------------------------------------------------
+    eventSeries: [
+        {
+            id: 1,
+            name: "Software Engineering",
+            studentIds: [1, 7],
+            events: [
+                { id: 1, name: "VL Grundlagen", type: "Lehrveranstaltung", duration: 90, schedule: { day: 0, start: "09:45", end: "11:15" }, roomId: 4, order: 1 },
+                { id: 2, name: "Klausur SE", type: "Klausur", duration: 90, schedule: null, roomId: null, order: 2 }
+            ]
+        },
+        {
+            id: 2,
+            name: "IT-Projektmanagement",
+            studentIds: [1, 5, 7],
+            events: [
+                { id: 1, name: "VL Projektmanagement", type: "Lehrveranstaltung", duration: 90, schedule: { day: 0, start: "13:45", end: "15:15" }, roomId: 4, order: 1 },
+                { id: 2, name: "Übung PM", type: "Lehrveranstaltung", duration: 90, schedule: { day: 1, start: "09:45", end: "11:15" }, roomId: 6, order: 2 },
+                { id: 3, name: "Klausur PM", type: "Klausur", duration: 90, schedule: { day: 3, start: "09:00", end: "10:30" }, roomId: 2, order: 3 }
+            ]
+        },
+        {
+            id: 3,
+            name: "Künstliche Intelligenz",
+            studentIds: [7],
+            events: [
+                { id: 1, name: "VL Neuronale Netze", type: "Lehrveranstaltung", duration: 90, schedule: { day: 2, start: "09:45", end: "13:00" }, roomId: 1, order: 1 },
+                { id: 2, name: "Übung KI", type: "Lehrveranstaltung", duration: 90, schedule: { day: 4, start: "09:45", end: "13:00" }, roomId: 7, order: 2 },
+                { id: 3, name: "Klausur KI", type: "Klausur", duration: 90, schedule: null, roomId: null, order: 3 }
+            ]
+        },
+        {
+            id: 4,
+            name: "Software Testing & DevOps",
+            studentIds: [],
+            events: []
+        }
+    ],
+
+    // -------------------------------------------------------------------------
+    // Prüfungsergebnisse – Noten pro Klausur (Schlüssel: seriesId-eventId)
+    // -------------------------------------------------------------------------
+    examResults: {
+        "1-2": [
+            { studentId: 1, grade: "1.3" },
+            { studentId: 7, grade: "2.0" }
+        ],
+        "2-3": [
+            { studentId: 1, grade: "2.7" },
+            { studentId: 5, grade: "3.3" },
+            { studentId: 7, grade: "1.7" }
+        ]
+    }
 };
 
 /**

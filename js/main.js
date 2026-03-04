@@ -9,6 +9,12 @@ import { renderDownloads } from './script/downloads.js';
 import { renderSubmissions } from './script/submissions.js';
 import { renderDozentCourses, renderDozentGrading } from './script/dozent.js';
 import { renderAdminStudents, renderAdminExams } from './script/admin.js';
+import { initModal } from './script/modal.js';
+import { initChangePassword } from './script/changePassword.js';
+import { renderUserManagement } from './script/userManagement.js';
+import { renderRoomManagement } from './script/roomManagement.js';
+import { renderEventManagement } from './script/eventManagement.js';
+import { renderExamResultsManagement } from './script/examResults.js';
 import { escapeHTML } from './script/utils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -17,6 +23,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initTheme();
     initAuth();
+    initModal();
+    initChangePassword();
     const navigation = initNavigation();
     applyRoleVisibility();
     initData();
@@ -36,7 +44,7 @@ function applyRoleVisibility() {
     // Show/hide nav items based on data-roles attribute
     document.querySelectorAll('.nav-item[data-roles]').forEach(item => {
         const roles = item.getAttribute('data-roles').split(',');
-        item.style.display = roles.includes(role) ? '' : 'none';
+        item.classList.toggle('hidden', !roles.includes(role));
     });
 }
 
@@ -73,8 +81,10 @@ function initData() {
             renderDownloads(mockData);
         } else if (user.role === 'verwaltung') {
             renderVerwaltungDashboard(mockData, user);
-            renderAdminStudents(mockData);
-            renderAdminExams(mockData);
+            renderUserManagement(mockData);
+            renderRoomManagement(mockData);
+            renderEventManagement(mockData);
+            renderExamResultsManagement(mockData);
             renderDownloads(mockData);
         }
     } catch (_) {
@@ -180,9 +190,9 @@ function renderDozentDashboard(data, user) {
  * Renders a basic dashboard for Verwaltung role.
  */
 function renderVerwaltungDashboard(data, user) {
-    const students = data.users.filter(u => u.role === 'student');
-    const activeModules = data.modules.filter(m => m.status === 'active' || m.status === 'registered');
-    const upcomingExams = activeModules.filter(m => m.exam);
+    const totalUsers = data.users.length;
+    const totalRooms = (data.rooms || []).length;
+    const totalSeries = (data.eventSeries || []).length;
 
     const statsContainer = document.querySelector('.stats-row');
     if (statsContainer) {
@@ -190,22 +200,22 @@ function renderVerwaltungDashboard(data, user) {
             <div class="card stat-card">
                 <div class="stat-icon primary-bg"><span class="material-icons-round">people</span></div>
                 <div class="stat-info">
-                    <span class="stat-label">Eingeschriebene Studierende</span>
-                    <span class="stat-value">${students.length}</span>
+                    <span class="stat-label">Benutzer gesamt</span>
+                    <span class="stat-value">${totalUsers}</span>
                 </div>
             </div>
             <div class="card stat-card">
-                <div class="stat-icon warning-bg"><span class="material-icons-round">event_note</span></div>
+                <div class="stat-icon warning-bg"><span class="material-icons-round">meeting_room</span></div>
                 <div class="stat-info">
-                    <span class="stat-label">Geplante Prüfungen</span>
-                    <span class="stat-value">${upcomingExams.length}</span>
+                    <span class="stat-label">Räume</span>
+                    <span class="stat-value">${totalRooms}</span>
                 </div>
             </div>
             <div class="card stat-card">
-                <div class="stat-icon success-bg"><span class="material-icons-round">school</span></div>
+                <div class="stat-icon success-bg"><span class="material-icons-round">event</span></div>
                 <div class="stat-info">
-                    <span class="stat-label">Aktive Module</span>
-                    <span class="stat-value">${activeModules.length}</span>
+                    <span class="stat-label">Veranstaltungsreihen</span>
+                    <span class="stat-value">${totalSeries}</span>
                 </div>
             </div>
         `;

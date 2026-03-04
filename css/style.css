@@ -15,6 +15,13 @@
     --warning-color: #f59e0b;
     --error-color: #ef4444;
     --info-color: #3b82f6;
+    --success-color-dark: #059669;
+    --success-color-bright: #22c55e;
+    --error-color-dark: #dc2626;
+    --warning-color-dark: #d97706;
+    --purple-color: #7c3aed;
+    --gray-color: #6b7280;
+    --gray-dark: #4B5563;
     --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
     --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.06);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
@@ -53,6 +60,13 @@ body.dark-mode {
     --glass-bg: rgba(15, 23, 42, 0.6);
     --glass-border: rgba(100, 130, 200, 0.12);
     --glass-blur: blur(16px) saturate(180%);
+    --success-color-dark: #34d399;
+    --success-color-bright: #4ade80;
+    --error-color-dark: #f87171;
+    --warning-color-dark: #fbbf24;
+    --purple-color: #a78bfa;
+    --gray-color: #9ca3af;
+    --gray-dark: #d1d5db;
 }
 
 /* Reset & Base Styles */
@@ -104,6 +118,12 @@ body {
 /* Hidden utility (replaces inline display:none) */
 .hidden {
     display: none !important;
+}
+
+.heading-icon {
+    vertical-align: middle;
+    margin-right: 0.5rem;
+    color: var(--primary-color);
 }
 
 /* Focus Visible Styles for Keyboard Navigation */
@@ -368,6 +388,22 @@ body.dark-mode .dropdown-menu {
     margin-left: auto;
 }
 
+.user-switch-group-label {
+    padding: 0.45rem 1rem 0.25rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-tertiary);
+    border-top: 1px solid var(--border-color-subtle);
+    margin-top: 0.25rem;
+}
+
+.user-switch-group-label:first-child {
+    border-top: none;
+    margin-top: 0;
+}
+
 .icon-btn {
     background: none;
     border: none;
@@ -436,7 +472,19 @@ body.dark-mode .dropdown-menu {
     border-color: var(--border-color);
 }
 
-body.dark-mode .card {
+body.dark-mode .card,
+body.dark-mode .exam-card-enhanced,
+body.dark-mode .submission-card,
+body.dark-mode .grade-stat,
+body.dark-mode .grades-card,
+body.dark-mode .category-sidebar,
+body.dark-mode .file-section,
+body.dark-mode .empty-state,
+body.dark-mode .login-card,
+body.dark-mode .credentials-card,
+body.dark-mode .calendar-wrapper,
+body.dark-mode .module-overview-card,
+body.dark-mode .login-container {
     background-color: var(--glass-bg);
     backdrop-filter: var(--glass-blur);
     -webkit-backdrop-filter: var(--glass-blur);
@@ -490,13 +538,6 @@ body.dark-mode .card:hover {
     background: var(--primary-color);
 }
 
-body.dark-mode .login-container {
-    background-color: var(--glass-bg);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
-    border-color: var(--glass-border);
-}
-
 .login-header {
     margin-bottom: 2rem;
 }
@@ -543,6 +584,36 @@ body.dark-mode .login-container {
     background-color: var(--surface-color);
 }
 
+.form-group select {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border-radius: var(--radius-md);
+    border: 1.5px solid var(--border-color);
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 0.95rem;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    padding-right: 2rem;
+    cursor: pointer;
+}
+
+.form-group select:hover {
+    border-color: var(--text-tertiary);
+}
+
+.form-group select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+    background-color: var(--surface-color);
+}
+
 .btn {
     padding: 0.7rem 1.5rem;
     border-radius: var(--radius-md);
@@ -579,6 +650,100 @@ body.dark-mode .login-container {
 
 .btn-block {
     width: 100%;
+}
+
+/* --- Shared Button Variants --- */
+.btn-outline {
+    background: none;
+    color: var(--text-primary);
+    border: 1.5px solid var(--border-color);
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color var(--transition-fast), border-color var(--transition-fast);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.btn-outline:hover {
+    background-color: rgba(0, 0, 0, 0.03);
+    border-color: var(--text-tertiary);
+}
+
+.btn-outline-pill {
+    background: transparent;
+    border: 1.5px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 0.35rem 1rem;
+    font-size: 0.85rem;
+    border-radius: 999px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.btn-outline-pill:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    background-color: var(--primary-light);
+}
+
+.btn-danger {
+    background-color: var(--error-color);
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity var(--transition-fast);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.btn-danger:hover {
+    opacity: 0.9;
+}
+
+.btn-sm {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+}
+
+.btn-sm .material-icons-round {
+    font-size: 1rem;
+}
+
+.btn-icon-only {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border-color);
+    background: none;
+    border-radius: var(--radius-md);
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.btn-icon-only:hover {
+    background-color: rgba(0, 0, 0, 0.03);
+    color: var(--text-primary);
+}
+
+.btn-icon-only.danger:hover {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: var(--error-color);
+    border-color: rgba(239, 68, 68, 0.3);
 }
 
 .forgot-password {
@@ -902,6 +1067,35 @@ body.dark-mode .login-container {
     border: 1px dashed var(--border-color);
 }
 
+.placeholder-map .material-icons-round {
+    font-size: 3rem;
+    opacity: 0.4;
+}
+
+/* Link List Utility */
+.link-list {
+    list-style: none;
+    margin-top: 1rem;
+    padding: 0;
+}
+
+.link-list li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.link-list a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.link-list a:hover {
+    text-decoration: underline;
+}
+
 .mobile-only {
     display: none;
 }
@@ -962,13 +1156,6 @@ body.dark-mode .login-container {
     box-shadow: var(--shadow-sm);
     border: 1px solid var(--border-color-subtle);
     overflow-x: auto;
-}
-
-body.dark-mode .module-overview-card {
-    background-color: var(--glass-bg);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
-    border-color: var(--glass-border);
 }
 
 .module-overview-table {

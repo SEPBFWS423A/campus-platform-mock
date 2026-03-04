@@ -16,10 +16,27 @@
 
 <body class="light-mode">
     <div class="login-page">
-        <!-- Theme Toggle -->
-        <button id="theme-toggle" class="login-theme-toggle" type="button" aria-label="Dunkles Design aktivieren">
-            <span class="material-icons-round" aria-hidden="true">dark_mode</span>
-        </button>
+        <!-- Top-right controls: Credentials Dropdown + Theme Toggle -->
+        <div class="login-top-controls">
+            <div class="credentials-dropdown">
+                <button id="credentials-toggle" class="login-theme-toggle credentials-toggle-btn" type="button" aria-label="Testzugänge anzeigen" aria-expanded="false" aria-controls="credentials-panel">
+                    <span class="material-icons-round" aria-hidden="true">vpn_key</span>
+                    <span class="credentials-toggle-label">Testzugänge</span>
+                </button>
+                <aside id="credentials-panel" class="credentials-card credentials-panel" aria-label="Testzugangsdaten" hidden>
+                    <div class="credentials-header">
+                        <span class="material-icons-round" aria-hidden="true">vpn_key</span>
+                        <h2>Testzugänge</h2>
+                    </div>
+                    <div id="credentials-list" class="credentials-list">
+                        <!-- Populated by JS from mockData -->
+                    </div>
+                </aside>
+            </div>
+            <button id="theme-toggle" class="login-theme-toggle" type="button" aria-label="Dunkles Design aktivieren">
+                <span class="material-icons-round" aria-hidden="true">dark_mode</span>
+            </button>
+        </div>
 
         <!-- Decorative Background Elements -->
         <div class="login-bg-decoration" aria-hidden="true">
@@ -29,44 +46,51 @@
         </div>
 
         <!-- Login Card -->
-        <main class="login-card" role="main">
-            <div class="login-header">
-                <div class="login-brand">
-                    <span class="material-icons-round login-logo" aria-hidden="true">school</span>
-                    <span class="login-brand-name">CampusPlatform</span>
-                </div>
-                <h1 id="login-title">Willkommen</h1>
-                <p class="login-subtitle">Bitte melden Sie sich mit Ihren Zugangsdaten an</p>
-            </div>
-
-            <form id="login-form" novalidate>
-                <div class="form-group">
-                    <label for="username">Matrikelnummer / E-Mail</label>
-                    <div class="input-wrapper">
-                        <span class="material-icons-round input-icon" aria-hidden="true">person</span>
-                        <input type="text" id="username" placeholder="12345678" required autocomplete="username" aria-required="true">
+        <div class="login-layout">
+            <main class="login-card" role="main">
+                <div class="login-header">
+                    <div class="login-brand">
+                        <span class="material-icons-round login-logo" aria-hidden="true">school</span>
+                        <span class="login-brand-name">CampusPlatform</span>
                     </div>
+                    <h1 id="login-title">Willkommen</h1>
+                    <p class="login-subtitle">Bitte melden Sie sich mit Ihren Zugangsdaten an</p>
                 </div>
-                <div class="form-group">
-                    <label for="password">Passwort</label>
-                    <div class="input-wrapper">
-                        <span class="material-icons-round input-icon" aria-hidden="true">lock</span>
-                        <input type="password" id="password" placeholder="••••••••" required autocomplete="current-password" aria-required="true">
+
+                <form id="login-form" novalidate>
+                    <div class="form-group">
+                        <label for="username">Benutzername</label>
+                        <div class="input-wrapper">
+                            <span class="material-icons-round input-icon" aria-hidden="true">person</span>
+                            <input type="text" id="username" placeholder="benutzername" required autocomplete="username" aria-required="true">
+                        </div>
                     </div>
-                </div>
-                <button type="submit" class="btn btn-primary btn-block btn-login">
-                    <span class="btn-text">Anmelden</span>
-                    <span class="material-icons-round btn-icon" aria-hidden="true">arrow_forward</span>
-                </button>
-                <a href="#" class="forgot-password">Passwort vergessen?</a>
-            </form>
+                    <div class="form-group">
+                        <label for="password">Passwort</label>
+                        <div class="input-wrapper">
+                            <span class="material-icons-round input-icon" aria-hidden="true">lock</span>
+                            <input type="password" id="password" placeholder="••••••••" required autocomplete="current-password" aria-required="true">
+                        </div>
+                        <p class="form-hint">Bitte halten Sie Ihr Passwort geheim.</p>
+                    </div>
+                    <div id="login-error" class="login-error" role="alert" aria-live="assertive" hidden>
+                        <span class="material-icons-round" aria-hidden="true">error_outline</span>
+                        <span id="login-error-text">Benutzername oder Passwort nicht korrekt.</span>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block btn-login">
+                        <span class="btn-text">Anmelden</span>
+                        <span class="material-icons-round btn-icon" aria-hidden="true">arrow_forward</span>
+                    </button>
+                    <a href="#" class="forgot-password">Passwort vergessen?</a>
+                </form>
 
-            <footer class="login-footer">
-                <p>&copy; 2025 CampusPlatform</p>
-            </footer>
-        </main>
-    </div>
+                <footer class="login-footer">
+                    <p>&copy; 2025 CampusPlatform</p>
+                </footer>
+            </main>
+        </div>
 
+    <script src="js/data.js"></script>
     <script type="module">
         // Theme Management
         (function initTheme() {
@@ -125,14 +149,39 @@
         // Login Form Handling
         const loginForm = document.getElementById('login-form');
         const usernameInput = document.getElementById('username');
+        const loginError = document.getElementById('login-error');
+        const loginErrorText = document.getElementById('login-error-text');
 
         if (usernameInput) {
             setTimeout(() => usernameInput.focus(), 300);
         }
 
+        function showLoginError(message) {
+            if (loginError && loginErrorText) {
+                loginErrorText.textContent = message;
+                loginError.hidden = false;
+            }
+        }
+
+        function hideLoginError() {
+            if (loginError) {
+                loginError.hidden = true;
+            }
+        }
+
         if (loginForm) {
             loginForm.addEventListener('submit', (e) => {
                 e.preventDefault();
+                hideLoginError();
+
+                const username = usernameInput?.value.trim();
+                const password = document.getElementById('password')?.value;
+
+                if (!username || !password) {
+                    showLoginError('Bitte füllen Sie alle Felder aus.');
+                    return;
+                }
+
                 const submitBtn = loginForm.querySelector('button[type="submit"]');
                 const btnText = submitBtn?.querySelector('.btn-text');
                 const btnIcon = submitBtn?.querySelector('.btn-icon');
@@ -146,7 +195,24 @@
                 }
 
                 setTimeout(() => {
+                    const user = mockData.users.find(
+                        u => u.username === username && u.password === password
+                    );
+
+                    if (!user) {
+                        if (submitBtn) {
+                            if (btnText) btnText.textContent = 'Anmelden';
+                            if (btnIcon) btnIcon.textContent = 'arrow_forward';
+                            submitBtn.disabled = false;
+                            submitBtn.setAttribute('aria-busy', 'false');
+                            submitBtn.classList.remove('btn-loading');
+                        }
+                        showLoginError('Benutzername oder Passwort nicht korrekt.');
+                        return;
+                    }
+
                     sessionStorage.setItem('isLoggedIn', 'true');
+                    sessionStorage.setItem('currentUserId', String(user.id));
 
                     // Fade out the login card
                     const loginCard = document.querySelector('.login-card');
@@ -159,9 +225,107 @@
                     setTimeout(() => {
                         window.location.href = 'index.html';
                     }, 400);
-                }, 1000);
+                }, 600);
             });
         }
+        // Populate credentials card
+        (function renderCredentials() {
+            const container = document.getElementById('credentials-list');
+            if (!container || typeof mockData === 'undefined') return;
+
+            const roleIcons = {
+                verwaltung: 'admin_panel_settings',
+                dozent: 'school',
+                student: 'person'
+            };
+            const roleLabels = {
+                verwaltung: 'Verwaltung',
+                dozent: 'Dozenten',
+                student: 'Studierende'
+            };
+            const groupOrder = ['verwaltung', 'dozent', 'student'];
+
+            const grouped = {};
+            for (const user of mockData.users) {
+                if (!grouped[user.role]) grouped[user.role] = [];
+                grouped[user.role].push(user);
+            }
+
+            let html = '';
+            for (const role of groupOrder) {
+                const users = grouped[role];
+                if (!users || users.length === 0) continue;
+                html += `
+                    <div class="credentials-group">
+                        <div class="credentials-group-label">
+                            <span class="material-icons-round" aria-hidden="true">${roleIcons[role]}</span>
+                            ${roleLabels[role]}
+                        </div>
+                        ${users.map(u => `
+                            <button class="credentials-entry" type="button"
+                                    data-username="${u.username}" data-password="${u.password}"
+                                    title="Klicken zum Ausfüllen">
+                                <div class="credentials-name">${u.name}</div>
+                                <div class="credentials-details">
+                                    <span class="credentials-user"><span class="material-icons-round" aria-hidden="true">person</span>${u.username}</span>
+                                    <span class="credentials-pass"><span class="material-icons-round" aria-hidden="true">lock</span>${u.password}</span>
+                                </div>
+                            </button>
+                        `).join('')}
+                    </div>`;
+            }
+            container.innerHTML = html;
+
+            // Click to autofill
+            container.querySelectorAll('.credentials-entry').forEach(entry => {
+                entry.addEventListener('click', () => {
+                    const uInput = document.getElementById('username');
+                    const pInput = document.getElementById('password');
+                    if (uInput) uInput.value = entry.dataset.username;
+                    if (pInput) pInput.value = entry.dataset.password;
+                    if (uInput) uInput.focus();
+                });
+            });
+        })();
+
+        // Credentials Dropdown Toggle
+        (function initCredentialsDropdown() {
+            const toggleBtn = document.getElementById('credentials-toggle');
+            const panel = document.getElementById('credentials-panel');
+            if (!toggleBtn || !panel) return;
+
+            function openPanel() {
+                panel.hidden = false;
+                toggleBtn.setAttribute('aria-expanded', 'true');
+            }
+
+            function closePanel() {
+                panel.hidden = true;
+                toggleBtn.setAttribute('aria-expanded', 'false');
+            }
+
+            toggleBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (panel.hidden) {
+                    openPanel();
+                } else {
+                    closePanel();
+                }
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!panel.hidden && !panel.contains(e.target) && !toggleBtn.contains(e.target)) {
+                    closePanel();
+                }
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && !panel.hidden) {
+                    closePanel();
+                    toggleBtn.focus();
+                }
+            });
+        })();
     </script>
 </body>
 

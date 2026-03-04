@@ -46,7 +46,7 @@ export function renderAdminStudents(data) {
             <div class="card-header" style="margin-bottom: 1rem;">
                 <h3>Studierendenliste</h3>
             </div>
-            <table class="grades-table">
+            <table class="data-table grades-table">
                 <thead>
                     <tr>
                         <th scope="col" width="25%">Name</th>
@@ -118,7 +118,7 @@ export function renderAdminExams(data) {
             <div class="card-header" style="margin-bottom: 1rem;">
                 <h3>Prüfungsübersicht</h3>
             </div>
-            <table class="grades-table">
+            <table class="data-table grades-table">
                 <thead>
                     <tr>
                         <th scope="col" width="25%">Modul</th>

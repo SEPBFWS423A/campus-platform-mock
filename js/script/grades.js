@@ -71,7 +71,7 @@ export function renderGrades(data) {
                 <span class="semester-stats">&Oslash; ${escapeHTML(String(semAvg))} &bull; ${escapeHTML(String(semECTS))} ECTS</span>
             </div>
             <div class="grades-card">
-                <table class="grades-table">
+                <table class="data-table grades-table">
                     <thead>
                         <tr>
                             <th scope="col" width="35%">Modul</th>

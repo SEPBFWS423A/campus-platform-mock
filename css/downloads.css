@@ -215,23 +215,23 @@
 
 /* Specific Colors for File Types - Flat Colors */
 .file-type-icon-sm.pdf {
-    background-color: #ef4444;
+    background-color: var(--error-color);
 }
 
 .file-type-icon-sm.doc {
-    background-color: #3b82f6;
+    background-color: var(--info-color);
 }
 
 .file-type-icon-sm.zip {
-    background-color: #f59e0b;
+    background-color: var(--warning-color);
 }
 
 .file-type-icon-sm.img {
-    background-color: #10b981;
+    background-color: var(--success-color);
 }
 
 .file-type-icon-sm.default {
-    background-color: #6b7280;
+    background-color: var(--gray-color);
 }
 
 
@@ -321,21 +321,6 @@
 .dark-mode .file-type-icon-sm {
     box-shadow: none;
     /* Reduce glow in dark mode if too strong */
-}
-
-/* Dark mode glassmorphism for downloads */
-body.dark-mode .category-sidebar {
-    background-color: var(--glass-bg);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
-    border-color: var(--glass-border);
-}
-
-body.dark-mode .file-section {
-    background-color: var(--glass-bg);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
-    border-color: var(--glass-border);
 }
 
 body.dark-mode .file-section-header {

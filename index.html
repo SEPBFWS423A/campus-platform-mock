@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="css/exams.css">
     <link rel="stylesheet" href="css/downloads.css">
     <link rel="stylesheet" href="css/submissions.css">
+    <link rel="stylesheet" href="css/management.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Material Icons for UI elements -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
@@ -49,21 +50,29 @@
                     <span>Abgaben</span>
                 </a>
                 <!-- Dozent -->
-                <a href="#" class="nav-item" data-target="dozent-courses" data-roles="dozent" role="tab" aria-selected="false" aria-controls="dozent-courses" style="display:none;">
+                <a href="#" class="nav-item hidden" data-target="dozent-courses" data-roles="dozent" role="tab" aria-selected="false" aria-controls="dozent-courses">
                     <span class="material-icons-round" aria-hidden="true">menu_book</span>
                     <span>Meine Kurse</span>
                 </a>
-                <a href="#" class="nav-item" data-target="dozent-grading" data-roles="dozent" role="tab" aria-selected="false" aria-controls="dozent-grading" style="display:none;">
+                <a href="#" class="nav-item hidden" data-target="dozent-grading" data-roles="dozent" role="tab" aria-selected="false" aria-controls="dozent-grading">
                     <span class="material-icons-round" aria-hidden="true">grading</span>
                     <span>Notenvergabe</span>
                 </a>
                 <!-- Verwaltung -->
-                <a href="#" class="nav-item" data-target="admin-students" data-roles="verwaltung" role="tab" aria-selected="false" aria-controls="admin-students" style="display:none;">
-                    <span class="material-icons-round" aria-hidden="true">people</span>
-                    <span>Studierende</span>
+                <a href="#" class="nav-item hidden" data-target="admin-users" data-roles="verwaltung" role="tab" aria-selected="false" aria-controls="admin-users">
+                    <span class="material-icons-round" aria-hidden="true">manage_accounts</span>
+                    <span>Benutzerverwaltung</span>
                 </a>
-                <a href="#" class="nav-item" data-target="admin-exams" data-roles="verwaltung" role="tab" aria-selected="false" aria-controls="admin-exams" style="display:none;">
-                    <span class="material-icons-round" aria-hidden="true">assignment</span>
+                <a href="#" class="nav-item hidden" data-target="admin-rooms" data-roles="verwaltung" role="tab" aria-selected="false" aria-controls="admin-rooms">
+                    <span class="material-icons-round" aria-hidden="true">meeting_room</span>
+                    <span>Raumverwaltung</span>
+                </a>
+                <a href="#" class="nav-item hidden" data-target="admin-events" data-roles="verwaltung" role="tab" aria-selected="false" aria-controls="admin-events">
+                    <span class="material-icons-round" aria-hidden="true">event</span>
+                    <span>Veranstaltungen</span>
+                </a>
+                <a href="#" class="nav-item hidden" data-target="admin-exams" data-roles="verwaltung" role="tab" aria-selected="false" aria-controls="admin-exams">
+                    <span class="material-icons-round" aria-hidden="true">assessment</span>
                     <span>Prüfungsamt</span>
                 </a>
                 <!-- Alle Rollen -->
@@ -221,11 +230,11 @@
 
                 <!-- Tab 2: Calendar -->
                 <div id="schedule-calendar" class="tab-content">
-                    <div class="calendar-controls" style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+                    <div class="calendar-controls">
                         <button class="icon-btn"><span class="material-icons-round">chevron_left</span></button>
                         <h3 id="calendar-week-label">KW 10 (02.03 - 06.03)</h3>
                         <button class="icon-btn"><span class="material-icons-round">chevron_right</span></button>
-                        <button class="btn btn-outline small today-btn">Heute</button>
+                        <button class="btn-outline-pill today-btn">Heute</button>
                     </div>
                     <div class="card calendar-wrapper">
                         <div class="calendar-grid-detailed">
@@ -342,11 +351,11 @@
 
                 <!-- Tab 2: Calendar -->
                 <div id="dozent-calendar" class="tab-content">
-                    <div class="calendar-controls" style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+                    <div class="calendar-controls">
                         <button class="icon-btn"><span class="material-icons-round">chevron_left</span></button>
                         <h3 id="dozent-calendar-week-label">KW 10 (02.03 - 06.03)</h3>
                         <button class="icon-btn"><span class="material-icons-round">chevron_right</span></button>
-                        <button class="btn btn-outline small today-btn">Heute</button>
+                        <button class="btn-outline-pill today-btn">Heute</button>
                     </div>
                     <div class="card calendar-wrapper">
                         <div class="dozent-calendar-grid calendar-grid-detailed">
@@ -383,16 +392,42 @@
                 </div>
             </section>
 
-            <!-- Verwaltung: Studierende -->
-            <section id="admin-students" class="content-section" role="tabpanel" aria-labelledby="tab-admin-students">
+            <!-- Verwaltung: Benutzerverwaltung -->
+            <section id="admin-users" class="content-section" role="tabpanel" aria-labelledby="tab-admin-users">
                 <header class="section-header">
                     <div class="header-content">
-                        <h1>Studierende</h1>
-                        <p>Studierendenverwaltung</p>
+                        <h1>Benutzerverwaltung</h1>
+                        <p>Benutzer anlegen, bearbeiten und verwalten</p>
                     </div>
                 </header>
-                <div class="admin-students-content">
-                    <!-- Injected by admin.js -->
+                <div class="admin-users-content">
+                    <!-- Injected by userManagement.js -->
+                </div>
+            </section>
+
+            <!-- Verwaltung: Raumverwaltung -->
+            <section id="admin-rooms" class="content-section" role="tabpanel" aria-labelledby="tab-admin-rooms">
+                <header class="section-header">
+                    <div class="header-content">
+                        <h1>Raumverwaltung</h1>
+                        <p>Räume, Belegungsplan und Auslastung</p>
+                    </div>
+                </header>
+                <div class="admin-rooms-content">
+                    <!-- Injected by roomManagement.js -->
+                </div>
+            </section>
+
+            <!-- Verwaltung: Veranstaltungsverwaltung -->
+            <section id="admin-events" class="content-section" role="tabpanel" aria-labelledby="tab-admin-events">
+                <header class="section-header">
+                    <div class="header-content">
+                        <h1>Veranstaltungsverwaltung</h1>
+                        <p>Veranstaltungsreihen, Events und Raumplanung</p>
+                    </div>
+                </header>
+                <div class="admin-events-content">
+                    <!-- Injected by eventManagement.js -->
                 </div>
             </section>
 
@@ -466,7 +501,7 @@
                 </header>
                 <div class="grid-container">
                     <div class="card">
-                        <h3><span class="material-icons-round" aria-hidden="true" style="vertical-align: middle; margin-right: 0.5rem; color: var(--primary-color);">support_agent</span>Kontakt Studierendensekretariat</h3>
+                        <h3><span class="material-icons-round heading-icon" aria-hidden="true">support_agent</span>Kontakt Studierendensekretariat</h3>
                         <address class="contact-list">
                             <ul>
                                 <li><span class="material-icons-round" aria-hidden="true">email</span> <a href="mailto:sekr@university.edu">sekr@university.edu</a></li>
@@ -477,26 +512,26 @@
                         </address>
                     </div>
                     <div class="card">
-                        <h3><span class="material-icons-round" aria-hidden="true" style="vertical-align: middle; margin-right: 0.5rem; color: var(--primary-color);">map</span>Campus Plan</h3>
+                        <h3><span class="material-icons-round heading-icon" aria-hidden="true">map</span>Campus Plan</h3>
                         <div class="placeholder-map" role="img" aria-label="Campus-Karte">
-                            <span class="material-icons-round" aria-hidden="true" style="font-size: 3rem; opacity: 0.4;">map</span>
+                            <span class="material-icons-round" aria-hidden="true">map</span>
                             <p>Karte wird geladen...</p>
                         </div>
                     </div>
                     <div class="card">
-                        <h3><span class="material-icons-round" aria-hidden="true" style="vertical-align: middle; margin-right: 0.5rem; color: var(--primary-color);">link</span>Wichtige Links</h3>
-                        <ul style="list-style: none; margin-top: 1rem;">
-                            <li style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; color: var(--text-secondary);">
+                        <h3><span class="material-icons-round heading-icon" aria-hidden="true">link</span>Wichtige Links</h3>
+                        <ul class="link-list">
+                            <li>
                                 <span class="material-icons-round" aria-hidden="true">language</span>
-                                <a href="#" style="color: var(--primary-color); text-decoration: none;">University Website</a>
+                                <a href="#">University Website</a>
                             </li>
-                            <li style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; color: var(--text-secondary);">
+                            <li>
                                 <span class="material-icons-round" aria-hidden="true">local_library</span>
-                                <a href="#" style="color: var(--primary-color); text-decoration: none;">Online-Bibliothek</a>
+                                <a href="#">Online-Bibliothek</a>
                             </li>
-                            <li style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; color: var(--text-secondary);">
+                            <li>
                                 <span class="material-icons-round" aria-hidden="true">restaurant</span>
-                                <a href="#" style="color: var(--primary-color); text-decoration: none;">Mensa Speiseplan</a>
+                                <a href="#">Mensa Speiseplan</a>
                             </li>
                         </ul>
                     </div>
@@ -539,21 +574,29 @@
                     <span>Abgaben</span>
                 </a>
                 <!-- Dozent -->
-                <a href="#" class="nav-item" data-target="dozent-courses" data-roles="dozent" style="display:none;">
+                <a href="#" class="nav-item hidden" data-target="dozent-courses" data-roles="dozent">
                     <span class="material-icons-round" aria-hidden="true">menu_book</span>
                     <span>Meine Kurse</span>
                 </a>
-                <a href="#" class="nav-item" data-target="dozent-grading" data-roles="dozent" style="display:none;">
+                <a href="#" class="nav-item hidden" data-target="dozent-grading" data-roles="dozent">
                     <span class="material-icons-round" aria-hidden="true">grading</span>
                     <span>Notenvergabe</span>
                 </a>
                 <!-- Verwaltung -->
-                <a href="#" class="nav-item" data-target="admin-students" data-roles="verwaltung" style="display:none;">
-                    <span class="material-icons-round" aria-hidden="true">people</span>
-                    <span>Studierende</span>
+                <a href="#" class="nav-item hidden" data-target="admin-users" data-roles="verwaltung">
+                    <span class="material-icons-round" aria-hidden="true">manage_accounts</span>
+                    <span>Benutzerverwaltung</span>
                 </a>
-                <a href="#" class="nav-item" data-target="admin-exams" data-roles="verwaltung" style="display:none;">
-                    <span class="material-icons-round" aria-hidden="true">assignment</span>
+                <a href="#" class="nav-item hidden" data-target="admin-rooms" data-roles="verwaltung">
+                    <span class="material-icons-round" aria-hidden="true">meeting_room</span>
+                    <span>Raumverwaltung</span>
+                </a>
+                <a href="#" class="nav-item hidden" data-target="admin-events" data-roles="verwaltung">
+                    <span class="material-icons-round" aria-hidden="true">event</span>
+                    <span>Veranstaltungen</span>
+                </a>
+                <a href="#" class="nav-item hidden" data-target="admin-exams" data-roles="verwaltung">
+                    <span class="material-icons-round" aria-hidden="true">assessment</span>
                     <span>Prüfungsamt</span>
                 </a>
                 <!-- Alle Rollen -->
@@ -568,6 +611,20 @@
             </nav>
         </div>
         <div id="sidebar-overlay" class="overlay" aria-hidden="true"></div>
+
+        <!-- Modal Dialog Container -->
+        <div id="modal-overlay" class="modal-overlay" aria-hidden="true">
+            <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+                <div class="modal-header">
+                    <h3 id="modal-title"></h3>
+                    <button class="modal-close-btn" aria-label="Schließen" type="button">
+                        <span class="material-icons-round" aria-hidden="true">close</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="modal-body"></div>
+                <div class="modal-footer" id="modal-footer"></div>
+            </div>
+        </div>
     </div>
     <script src="js/data.js"></script>
     <script type="module" src="js/main.js"></script>

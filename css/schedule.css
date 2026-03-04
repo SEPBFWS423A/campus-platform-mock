@@ -17,7 +17,8 @@
 .calendar-controls {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
 }
 
 .calendar-controls h3 {
@@ -25,25 +26,6 @@
     font-weight: 600;
     min-width: 180px;
     text-align: center;
-}
-
-.btn-outline {
-    background: transparent;
-    border: 1.5px solid var(--border-color);
-    color: var(--text-primary);
-    padding: 0.35rem 1rem;
-    font-size: 0.85rem;
-    border-radius: 999px;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    font-weight: 500;
-    font-family: inherit;
-    cursor: pointer;
-}
-
-.btn-outline:hover {
-    border-color: var(--primary-color);
-    color: var(--primary-color);
-    background-color: var(--primary-light);
 }
 
 /* Detailed Grid */
@@ -219,13 +201,6 @@ body.dark-mode .calendar-event.orange {
 body.dark-mode .calendar-event.purple {
     background-color: rgba(139, 92, 246, 0.12);
     color: #c4b5fd;
-}
-
-body.dark-mode .calendar-wrapper {
-    background-color: var(--glass-bg);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
-    border-color: var(--glass-border);
 }
 
 body.dark-mode .calendar-grid-detailed {

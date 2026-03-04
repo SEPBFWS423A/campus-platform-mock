@@ -48,7 +48,7 @@
 
 .grade-stat-icon.purple {
     background-color: rgba(139, 92, 246, 0.1);
-    color: #8b5cf6;
+    color: var(--purple-color);
 }
 
 .grade-stat-icon.danger {
@@ -138,30 +138,10 @@
     border-collapse: collapse;
 }
 
-.grades-table th {
-    background-color: var(--bg-color);
-    padding: 0.85rem 1.5rem;
-    text-align: left;
-    font-weight: 600;
-    color: var(--text-tertiary);
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-}
-
 .grades-table td {
     padding: 1.25rem 1.5rem;
     border-bottom: 1px solid var(--border-color);
-    color: var(--text-primary);
     vertical-align: middle;
-}
-
-.grades-table tr:last-child td {
-    border-bottom: none;
-}
-
-.grades-table tr:hover td {
-    background-color: var(--primary-light);
 }
 
 /* Module Column */
@@ -199,31 +179,31 @@
 
 .grade-badge.excellent {
     background-color: rgba(16, 185, 129, 0.15);
-    color: #059669;
+    color: var(--success-color-dark);
 }
 
 /* 1.0 - 1.5 */
 .grade-badge.good {
     background-color: rgba(59, 130, 246, 0.15);
-    color: #2563EB;
+    color: var(--primary-color);
 }
 
 /* 1.6 - 2.5 */
 .grade-badge.average {
     background-color: rgba(245, 158, 11, 0.15);
-    color: #D97706;
+    color: var(--warning-color-dark);
 }
 
 /* 2.6 - 3.5 */
 .grade-badge.passed {
     background-color: rgba(107, 114, 128, 0.15);
-    color: #4B5563;
+    color: var(--gray-dark);
 }
 
 /* 3.6 - 4.0 */
 .grade-badge.failed {
     background-color: rgba(239, 68, 68, 0.15);
-    color: #DC2626;
+    color: var(--error-color-dark);
 }
 
 /* 5.0 */
@@ -279,21 +259,6 @@
     font-weight: 500;
     color: var(--text-secondary);
     white-space: nowrap;
-}
-
-/* Dark mode glassmorphism for grades */
-body.dark-mode .grade-stat {
-    background-color: var(--glass-bg);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
-    border-color: var(--glass-border);
-}
-
-body.dark-mode .grades-card {
-    background-color: var(--glass-bg);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
-    border-color: var(--glass-border);
 }
 
 body.dark-mode .grade-badge.good {

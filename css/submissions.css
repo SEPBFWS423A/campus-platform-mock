@@ -100,19 +100,19 @@
 }
 
 .type-project {
-    background: #2563eb;
+    background: var(--primary-color);
 }
 
 .type-thesis {
-    background: #7c3aed;
+    background: var(--purple-color);
 }
 
 .type-presentation {
-    background: #d97706;
+    background: var(--warning-color-dark);
 }
 
 .type-default {
-    background: #64748b;
+    background: var(--text-secondary);
 }
 
 /* Info – Inline */
@@ -197,17 +197,17 @@
 }
 
 .status-badge.success {
-    color: #059669;
+    color: var(--success-color-dark);
     background-color: rgba(16, 185, 129, 0.12);
 }
 
 .status-badge.warning {
-    color: #d97706;
+    color: var(--warning-color-dark);
     background-color: rgba(245, 158, 11, 0.12);
 }
 
 .status-badge.info {
-    color: #2563eb;
+    color: var(--primary-color);
     background-color: rgba(37, 99, 235, 0.12);
 }
 
@@ -349,12 +349,6 @@
     background: var(--primary-hover);
 }
 
-.btn-sm {
-    padding: 0.4rem 1rem;
-    font-size: 0.8rem;
-    font-weight: 600;
-}
-
 /* Empty State */
 .empty-state {
     text-align: center;
@@ -371,24 +365,9 @@
     gap: 0.75rem;
 }
 
-/* Dark mode glassmorphism for submissions */
-body.dark-mode .submission-card {
-    background-color: var(--glass-bg);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
-    border-color: var(--glass-border);
-}
-
 body.dark-mode .submission-card:hover {
     background-color: rgba(59, 130, 246, 0.08);
     border-color: var(--primary-color);
-}
-
-body.dark-mode .empty-state {
-    background-color: var(--glass-bg);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
-    border-color: var(--glass-border);
 }
 
 body.dark-mode .status-badge.info {
