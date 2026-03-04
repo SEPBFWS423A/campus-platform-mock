@@ -48,56 +48,51 @@
     background-color: var(--surface-color);
 }
 
-/* Submissions List Container */
+/* Submissions Card Grid */
 .submissions-grid {
-    background-color: var(--surface-color);
-    border-radius: var(--radius-xl);
-    border: 1px solid var(--border-color-subtle);
-    overflow: hidden;
-    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
 }
 
-/* Compact Submission Row */
+/* Submission Card */
 .submission-card {
     background: var(--surface-color);
-    border-bottom: 1px solid var(--border-color-subtle);
+    border: 1px solid var(--border-color-subtle);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-sm);
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 1rem;
-    padding: 0.85rem 1.5rem;
+    gap: 0.75rem;
+    padding: 0.9rem 1.25rem;
     position: relative;
-    transition: background-color 0.15s ease;
-    box-shadow: none;
-    border-radius: 0;
+    transition: all 0.2s ease;
     overflow: visible;
     height: auto;
 }
 
-.submission-card:last-child {
-    border-bottom: none;
-}
-
 .submission-card:hover {
     background-color: var(--primary-light);
-    box-shadow: none;
+    box-shadow: var(--shadow-md);
+    border-color: var(--primary-color);
 }
 
 /* Type Icon – Small */
 .submission-type-icon {
-    width: 40px;
-    height: 40px;
+    width: 38px;
+    height: 38px;
     border-radius: var(--radius-md);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
     color: white;
-    font-size: 1.25rem;
+    font-size: 1.15rem;
 }
 
 .submission-type-icon .material-icons-round {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
 }
 
 .submission-card:hover .submission-type-icon {
@@ -125,7 +120,7 @@
     padding: 0;
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.75rem;
     flex: 1;
     min-width: 0;
     position: relative;
@@ -139,18 +134,18 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 0.1rem;
+    gap: 0;
     min-width: 0;
     z-index: 1;
 }
 
 .submission-type {
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     text-transform: uppercase;
-    color: var(--primary-color);
-    font-weight: 700;
+    color: var(--text-tertiary);
+    font-weight: 600;
     letter-spacing: 0.04em;
-    opacity: 0.85;
+    display: inline;
 }
 
 .submission-info h3 {
@@ -182,7 +177,7 @@
     position: static;
     display: inline-flex;
     align-items: center;
-    gap: 0.35rem;
+    gap: 0.3rem;
     padding: 0.2rem 0.6rem;
     border-radius: var(--radius-sm);
     font-size: 0.7rem;
@@ -190,7 +185,7 @@
     white-space: nowrap;
     flex-shrink: 0;
     letter-spacing: 0.01em;
-    min-width: 90px;
+    width: 110px;
     justify-content: center;
 }
 
@@ -232,7 +227,7 @@
 .submission-meta {
     display: flex;
     align-items: center;
-    min-width: 120px;
+    width: 130px;
     justify-content: flex-start;
 }
 
@@ -279,7 +274,7 @@
 .grade-box {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.4rem;
 }
 
 .grade-circle {
@@ -324,7 +319,7 @@
     display: flex;
     gap: 0.5rem;
     flex-shrink: 0;
-    min-width: 80px;
+    width: 120px;
     justify-content: flex-end;
 }
 
@@ -335,7 +330,7 @@
     border: none;
     background: var(--primary-color);
     color: white;
-    padding: 0.35rem 0.75rem;
+    padding: 0.4rem 1rem;
     font-size: 0.8rem;
     border-radius: var(--radius-md);
     cursor: pointer;
@@ -355,7 +350,7 @@
 }
 
 .btn-sm {
-    padding: 0.35rem 0.75rem;
+    padding: 0.4rem 1rem;
     font-size: 0.8rem;
     font-weight: 600;
 }
@@ -366,6 +361,9 @@
     padding: 4rem 1rem;
     color: var(--text-secondary);
     background: var(--surface-color);
+    border: 1px solid var(--border-color-subtle);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-sm);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -374,20 +372,23 @@
 }
 
 /* Dark mode glassmorphism for submissions */
-body.dark-mode .submissions-grid {
+body.dark-mode .submission-card {
     background-color: var(--glass-bg);
     backdrop-filter: var(--glass-blur);
     -webkit-backdrop-filter: var(--glass-blur);
     border-color: var(--glass-border);
 }
 
-body.dark-mode .submission-card {
-    background-color: transparent;
-    border-bottom-color: var(--glass-border);
+body.dark-mode .submission-card:hover {
+    background-color: rgba(59, 130, 246, 0.08);
+    border-color: var(--primary-color);
 }
 
-body.dark-mode .submission-card:hover {
-    background-color: rgba(59, 130, 246, 0.05);
+body.dark-mode .empty-state {
+    background-color: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-color: var(--glass-border);
 }
 
 body.dark-mode .status-badge.info {
@@ -420,6 +421,10 @@ body.dark-mode .type-presentation {
         order: 1;
     }
 
+    .submissions-grid {
+        gap: 0.6rem;
+    }
+
     .submission-card {
         flex-wrap: wrap;
         padding: 0.75rem 1rem;
@@ -433,14 +438,47 @@ body.dark-mode .type-presentation {
 
     .submission-right {
         flex: 1 1 100%;
-        padding-left: 3.25rem;
+        padding-left: 3rem;
+        flex-wrap: wrap;
+        gap: 0.5rem;
     }
 
     .submission-info h3 {
         white-space: normal;
+        font-size: 0.9rem;
     }
 
     .submission-meta {
-        min-width: auto;
+        width: auto;
+    }
+
+    .submission-actions {
+        width: auto;
+    }
+
+    .status-badge {
+        width: auto;
+        font-size: 0.65rem;
+        padding: 0.15rem 0.5rem;
+    }
+}
+
+/* Small phones */
+@media (max-width: 380px) {
+    .submissions-grid {
+        gap: 0.5rem;
+    }
+
+    .submission-card {
+        padding: 0.65rem 0.75rem;
+    }
+
+    .submission-right {
+        padding-left: 0;
+    }
+
+    .submission-type-icon {
+        width: 36px;
+        height: 36px;
     }
 }

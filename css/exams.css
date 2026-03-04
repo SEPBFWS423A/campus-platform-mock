@@ -253,10 +253,18 @@ body.dark-mode .filter-chip {
     border-color: var(--glass-border);
 }
 
+/* Tablet Responsiveness */
+@media (max-width: 1024px) {
+    .exams-grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+}
+
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
     .exams-grid {
         grid-template-columns: 1fr;
+        gap: 1rem;
     }
 
     .exam-card-enhanced {
@@ -288,10 +296,33 @@ body.dark-mode .filter-chip {
         font-size: 0.9rem;
     }
 
+    .exam-footer {
+        padding: 0.75rem 1.25rem;
+    }
+
     .filter-bar {
         padding-bottom: 0.5rem;
         margin-bottom: 1rem;
         -webkit-overflow-scrolling: touch;
-        /* Smooth scrolling on iOS */
+    }
+
+    .filter-chip {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.9rem;
+    }
+}
+
+/* Small phones */
+@media (max-width: 380px) {
+    .exam-body {
+        padding: 1rem;
+    }
+
+    .exam-title {
+        font-size: 1rem;
+    }
+
+    .exam-details-list {
+        font-size: 0.8rem;
     }
 }

@@ -23,3 +23,43 @@ Die App soll folgende Funktionen bieten:
 - Informationen über die Universität
 
 Nutze deine Kenntnisse in modernem UI Design. Erstelle einen Dark und einen Light Mode. Füge eine Navigationsleiste hinzu, die es dem Nutzer ermöglicht, zwischen den verschiedenen Funktionen zu wechseln (Desktop: oben, Mobile: links, ausklappbar).
+
+---
+
+## Promt 2
+
+Wir brauchen diverse Anpassungen an der Webseite. Benutze dafür den SKILL.md:
+
+### 1. Struktur
+
+#### 1.1 Mock-DB
+Stelle sicher, dass alle Daten - Nutzer, Vorlesungen, Termine, Prüfungen, Noten, etc. - alle Zentral über die Mock-DB gespeichert und abrufbar sind und Notenspiegel etc. daraus berechnet werden. Kein Hardcoding von Daten im js.
+
+Überprüfe im gleichen Schritt, ob die Mock-DB weiterhin im .js oder in einer .json Datei existieren soll.
+
+#### 1.2 Nutzergruppen
+
+Die Seite hat 3 Nutzergruppen:
+
+1. Studenten
+2. Dozenten
+3. Verwaltung
+
+Füge drei User über die Mock-DB ein, die jeweils eine dieser Gruppierungen hat. 
+Je nach dem, welcher Nutzer gerade angemeldet ist (füge im Nutzerdropdown eine Funktion zum Wechseln der Ansicht ein), ist der Aufbau der Seite anders. Erstelle für diese Nutzergruppen erstmal ein grundlegendes UI, was in Zukunft noch erweitert werden soll.
+
+Überprüfe dabei noch, welche Funktionen, die man aktuell (Studentensicht) sehen kann, vielleicht zu einer anderen Nutzergruppe gehören.
+
+### 2. Anpassungen an der Studentensicht
+
+#### 2.1 Prüfungstermine (Prüfungen)
+
+Der Reiter Prüfungen soll auschließlich den Prüfungsterminen gelten, d.h. bereits Bestandene, oder nicht Bestandene sollen mir dort nicht angezeigt werden. Passe in dem Schritt dann auch den Namen an.
+
+#### 2.2 Notenansicht
+
+Bestandene, Nicht Bestandene Prüfungen und dessen Ergebnisse sollen wie gewohnt in der Notenansicht stehen. Dazu soll noch angezeigt werden, um welchen Versuch es sich handelt, bzw. mit welchem Versuch die Prüfung abgeschlossen wurde.
+
+#### 2.3 Kalender - Vorlesungen
+
+Die Kalenderwoche die angezeigt wird soll immer die aktuelle Woche sein und sich automatisch anpassen. Ansonsten können die Mock Vorlesungen statisch bleiben.

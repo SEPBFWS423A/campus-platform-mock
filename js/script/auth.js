@@ -30,9 +30,54 @@ export function initAuth() {
     if (logoutBtn) {
         logoutBtn.addEventListener('click', () => {
             sessionStorage.removeItem('isLoggedIn');
+            sessionStorage.removeItem('currentUserId');
             window.location.href = 'login.html';
         });
     }
+
+    renderUserSwitcher();
+}
+
+/**
+ * Renders the user switch buttons in the dropdown menu.
+ * Reads available users from mockData and highlights the current user.
+ */
+function renderUserSwitcher() {
+    const container = document.getElementById('user-switch-list');
+    if (!container || typeof mockData === 'undefined') return;
+
+    const currentUser = getCurrentUser();
+    const roleIcons = {
+        student: 'person',
+        dozent: 'school',
+        verwaltung: 'admin_panel_settings'
+    };
+
+    container.innerHTML = mockData.users.map(user => {
+        const isActive = user.id === currentUser.id;
+        return `
+            <button class="dropdown-item user-switch-item ${isActive ? 'active' : ''}"
+                    data-user-id="${user.id}" role="menuitem"
+                    ${isActive ? 'aria-current="true"' : ''}>
+                <span class="material-icons-round" aria-hidden="true">${roleIcons[user.role] || 'person'}</span>
+                <span class="user-switch-info">
+                    <span class="user-switch-name">${user.name}</span>
+                    <span class="user-switch-role">${user.roleLabel}</span>
+                </span>
+                ${isActive ? '<span class="material-icons-round user-switch-check" aria-hidden="true">check</span>' : ''}
+            </button>
+        `;
+    }).join('');
+
+    // Add click listeners for user switching
+    container.querySelectorAll('.user-switch-item').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const userId = parseInt(btn.dataset.userId);
+            if (userId === currentUser.id) return;
+            sessionStorage.setItem('currentUserId', String(userId));
+            window.location.reload();
+        });
+    });
 }
 
 /**

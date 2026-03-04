@@ -110,9 +110,6 @@ function renderList() {
                         <div class="grade-circle">
                             <span class="grade-value">${sub.grade.toFixed(1).replace('.', ',')}</span>
                         </div>
-                        <div class="grade-meta">
-                            <span class="grade-label">Note</span>
-                        </div>
                     </div>
                 </div>
                 <div class="submission-actions">
@@ -159,9 +156,8 @@ function renderList() {
                         <span class="material-icons-round" aria-hidden="true">${icon}</span>
                     </div>
                     <div class="submission-info">
-                        <span class="submission-type">${escapeHTML(sub.type)}</span>
                         <h3>${escapeHTML(sub.title)}</h3>
-                        <span class="submission-module">${escapeHTML(sub.module)}</span>
+                        <span class="submission-module"><span class="submission-type">${escapeHTML(sub.type)}</span> · ${escapeHTML(sub.module)}</span>
                     </div>
                 </div>
                 <div class="submission-right">

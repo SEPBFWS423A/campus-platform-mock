@@ -292,15 +292,21 @@ body.dark-mode .calendar-event {
     display: none;
 }
 
+/* Tablet Responsiveness */
+@media (max-width: 1024px) {
+    .calendar-wrapper {
+        height: 500px;
+    }
+}
+
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
 
     /* Controls better alignment */
     .calendar-controls {
         flex-direction: row;
-        /* Keep row but wrap specific items if needed */
         flex-wrap: wrap;
-        justify-content: space-between;
+        justify-content: center;
         gap: 0.5rem;
     }
 
@@ -310,6 +316,7 @@ body.dark-mode .calendar-event {
         margin-bottom: 0.25rem;
         text-align: center;
         font-size: 1rem;
+        min-width: unset;
     }
 
     /* Adjust button sizes */
@@ -317,9 +324,33 @@ body.dark-mode .calendar-event {
         padding: 0.5rem;
     }
 
+    /* Smaller calendar wrapper */
+    .calendar-wrapper {
+        height: 450px;
+        max-height: 60vh;
+    }
+
     /* Ensure grid is touch-friendly */
     .calendar-grid-detailed {
-        min-width: 700px;
-        /* Reduction allowed */
+        min-width: 600px;
+    }
+
+    .calendar-event {
+        font-size: 0.7rem;
+        padding: 0.35rem;
+    }
+
+    .event-title {
+        font-size: 0.7rem;
+        -webkit-line-clamp: 1;
+        line-clamp: 1;
+    }
+
+    .event-time {
+        font-size: 0.6rem;
+    }
+
+    .event-loc {
+        display: none;
     }
 }

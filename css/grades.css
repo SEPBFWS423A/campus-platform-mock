@@ -51,6 +51,11 @@
     color: #8b5cf6;
 }
 
+.grade-stat-icon.danger {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: var(--error-color);
+}
+
 .grade-stat-info {
     display: flex;
     flex-direction: column;
@@ -267,6 +272,15 @@
     border: 1px solid var(--border-color-subtle);
 }
 
+/* Attempt Badge */
+.attempt-badge {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    white-space: nowrap;
+}
+
 /* Dark mode glassmorphism for grades */
 body.dark-mode .grade-stat {
     background-color: var(--glass-bg);
@@ -410,6 +424,15 @@ body.dark-mode .grade-badge.good {
         margin-top: 0.25rem;
     }
 
+    /* Cell 5: Versuch - inline with status */
+    .grades-table td:nth-child(5) {
+        display: inline-block;
+        width: auto;
+        margin-left: 0.5rem;
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+    }
+
     /* Cell 5: Grade - Top Right Absolute */
     .grades-table td:last-child {
         position: absolute;
@@ -422,5 +445,25 @@ body.dark-mode .grade-badge.good {
         font-size: 1.1rem;
         width: 40px;
         height: 40px;
+    }
+}
+
+/* Small phones */
+@media (max-width: 380px) {
+    .grade-stat {
+        min-width: 85%;
+        padding: 0.75rem;
+    }
+
+    .grade-stat-value {
+        font-size: 1.25rem;
+    }
+
+    .grade-stat-label {
+        font-size: 0.75rem;
+    }
+
+    .grades-table tr {
+        padding: 0.75rem;
     }
 }

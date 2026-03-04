@@ -4,9 +4,19 @@ let allExams = [];
 let currentFilter = 'all';
 let isInitialized = false;
 
+/**
+ * Renders exam appointment cards.
+ * Only shows upcoming exams (registered, open, upcoming) – NOT completed/passed.
+ */
 export function renderExams(data) {
     if (data) {
-        const examModules = data.modules.filter(m => m.exam && (m.exam.status === 'registered' || m.exam.status === 'upcoming' || m.exam.status === 'open' || m.exam.status === 'completed'));
+        // Filter: nur anstehende Prüfungstermine, keine bestandenen/nicht bestandenen
+        const examModules = data.modules.filter(m =>
+            m.exam &&
+            (m.exam.status === 'registered' || m.exam.status === 'upcoming' || m.exam.status === 'open') &&
+            m.status !== 'passed' &&
+            m.status !== 'failed'
+        );
         allExams = examModules.map(m => buildExamData(m));
     }
 
@@ -47,7 +57,7 @@ function renderExamCards() {
         examsGrid.innerHTML = `
             <div class="empty-state" style="grid-column: 1 / -1; text-align: center; padding: 3rem 1rem;">
                 <span class="material-icons-round" style="font-size: 3rem; color: var(--text-secondary); margin-bottom: 0.5rem; display: block;" aria-hidden="true">search_off</span>
-                <p style="color: var(--text-secondary);">Keine Prüfungen in dieser Kategorie.</p>
+                <p style="color: var(--text-secondary);">Keine Prüfungstermine in dieser Kategorie.</p>
             </div>
         `;
         return;
@@ -105,15 +115,7 @@ function buildExamData(m) {
     let actionText = 'Details';
     let actionIcon = 'arrow_forward';
 
-    if (e.status === 'completed' || m.status === 'passed') {
-        statusClass = 'completed';
-        filterStatus = 'completed';
-        footerIcon = 'verified';
-        footerStatus = 'Bestanden';
-        footerColorClass = 'success';
-        footerStyle = 'color: var(--success-color);';
-        actionText = 'Einsicht';
-    } else if (e.status === 'registered') {
+    if (e.status === 'registered') {
         statusClass = 'registered';
         filterStatus = 'registered';
         footerIcon = 'check_circle';

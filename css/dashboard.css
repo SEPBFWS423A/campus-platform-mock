@@ -437,13 +437,7 @@ body.dark-mode .btn-action:hover {
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
 
-    /* Header Stack */
-    .section-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.5rem;
-    }
-
+    /* Current Date */
     .current-date {
         width: 100%;
         padding-top: 0.5rem;
@@ -469,11 +463,9 @@ body.dark-mode .btn-action:hover {
 
     .stat-card {
         min-width: 65%;
-        /* Smaller width to show more cards */
         scroll-snap-align: start;
         flex-shrink: 0;
         padding: 0.75rem;
-        /* Compact padding */
         gap: 0.75rem;
     }
 
@@ -495,12 +487,10 @@ body.dark-mode .btn-action:hover {
     /* Schedule Card - Prominent */
     .schedule-card {
         min-height: 400px;
-        /* Ensure visual prominence */
     }
 
     .timeline-item {
         gap: 1.25rem;
-        /* Restore/Increase gap for better readability */
         padding: 0.5rem 0;
     }
 
@@ -508,19 +498,16 @@ body.dark-mode .btn-action:hover {
         width: auto;
         min-width: 50px;
         font-size: 0.95rem;
-        /* Slightly larger time text */
         text-align: left;
         font-weight: 700;
     }
 
     .timeline-item .content {
         padding: 1.25rem;
-        /* Larger touch area/content box */
     }
 
     .timeline-item h4 {
         font-size: 1.1rem;
-        /* Larger title */
     }
 
     .timeline::before {
@@ -530,7 +517,6 @@ body.dark-mode .btn-action:hover {
     .timeline-item .marker {
         margin-left: -3px;
         width: 16px;
-        /* Slightly larger marker */
         height: 16px;
     }
 
@@ -541,5 +527,22 @@ body.dark-mode .btn-action:hover {
 
     .btn-action {
         padding: 1rem 0.5rem;
+    }
+}
+
+/* Small phones */
+@media (max-width: 380px) {
+    .stat-card {
+        min-width: 80%;
+    }
+
+    .action-buttons {
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+    }
+
+    .btn-action {
+        padding: 0.75rem 0.4rem;
+        font-size: 0.8rem;
     }
 }

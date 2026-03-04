@@ -30,31 +30,48 @@
                 <span>CampusPlatform</span>
             </div>
             <div class="nav-links" role="tablist" aria-label="Seitennavigation">
-                <a href="#" class="nav-item active" data-target="dashboard" role="tab" aria-selected="true" aria-controls="dashboard">
+                <!-- Alle Rollen -->
+                <a href="#" class="nav-item active" data-target="dashboard" data-roles="student,dozent,verwaltung" role="tab" aria-selected="true" aria-controls="dashboard">
                     <span class="material-icons-round" aria-hidden="true">dashboard</span>
                     <span>Dashboard</span>
                 </a>
-                <a href="#" class="nav-item" data-target="schedule" role="tab" aria-selected="false" aria-controls="schedule">
+                <!-- Student -->
+                <a href="#" class="nav-item" data-target="schedule" data-roles="student" role="tab" aria-selected="false" aria-controls="schedule">
                     <span class="material-icons-round" aria-hidden="true">calendar_today</span>
                     <span>Vorlesungen</span>
                 </a>
-                <a href="#" class="nav-item" data-target="grades" role="tab" aria-selected="false" aria-controls="grades">
+                <a href="#" class="nav-item" data-target="grades" data-roles="student" role="tab" aria-selected="false" aria-controls="grades">
                     <span class="material-icons-round" aria-hidden="true">grade</span>
                     <span>Noten</span>
                 </a>
-                <a href="#" class="nav-item" data-target="exams" role="tab" aria-selected="false" aria-controls="exams">
-                    <span class="material-icons-round" aria-hidden="true">event_note</span>
-                    <span>Prüfungen</span>
-                </a>
-                <a href="#" class="nav-item" data-target="submissions" role="tab" aria-selected="false" aria-controls="submissions">
+                <a href="#" class="nav-item" data-target="submissions" data-roles="student" role="tab" aria-selected="false" aria-controls="submissions">
                     <span class="material-icons-round" aria-hidden="true">upload_file</span>
                     <span>Abgaben</span>
                 </a>
-                <a href="#" class="nav-item" data-target="downloads" role="tab" aria-selected="false" aria-controls="downloads">
+                <!-- Dozent -->
+                <a href="#" class="nav-item" data-target="dozent-courses" data-roles="dozent" role="tab" aria-selected="false" aria-controls="dozent-courses" style="display:none;">
+                    <span class="material-icons-round" aria-hidden="true">menu_book</span>
+                    <span>Meine Kurse</span>
+                </a>
+                <a href="#" class="nav-item" data-target="dozent-grading" data-roles="dozent" role="tab" aria-selected="false" aria-controls="dozent-grading" style="display:none;">
+                    <span class="material-icons-round" aria-hidden="true">grading</span>
+                    <span>Notenvergabe</span>
+                </a>
+                <!-- Verwaltung -->
+                <a href="#" class="nav-item" data-target="admin-students" data-roles="verwaltung" role="tab" aria-selected="false" aria-controls="admin-students" style="display:none;">
+                    <span class="material-icons-round" aria-hidden="true">people</span>
+                    <span>Studierende</span>
+                </a>
+                <a href="#" class="nav-item" data-target="admin-exams" data-roles="verwaltung" role="tab" aria-selected="false" aria-controls="admin-exams" style="display:none;">
+                    <span class="material-icons-round" aria-hidden="true">assignment</span>
+                    <span>Prüfungsamt</span>
+                </a>
+                <!-- Alle Rollen -->
+                <a href="#" class="nav-item" data-target="downloads" data-roles="student,dozent,verwaltung" role="tab" aria-selected="false" aria-controls="downloads">
                     <span class="material-icons-round" aria-hidden="true">folder</span>
                     <span>Downloads</span>
                 </a>
-                <a href="#" class="nav-item" data-target="info" role="tab" aria-selected="false" aria-controls="info">
+                <a href="#" class="nav-item" data-target="info" data-roles="student,dozent,verwaltung" role="tab" aria-selected="false" aria-controls="info">
                     <span class="material-icons-round" aria-hidden="true">info</span>
                     <span>Info</span>
                 </a>
@@ -81,6 +98,11 @@
                             <span class="material-icons-round" aria-hidden="true">settings</span>
                             Einstellungen
                         </button>
+                        <div class="dropdown-divider" role="separator"></div>
+                        <div class="dropdown-section-label">Ansicht wechseln</div>
+                        <div id="user-switch-list">
+                            <!-- User switch items will be injected by auth.js -->
+                        </div>
                         <div class="dropdown-divider" role="separator"></div>
                         <button class="dropdown-item danger" id="logout-btn" role="menuitem">
                             <span class="material-icons-round" aria-hidden="true">logout</span>
@@ -120,7 +142,7 @@
                     <div class="card schedule-card">
                         <div class="card-header">
                             <h3>Heutiger Stundenplan</h3>
-                            <button class="icon-btn text-btn">Alle ansehen</button>
+                            <button id="view-all-schedule" class="icon-btn text-btn">Alle ansehen</button>
                         </div>
                         <div class="timeline">
                             <!-- Timeline events will be injected here -->
@@ -165,39 +187,79 @@
                 </div>
             </section>
 
-            <!-- Schedule / Calendar -->
+            <!-- Schedule / Vorlesungen -->
             <section id="schedule" class="content-section" role="tabpanel" aria-labelledby="tab-schedule">
                 <header class="section-header">
                     <div class="header-content">
-                        <h1>Stundenplan</h1>
+                        <h1>Vorlesungen</h1>
                         <p>Wintersemester 2025/2026</p>
-                    </div>
-                    <div class="calendar-controls">
-                        <button class="icon-btn"><span class="material-icons-round">chevron_left</span></button>
-                        <h3>KW 8 (17.02 - 21.02)</h3>
-                        <button class="icon-btn"><span class="material-icons-round">chevron_right</span></button>
-                        <button class="btn btn-outline small today-btn">Heute</button>
                     </div>
                 </header>
 
-                <div class="card calendar-wrapper">
-                    <div class="calendar-grid-detailed">
-                        <!-- Time Column -->
-                        <div class="time-column">
-                            <div class="time-slot-header"></div> <!-- Empty corner -->
-                            <div class="time-slot"><span>08:00</span></div>
-                            <div class="time-slot"><span>09:00</span></div>
-                            <div class="time-slot"><span>10:00</span></div>
-                            <div class="time-slot"><span>11:00</span></div>
-                            <div class="time-slot"><span>12:00</span></div>
-                            <div class="time-slot"><span>13:00</span></div>
-                            <div class="time-slot"><span>14:00</span></div>
-                            <div class="time-slot"><span>15:00</span></div>
-                            <div class="time-slot"><span>16:00</span></div>
-                            <div class="time-slot"><span>17:00</span></div>
-                        </div>
+                <!-- Sub-Tabs -->
+                <div class="section-tabs" role="tablist" aria-label="Vorlesungen Ansicht">
+                    <button class="section-tab active" data-tab="schedule-overview" role="tab" aria-selected="true">
+                        <span class="material-icons-round" aria-hidden="true">list_alt</span>
+                        Modulübersicht
+                    </button>
+                    <button class="section-tab" data-tab="schedule-calendar" role="tab" aria-selected="false">
+                        <span class="material-icons-round" aria-hidden="true">calendar_today</span>
+                        Kalender
+                    </button>
+                    <button class="section-tab" data-tab="schedule-exams" role="tab" aria-selected="false">
+                        <span class="material-icons-round" aria-hidden="true">event_note</span>
+                        Prüfungstermine
+                    </button>
+                </div>
 
-                        <!-- Days Columns will be injected here -->
+                <!-- Tab 1: Module Overview -->
+                <div id="schedule-overview" class="tab-content active">
+                    <div class="module-overview-card">
+                        <!-- Injected by schedule.js -->
+                    </div>
+                </div>
+
+                <!-- Tab 2: Calendar -->
+                <div id="schedule-calendar" class="tab-content">
+                    <div class="calendar-controls" style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+                        <button class="icon-btn"><span class="material-icons-round">chevron_left</span></button>
+                        <h3 id="calendar-week-label">KW 10 (02.03 - 06.03)</h3>
+                        <button class="icon-btn"><span class="material-icons-round">chevron_right</span></button>
+                        <button class="btn btn-outline small today-btn">Heute</button>
+                    </div>
+                    <div class="card calendar-wrapper">
+                        <div class="calendar-grid-detailed">
+                            <!-- Time Column -->
+                            <div class="time-column">
+                                <div class="time-slot-header"></div>
+                                <div class="time-slot"><span>08:00</span></div>
+                                <div class="time-slot"><span>09:00</span></div>
+                                <div class="time-slot"><span>10:00</span></div>
+                                <div class="time-slot"><span>11:00</span></div>
+                                <div class="time-slot"><span>12:00</span></div>
+                                <div class="time-slot"><span>13:00</span></div>
+                                <div class="time-slot"><span>14:00</span></div>
+                                <div class="time-slot"><span>15:00</span></div>
+                                <div class="time-slot"><span>16:00</span></div>
+                                <div class="time-slot"><span>17:00</span></div>
+                            </div>
+                            <!-- Days Columns will be injected here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab 3: Prüfungstermine -->
+                <div id="schedule-exams" class="tab-content">
+                    <!-- Filter Chips -->
+                    <div class="filter-bar exams-filter-bar" role="group" aria-label="Prüfungsfilter">
+                        <button class="filter-chip active" data-filter="all" aria-pressed="true">Alle</button>
+                        <button class="filter-chip" data-filter="registered" aria-pressed="false">Angemeldet</button>
+                        <button class="filter-chip" data-filter="upcoming" aria-pressed="false">In Kürze</button>
+                        <button class="filter-chip" data-filter="open" aria-pressed="false">Offen</button>
+                    </div>
+
+                    <div class="exams-grid" aria-live="polite">
+                        <!-- Exam cards will be injected here -->
                     </div>
                 </div>
             </section>
@@ -219,30 +281,6 @@
                 </div>
 
                 <!-- Semester Groups will be injected here -->
-            </section>
-
-            <!-- Exams -->
-            <section id="exams" class="content-section" role="tabpanel" aria-labelledby="tab-exams">
-                <header class="section-header">
-                    <div class="header-content">
-                        <h1>Prüfungstermine</h1>
-                        <p>Wintersemester 2023/2024</p>
-                    </div>
-                    <button class="btn btn-primary"><span class="material-icons-round">edit_calendar</span>
-                        Prüfungsanmeldung</button>
-                </header>
-
-                <!-- Filter Chips -->
-                <div class="filter-bar exams-filter-bar" role="group" aria-label="Prüfungsfilter">
-                    <button class="filter-chip active" data-filter="all" aria-pressed="true">Alle</button>
-                    <button class="filter-chip" data-filter="registered" aria-pressed="false">Angemeldet</button>
-                    <button class="filter-chip" data-filter="completed" aria-pressed="false">Bestanden</button>
-                    <button class="filter-chip" data-filter="open" aria-pressed="false">Offen</button>
-                </div>
-
-                <div class="exams-grid" aria-live="polite">
-                    <!-- Exam cards will be injected here -->
-                </div>
             </section>
 
             <!-- Submissions -->
@@ -271,6 +309,103 @@
 
                 <div class="submissions-grid" aria-live="polite">
                     <!-- Submission cards will be injected here -->
+                </div>
+            </section>
+
+            <!-- Dozent: Meine Kurse -->
+            <section id="dozent-courses" class="content-section" role="tabpanel" aria-labelledby="tab-dozent-courses">
+                <header class="section-header">
+                    <div class="header-content">
+                        <h1>Meine Kurse</h1>
+                        <p>Übersicht Ihrer Lehrveranstaltungen</p>
+                    </div>
+                </header>
+
+                <!-- Sub-Tabs -->
+                <div class="section-tabs" role="tablist" aria-label="Kurse Ansicht">
+                    <button class="section-tab active" data-tab="dozent-overview" role="tab" aria-selected="true">
+                        <span class="material-icons-round" aria-hidden="true">list_alt</span>
+                        Modulübersicht
+                    </button>
+                    <button class="section-tab" data-tab="dozent-calendar" role="tab" aria-selected="false">
+                        <span class="material-icons-round" aria-hidden="true">calendar_today</span>
+                        Kalender
+                    </button>
+                </div>
+
+                <!-- Tab 1: Module Overview -->
+                <div id="dozent-overview" class="tab-content active">
+                    <div class="dozent-courses-grid grid-container">
+                        <!-- Injected by dozent.js -->
+                    </div>
+                </div>
+
+                <!-- Tab 2: Calendar -->
+                <div id="dozent-calendar" class="tab-content">
+                    <div class="calendar-controls" style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+                        <button class="icon-btn"><span class="material-icons-round">chevron_left</span></button>
+                        <h3 id="dozent-calendar-week-label">KW 10 (02.03 - 06.03)</h3>
+                        <button class="icon-btn"><span class="material-icons-round">chevron_right</span></button>
+                        <button class="btn btn-outline small today-btn">Heute</button>
+                    </div>
+                    <div class="card calendar-wrapper">
+                        <div class="dozent-calendar-grid calendar-grid-detailed">
+                            <!-- Time Column -->
+                            <div class="time-column">
+                                <div class="time-slot-header"></div>
+                                <div class="time-slot"><span>08:00</span></div>
+                                <div class="time-slot"><span>09:00</span></div>
+                                <div class="time-slot"><span>10:00</span></div>
+                                <div class="time-slot"><span>11:00</span></div>
+                                <div class="time-slot"><span>12:00</span></div>
+                                <div class="time-slot"><span>13:00</span></div>
+                                <div class="time-slot"><span>14:00</span></div>
+                                <div class="time-slot"><span>15:00</span></div>
+                                <div class="time-slot"><span>16:00</span></div>
+                                <div class="time-slot"><span>17:00</span></div>
+                            </div>
+                            <!-- Days Columns will be injected here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Dozent: Notenvergabe -->
+            <section id="dozent-grading" class="content-section" role="tabpanel" aria-labelledby="tab-dozent-grading">
+                <header class="section-header">
+                    <div class="header-content">
+                        <h1>Notenvergabe</h1>
+                        <p>Noten für Ihre Kurse eintragen</p>
+                    </div>
+                </header>
+                <div class="dozent-grading-content">
+                    <!-- Injected by dozent.js -->
+                </div>
+            </section>
+
+            <!-- Verwaltung: Studierende -->
+            <section id="admin-students" class="content-section" role="tabpanel" aria-labelledby="tab-admin-students">
+                <header class="section-header">
+                    <div class="header-content">
+                        <h1>Studierende</h1>
+                        <p>Studierendenverwaltung</p>
+                    </div>
+                </header>
+                <div class="admin-students-content">
+                    <!-- Injected by admin.js -->
+                </div>
+            </section>
+
+            <!-- Verwaltung: Prüfungsamt -->
+            <section id="admin-exams" class="content-section" role="tabpanel" aria-labelledby="tab-admin-exams">
+                <header class="section-header">
+                    <div class="header-content">
+                        <h1>Prüfungsamt</h1>
+                        <p>Prüfungsverwaltung und -organisation</p>
+                    </div>
+                </header>
+                <div class="admin-exams-content">
+                    <!-- Injected by admin.js -->
                 </div>
             </section>
 
@@ -385,31 +520,48 @@
                 </button>
             </div>
             <nav class="sidebar-links" aria-label="Mobile Navigation">
-                <a href="#" class="nav-item active" data-target="dashboard">
+                <!-- Alle Rollen -->
+                <a href="#" class="nav-item active" data-target="dashboard" data-roles="student,dozent,verwaltung">
                     <span class="material-icons-round" aria-hidden="true">dashboard</span>
                     <span>Dashboard</span>
                 </a>
-                <a href="#" class="nav-item" data-target="schedule">
+                <!-- Student -->
+                <a href="#" class="nav-item" data-target="schedule" data-roles="student">
                     <span class="material-icons-round" aria-hidden="true">calendar_today</span>
                     <span>Vorlesungen</span>
                 </a>
-                <a href="#" class="nav-item" data-target="grades">
+                <a href="#" class="nav-item" data-target="grades" data-roles="student">
                     <span class="material-icons-round" aria-hidden="true">grade</span>
                     <span>Noten</span>
                 </a>
-                <a href="#" class="nav-item" data-target="exams">
-                    <span class="material-icons-round" aria-hidden="true">event_note</span>
-                    <span>Prüfungen</span>
-                </a>
-                <a href="#" class="nav-item" data-target="submissions">
+                <a href="#" class="nav-item" data-target="submissions" data-roles="student">
                     <span class="material-icons-round" aria-hidden="true">upload_file</span>
                     <span>Abgaben</span>
                 </a>
-                <a href="#" class="nav-item" data-target="downloads">
+                <!-- Dozent -->
+                <a href="#" class="nav-item" data-target="dozent-courses" data-roles="dozent" style="display:none;">
+                    <span class="material-icons-round" aria-hidden="true">menu_book</span>
+                    <span>Meine Kurse</span>
+                </a>
+                <a href="#" class="nav-item" data-target="dozent-grading" data-roles="dozent" style="display:none;">
+                    <span class="material-icons-round" aria-hidden="true">grading</span>
+                    <span>Notenvergabe</span>
+                </a>
+                <!-- Verwaltung -->
+                <a href="#" class="nav-item" data-target="admin-students" data-roles="verwaltung" style="display:none;">
+                    <span class="material-icons-round" aria-hidden="true">people</span>
+                    <span>Studierende</span>
+                </a>
+                <a href="#" class="nav-item" data-target="admin-exams" data-roles="verwaltung" style="display:none;">
+                    <span class="material-icons-round" aria-hidden="true">assignment</span>
+                    <span>Prüfungsamt</span>
+                </a>
+                <!-- Alle Rollen -->
+                <a href="#" class="nav-item" data-target="downloads" data-roles="student,dozent,verwaltung">
                     <span class="material-icons-round" aria-hidden="true">folder</span>
                     <span>Downloads</span>
                 </a>
-                <a href="#" class="nav-item" data-target="info">
+                <a href="#" class="nav-item" data-target="info" data-roles="student,dozent,verwaltung">
                     <span class="material-icons-round" aria-hidden="true">info</span>
                     <span>Info</span>
                 </a>
