@@ -1,5 +1,5 @@
-import { showModal, closeModal } from './modal.js';
-import { escapeHTML } from './utils.js';
+import { showModal, closeModal } from '../../core/modal.js';
+import { escapeHTML } from '../../core/utils.js';
 
 /**
  * Initializes the "Change Password" feature.

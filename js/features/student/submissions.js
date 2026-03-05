@@ -1,4 +1,4 @@
-import { escapeHTML } from './utils.js';
+import { escapeHTML } from '../../core/utils.js';
 
 let submissionsData = [];
 let currentDate = null;

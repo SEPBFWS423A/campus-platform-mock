@@ -1,4 +1,4 @@
-import { escapeHTML } from './utils.js';
+import { escapeHTML } from '../../core/utils.js';
 
 export function renderDownloads(data) {
     const filesContent = document.querySelector('.files-content');

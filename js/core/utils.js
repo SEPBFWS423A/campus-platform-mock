@@ -57,3 +57,14 @@ export function escapeHTML(str) {
     };
     return str.replace(/[&<>"']/g, (char) => escapeMap[char]);
 }
+
+/**
+ * Formats a date string into German locale format (DD.MM.YYYY).
+ * @param {string} dateStr - Date in YYYY-MM-DD format.
+ * @returns {string} Formatted date string.
+ */
+export function formatDateDE(dateStr) {
+    if (!dateStr) return '';
+    const d = new Date(dateStr + 'T00:00:00');
+    return d.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
+}

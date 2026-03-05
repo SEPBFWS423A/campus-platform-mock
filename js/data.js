@@ -128,8 +128,8 @@ const mockData = {
         },
         {
             code: "INF-101", name: "Programmierung I", semester: "WiSe 23/24",
-            ects: 6, grade: 1.7, status: "passed", attempt: 1,
-            lecturer: "Prof. Dr. Müller",
+            ects: 6, grade: 1.7, status: "passed", attempt: 1, dozentId: 8,
+            lecturer: "Prof. Dr. Mueller",
             exam: { date: "2024-02-20", grade: 1.7, type: "Klausur" }
         },
         {
@@ -148,8 +148,8 @@ const mockData = {
         // --- 2. Semester (SoSe 2024) – Abgeschlossen ---
         {
             code: "INF-102", name: "Programmierung II", semester: "SoSe 2024",
-            ects: 6, grade: 1.0, status: "passed", attempt: 1,
-            lecturer: "Prof. Dr. Müller",
+            ects: 6, grade: 1.0, status: "passed", attempt: 1, dozentId: 8,
+            lecturer: "Prof. Dr. Mueller",
             exam: { date: "2024-07-15", grade: 1.0, type: "Klausur" }
         },
         {
@@ -212,7 +212,7 @@ const mockData = {
         },
         {
             code: "WIN-302", name: "Projekt Wirtschaftsinformatik", semester: "SoSe 2025",
-            ects: 10, grade: 1.3, status: "passed", attempt: 1,
+            ects: 10, grade: 1.3, status: "passed", attempt: 1, dozentId: 2,
             lecturer: "Prof. Dr. Weber",
             exam: { date: "2025-07-25", grade: 1.3, type: "Projektarbeit" }
         },
@@ -250,8 +250,8 @@ const mockData = {
         },
         {
             code: "INF-405", name: "Künstliche Intelligenz", semester: "WiSe 25/26",
-            ects: 5, status: "active", attempt: 1,
-            lecturer: "Prof. Dr. Hoffmann",
+            ects: 5, status: "active", attempt: 1, dozentId: 8,
+            lecturer: "Prof. Dr. Mueller",
             schedule: [
                 { day: 2, start: "09:45", end: "13:00", room: "Hörsaal 1", type: "Vorlesung", color: "purple" },
                 { day: 4, start: "09:45", end: "13:00", room: "R 1.04", type: "Übung", color: "purple" }
@@ -267,8 +267,8 @@ const mockData = {
         },
         {
             code: "WIN-403", name: "IT-Recht & Compliance", semester: "WiSe 25/26",
-            ects: 5, status: "registered", attempt: 1,
-            lecturer: "Prof. Dr. Lang",
+            ects: 5, status: "registered", attempt: 1, dozentId: 2,
+            lecturer: "Prof. Dr. Weber",
             schedule: [
                 { day: 3, start: "09:45", end: "13:00", room: "R 2.10", type: "Vorlesung", color: "green" },
                 { day: 2, start: "13:45", end: "17:00", room: "R 2.10", type: "Übung", color: "green" }
@@ -401,7 +401,7 @@ const mockData = {
         {
             id: 3,
             name: "Künstliche Intelligenz",
-            studentIds: [7],
+            studentIds: [1, 4, 7],
             events: [
                 { id: 1, name: "VL Neuronale Netze", type: "Lehrveranstaltung", duration: 90, schedule: { day: 2, start: "09:45", end: "13:00" }, roomId: 1, order: 1 },
                 { id: 2, name: "Übung KI", type: "Lehrveranstaltung", duration: 90, schedule: { day: 4, start: "09:45", end: "13:00" }, roomId: 7, order: 2 },
@@ -413,6 +413,16 @@ const mockData = {
             name: "Software Testing & DevOps",
             studentIds: [],
             events: []
+        },
+        {
+            id: 5,
+            name: "IT-Recht & Compliance",
+            studentIds: [1, 4, 7],
+            events: [
+                { id: 1, name: "VL IT-Recht", type: "Lehrveranstaltung", duration: 90, schedule: { day: 3, start: "09:45", end: "13:00" }, roomId: 8, order: 1 },
+                { id: 2, name: "Übung IT-Recht", type: "Lehrveranstaltung", duration: 90, schedule: { day: 2, start: "13:45", end: "17:00" }, roomId: 8, order: 2 },
+                { id: 3, name: "Klausur IT-Recht", type: "Klausur", duration: 90, schedule: null, roomId: null, order: 3 }
+            ]
         }
     ],
 

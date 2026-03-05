@@ -1,5 +1,5 @@
-import { escapeHTML } from './utils.js';
-import { showModal, closeModal, showConfirmDialog } from './modal.js';
+import { escapeHTML } from '../../core/utils.js';
+import { showModal, closeModal, showConfirmDialog } from '../../core/modal.js';
 
 /**
  * Role label mapping for display in the UI.
@@ -103,7 +103,7 @@ export function renderUserManagement(data) {
             <div class="user-list-toolbar">
                 <div class="user-search-wrapper">
                     <span class="material-icons-round user-search-icon">search</span>
-                    <input type="text" id="user-search" class="user-search-input" placeholder="Benutzer suchen…">
+                    <input type="text" id="user-search" class="user-search-input" placeholder="Benutzer suchen\u2026">
                 </div>
                 <select id="user-role-filter" class="user-role-filter">
                     <option value="">Alle Benutzerarten</option>

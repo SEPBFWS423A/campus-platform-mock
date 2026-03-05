@@ -1,4 +1,4 @@
-import { calculateAverage, calculateECTS, escapeHTML } from './utils.js';
+import { calculateAverage, calculateECTS, escapeHTML } from '../../core/utils.js';
 
 /**
  * Renders the grades overview with semester tables.

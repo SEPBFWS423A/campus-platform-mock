@@ -1,4 +1,4 @@
-import { timeToMinutes, escapeHTML } from './utils.js';
+import { timeToMinutes, escapeHTML } from '../../core/utils.js';
 
 /**
  * Renders the schedule section with two sub-tabs:

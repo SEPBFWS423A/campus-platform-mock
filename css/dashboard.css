@@ -321,6 +321,10 @@
     gap: 1.5rem;
 }
 
+.right-col-stack > .card {
+    flex: 1;
+}
+
 .activity-list {
     list-style: none;
 }

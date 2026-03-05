@@ -1,293 +1,7 @@
-import { escapeHTML } from './utils.js';
-import { showModal, closeModal, showConfirmDialog } from './modal.js';
-
-/**
- * Day index to German day name mapping.
- * 0 = Montag, 1 = Dienstag, ..., 4 = Freitag
- */
-const DAY_NAMES = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag'];
-const DAY_SHORT = ['Mo', 'Di', 'Mi', 'Do', 'Fr'];
-
-// =========================================================================
-// Helper functions
-// =========================================================================
-
-/**
- * Looks up a room name by its ID.
- * @param {Array} rooms - The rooms array from mockData.
- * @param {number|null} roomId - The room ID to look up.
- * @returns {string} The room name or '-' if not found.
- */
-function getRoomName(rooms, roomId) {
-    if (roomId == null) return '-';
-    const room = rooms.find(r => r.id === roomId);
-    return room ? room.name : '-';
-}
-
-/**
- * Formats a schedule object for display.
- * @param {object|null} schedule - Schedule with day, start, end.
- * @returns {string} Formatted schedule string.
- */
-function formatSchedule(schedule) {
-    if (!schedule) return 'Nicht geplant';
-    return `${DAY_SHORT[schedule.day]} ${schedule.start}\u2013${schedule.end}`;
-}
-
-/**
- * Builds HTML meta-item spans for event detail display (duration, schedule, room).
- * Each item has a small icon for better visual recognition.
- * @param {object} ev - The event object.
- * @param {Array} rooms - The rooms array.
- * @returns {string} HTML string with meta items.
- */
-function buildEventMeta(ev, rooms) {
-    const durationHTML = `<span class="meta-item">
-        <span class="material-icons-round">timer</span>${ev.duration} min
-    </span>`;
-
-    const scheduleHTML = ev.schedule
-        ? `<span class="meta-item">
-            <span class="material-icons-round">schedule</span>${DAY_SHORT[ev.schedule.day]} ${ev.schedule.start}\u2013${ev.schedule.end}
-          </span>`
-        : `<span class="meta-item unplanned">
-            <span class="material-icons-round">event_busy</span>Nicht geplant
-          </span>`;
-
-    const roomName = getRoomName(rooms, ev.roomId);
-    const roomHTML = ev.roomId != null
-        ? `<span class="meta-item">
-            <span class="material-icons-round">meeting_room</span>${escapeHTML(roomName)}
-          </span>`
-        : `<span class="meta-item unplanned">
-            <span class="material-icons-round">meeting_room</span>Kein Raum
-          </span>`;
-
-    return `${durationHTML}${scheduleHTML}${roomHTML}`;
-}
-
-/**
- * Generates the next unique ID within an array of objects with id properties.
- * @param {Array<{id: number}>} items - Array of items with id fields.
- * @returns {number} Next available ID.
- */
-function nextId(items) {
-    if (!items || items.length === 0) return 1;
-    return Math.max(...items.map(i => i.id)) + 1;
-}
-
-/**
- * Checks whether two time ranges on the same day overlap.
- * @param {string} startA - Start time A (HH:MM).
- * @param {string} endA - End time A (HH:MM).
- * @param {string} startB - Start time B (HH:MM).
- * @param {string} endB - End time B (HH:MM).
- * @returns {boolean} True if ranges overlap.
- */
-function timesOverlap(startA, endA, startB, endB) {
-    return startA < endB && startB < endA;
-}
-
-// =========================================================================
-// Main render function (US12–US22)
-// =========================================================================
-
-/**
- * Renders the complete event series management view for the Verwaltung role.
- * Targets the .admin-events-content container.
- *
- * Covers user stories US12 through US22:
- *   US12 – Create event series
- *   US13 – Delete event series
- *   US14 – Assign students to series
- *   US15 – Remove students from series
- *   US16 – Add events to a series
- *   US17 – Remove events from a series
- *   US18 – Reorder events within a series
- *   US19 – Toggle event type (Klausur / Lehrveranstaltung)
- *   US20 – Edit event duration
- *   US21 – Edit event booking (room, day, time)
- *   US22 – Automatic room planning
- *
- * @param {object} data - The global mockData object.
- */
-export function renderEventManagement(data) {
-    const container = document.querySelector('.admin-events-content');
-    if (!container) return;
-
-    const seriesSorted = [...data.eventSeries].sort((a, b) =>
-        a.name.localeCompare(b.name, 'de')
-    );
-
-    // -----------------------------------------------------------------
-    // Build series cards HTML
-    // -----------------------------------------------------------------
-    const cardsHTML = seriesSorted.map(series => {
-        const studentCount = series.studentIds ? series.studentIds.length : 0;
-        const sortedEvents = [...series.events].sort((a, b) => a.order - b.order);
-
-        const eventsListHTML = sortedEvents.length > 0
-            ? sortedEvents.map(ev => {
-                const typeBadgeClass = ev.type === 'Klausur' ? 'klausur' : 'lehrveranstaltung';
-                return `
-                    <div class="event-list-item">
-                        <div class="event-list-item-info">
-                            <div class="event-list-item-header">
-                                <span class="type-badge ${escapeHTML(typeBadgeClass)}">${escapeHTML(ev.type)}</span>
-                                <span class="event-list-item-name">${escapeHTML(ev.name)}</span>
-                            </div>
-                            <div class="event-list-item-meta">
-                                ${buildEventMeta(ev, data.rooms)}
-                            </div>
-                        </div>
-                    </div>`;
-            }).join('')
-            : '<p style="color: var(--text-secondary); font-size: 0.875rem; margin: 0.5rem 0;">Keine Veranstaltungen vorhanden.</p>';
-
-        return `
-            <div class="series-card card" data-series-id="${series.id}">
-                <div class="series-card-header">
-                    <div>
-                        <div class="series-card-title">${escapeHTML(series.name)}</div>
-                        <div class="series-card-subtitle">
-                            <span class="material-icons-round">group</span>
-                            ${studentCount} Studierende zugewiesen
-                        </div>
-                    </div>
-                    <div class="series-card-actions">
-                        <button class="btn btn-sm btn-outline btn-edit-series" data-series-id="${series.id}" type="button">
-                            <span class="material-icons-round">edit</span> Bearbeiten
-                        </button>
-                        <button class="btn btn-sm btn-danger btn-delete-series" data-series-id="${series.id}" type="button">
-                            <span class="material-icons-round">delete</span> Löschen
-                        </button>
-                    </div>
-                </div>
-                <div class="series-card-events">
-                    ${eventsListHTML}
-                </div>
-            </div>`;
-    }).join('');
-
-    // -----------------------------------------------------------------
-    // Full container HTML
-    // -----------------------------------------------------------------
-    container.innerHTML = `
-        <!-- US12: Inline create form -->
-        <div class="card mgmt-form-section">
-            <div class="card-header mgmt-card-header">
-                <h3>Neue Veranstaltungsreihe anlegen</h3>
-            </div>
-            <div class="inline-create-form">
-                <div class="form-group">
-                    <label for="new-series-name">Name der Reihe</label>
-                    <input type="text" id="new-series-name" placeholder="z.\u00a0B. Datenbanken II" />
-                </div>
-                <button class="btn btn-sm btn-primary" id="btn-create-series" type="button">
-                    <span class="material-icons-round">add</span> Anlegen
-                </button>
-            </div>
-        </div>
-
-        <!-- Series cards grid -->
-        <div class="series-cards-grid">
-            ${cardsHTML || '<div class="management-empty"><span class="material-icons-round">event_busy</span><p>Keine Veranstaltungsreihen vorhanden.</p></div>'}
-        </div>
-
-        <!-- US22: Auto room planning -->
-        <div class="card" style="margin-top: 2rem;">
-            <div class="card-header mgmt-card-header">
-                <h3>Automatische Raumplanung</h3>
-            </div>
-            <p class="mgmt-desc-text">
-                Plant nicht zugewiesene Veranstaltungen automatisch in freie Räume und Zeitslots (Mo\u2013Fr, 09:00\u201317:00) ein.
-            </p>
-            <div class="inline-create-form">
-                <div class="form-group">
-                    <label for="auto-plan-start">Startdatum</label>
-                    <input type="date" id="auto-plan-start" />
-                </div>
-                <div class="form-group">
-                    <label for="auto-plan-end">Enddatum</label>
-                    <input type="date" id="auto-plan-end" />
-                </div>
-                <button class="btn btn-sm btn-primary" id="btn-auto-plan" type="button">
-                    <span class="material-icons-round">auto_fix_high</span> Planung starten
-                </button>
-            </div>
-            <div id="auto-plan-result"></div>
-        </div>
-    `;
-
-    // -----------------------------------------------------------------
-    // Event listeners
-    // -----------------------------------------------------------------
-
-    // US12 – Create series
-    const btnCreate = container.querySelector('#btn-create-series');
-    const inputName = container.querySelector('#new-series-name');
-    if (btnCreate && inputName) {
-        btnCreate.addEventListener('click', () => {
-            const name = inputName.value.trim();
-            if (!name) return;
-            const newSeries = {
-                id: nextId(data.eventSeries),
-                name,
-                studentIds: [],
-                events: []
-            };
-            data.eventSeries.push(newSeries);
-            renderEventManagement(data);
-        });
-        inputName.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') btnCreate.click();
-        });
-    }
-
-    // US13 – Delete series
-    container.querySelectorAll('.btn-delete-series').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const seriesId = parseInt(btn.dataset.seriesId, 10);
-            const series = data.eventSeries.find(s => s.id === seriesId);
-            if (!series) return;
-            showConfirmDialog(
-                'Veranstaltungsreihe löschen',
-                `Möchten Sie die Reihe "${escapeHTML(series.name)}" wirklich löschen? Alle zugehörigen Veranstaltungen werden ebenfalls entfernt.`,
-                () => {
-                    // Remove associated room bookings
-                    series.events.forEach(ev => {
-                        if (ev.roomId) {
-                            const room = data.rooms.find(r => r.id === ev.roomId);
-                            if (room) {
-                                room.bookings = room.bookings.filter(
-                                    b => !(b.eventSeriesId === seriesId && b.eventId === ev.id)
-                                );
-                            }
-                        }
-                    });
-                    data.eventSeries = data.eventSeries.filter(s => s.id !== seriesId);
-                    renderEventManagement(data);
-                }
-            );
-        });
-    });
-
-    // Edit series buttons – open modal
-    container.querySelectorAll('.btn-edit-series').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const seriesId = parseInt(btn.dataset.seriesId, 10);
-            openEditSeriesModal(data, seriesId);
-        });
-    });
-
-    // US22 – Auto room planning
-    const btnAutoPlan = container.querySelector('#btn-auto-plan');
-    if (btnAutoPlan) {
-        btnAutoPlan.addEventListener('click', () => {
-            runAutoPlanning(data);
-        });
-    }
-}
+import { escapeHTML } from '../../../core/utils.js';
+import { showModal, closeModal, showConfirmDialog } from '../../../core/modal.js';
+import { renderEventManagement, DAY_NAMES, buildEventMeta, nextId } from './seriesCards.js';
+import { runAutoPlanning } from './autoPlanning.js';
 
 // =========================================================================
 // Edit Series Modal (US14–US21)
@@ -298,12 +12,12 @@ export function renderEventManagement(data) {
  * @param {object} data - The global mockData object.
  * @param {number} seriesId - The ID of the series to edit.
  */
-function openEditSeriesModal(data, seriesId) {
+export function openEditSeriesModal(data, seriesId) {
     const series = data.eventSeries.find(s => s.id === seriesId);
     if (!series) return;
 
     const bodyHTML = buildEditSeriesBody(data, series);
-    const footerHTML = `<button class="btn btn-outline modal-close-action" type="button">Schließen</button>`;
+    const footerHTML = `<button class="btn btn-outline modal-close-action" type="button">Schlie\u00dfen</button>`;
 
     showModal(escapeHTML(series.name), bodyHTML, footerHTML, { sizeClass: 'modal-lg' });
 
@@ -359,11 +73,11 @@ function buildEditSeriesBody(data, series) {
             ${availableStudents.length > 0 ? `
                 <div style="display: flex; gap: 0.5rem; margin-top: 0.75rem; align-items: center; flex-wrap: wrap;">
                     <select id="modal-add-student-select" class="form-input" style="flex: 1; min-width: 180px;">
-                        <option value="">-- Studierenden auswählen --</option>
+                        <option value="">-- Studierenden ausw\u00e4hlen --</option>
                         ${studentOptionsHTML}
                     </select>
                     <button class="btn btn-sm btn-primary" id="modal-btn-add-student" type="button">
-                        <span class="material-icons-round">person_add</span> Hinzufügen
+                        <span class="material-icons-round">person_add</span> Hinzuf\u00fcgen
                     </button>
                 </div>
             ` : ''}
@@ -476,7 +190,7 @@ function buildEditSeriesBody(data, series) {
         <div class="modal-section-divider">
             <h4 class="modal-section-heading">
                 <span class="material-icons-round">add_circle_outline</span>
-                Veranstaltung hinzufügen
+                Veranstaltung hinzuf\u00fcgen
             </h4>
             <div class="inline-editor-form">
                 <div class="form-group" style="flex: 1; min-width: 160px;">
@@ -495,7 +209,7 @@ function buildEditSeriesBody(data, series) {
                     <input type="number" id="modal-new-event-duration" class="form-input" value="90" min="1" style="width: 100px;" />
                 </div>
                 <button class="btn btn-sm btn-primary" id="modal-btn-add-event" type="button">
-                    <span class="material-icons-round">add</span> Hinzufügen
+                    <span class="material-icons-round">add</span> Hinzuf\u00fcgen
                 </button>
             </div>
         </div>
@@ -776,118 +490,4 @@ function moveEvent(series, eventId, direction) {
     const tempOrder = sorted[idx].order;
     sorted[idx].order = sorted[swapIdx].order;
     sorted[swapIdx].order = tempOrder;
-}
-
-// =========================================================================
-// US22 – Automatic Room Planning (greedy algorithm)
-// =========================================================================
-
-/**
- * Runs the greedy automatic room planning algorithm.
- * For each unscheduled event across all series, finds the first available
- * room and timeslot (Mon–Fri, 09:00–17:00) that does not conflict with
- * existing bookings.
- * @param {object} data - The global mockData object.
- */
-function runAutoPlanning(data) {
-    const resultDiv = document.getElementById('auto-plan-result');
-    if (!resultDiv) return;
-
-    // Collect all unscheduled events
-    const unscheduled = [];
-    data.eventSeries.forEach(series => {
-        series.events.forEach(ev => {
-            if (!ev.schedule || !ev.roomId) {
-                unscheduled.push({ series, event: ev });
-            }
-        });
-    });
-
-    if (unscheduled.length === 0) {
-        resultDiv.innerHTML = `
-            <div class="management-alert" style="margin-top: 1rem; padding: 0.75rem 1rem; background: var(--surface-color); border-radius: 8px; color: var(--text-secondary);">
-                <span class="material-icons-round" style="vertical-align: middle; margin-right: 0.25rem;">info</span>
-                Alle Veranstaltungen sind bereits geplant.
-            </div>`;
-        return;
-    }
-
-    // Available time slots: every 30-minute-aligned block from 09:00 to 17:00
-    const START_HOUR = 9;
-    const END_HOUR = 17;
-
-    let assigned = 0;
-    const errors = [];
-
-    for (const { series, event: ev } of unscheduled) {
-        let placed = false;
-        const durationMinutes = ev.duration || 90;
-
-        // Try each day, then each start time, then each room
-        for (let day = 0; day < 5 && !placed; day++) {
-            for (let hour = START_HOUR; hour < END_HOUR && !placed; hour++) {
-                for (let minute = 0; minute < 60 && !placed; minute += 30) {
-                    const startStr = String(hour).padStart(2, '0') + ':' + String(minute).padStart(2, '0');
-                    const endTotalMin = hour * 60 + minute + durationMinutes;
-
-                    // Must end by 17:00
-                    if (endTotalMin > END_HOUR * 60) continue;
-
-                    const endHour = Math.floor(endTotalMin / 60);
-                    const endMinute = endTotalMin % 60;
-                    const endStr = String(endHour).padStart(2, '0') + ':' + String(endMinute).padStart(2, '0');
-
-                    // Try each room
-                    for (const room of data.rooms) {
-                        const conflict = room.bookings.some(b =>
-                            b.day === day && timesOverlap(b.start, b.end, startStr, endStr)
-                        );
-                        if (!conflict) {
-                            // Place the event
-                            ev.schedule = { day, start: startStr, end: endStr };
-                            ev.roomId = room.id;
-
-                            room.bookings.push({
-                                day,
-                                start: startStr,
-                                end: endStr,
-                                title: ev.name,
-                                eventSeriesId: series.id,
-                                eventId: ev.id
-                            });
-
-                            placed = true;
-                            assigned++;
-                        }
-                    }
-                }
-            }
-        }
-
-        if (!placed) {
-            errors.push(ev.name);
-        }
-    }
-
-    // Show result message
-    let messageHTML = '';
-    if (assigned > 0) {
-        messageHTML += `
-            <div class="management-alert" style="margin-top: 1rem; padding: 0.75rem 1rem; background: var(--success-light, #e8f5e9); border-radius: 8px; color: var(--success-color, #2e7d32);">
-                <span class="material-icons-round" style="vertical-align: middle; margin-right: 0.25rem;">check_circle</span>
-                ${assigned} Veranstaltung${assigned !== 1 ? 'en' : ''} erfolgreich eingeplant.
-            </div>`;
-    }
-    if (errors.length > 0) {
-        messageHTML += `
-            <div class="management-alert" style="margin-top: 0.5rem; padding: 0.75rem 1rem; background: var(--error-light, #fbe9e7); border-radius: 8px; color: var(--error-color, #c62828);">
-                <span class="material-icons-round" style="vertical-align: middle; margin-right: 0.25rem;">error</span>
-                Kein freier Slot gefunden für: ${errors.map(n => escapeHTML(n)).join(', ')}
-            </div>`;
-    }
-
-    resultDiv.innerHTML = messageHTML;
-
-    // Re-render cards view
-    renderEventManagement(data);
 }

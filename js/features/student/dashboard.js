@@ -1,4 +1,4 @@
-import { timeToMinutes, calculateAverage, calculateECTS, escapeHTML } from './utils.js';
+import { timeToMinutes, calculateAverage, calculateECTS, escapeHTML } from '../../core/utils.js';
 
 export function renderDashboard(data) {
     // 1. Stats

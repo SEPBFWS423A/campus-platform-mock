@@ -1,4 +1,4 @@
-import { escapeHTML } from './utils.js';
+import { escapeHTML } from '../../core/utils.js';
 
 /**
  * Renders the Verwaltung's student management view (basic placeholder).
@@ -36,7 +36,7 @@ export function renderAdminStudents(data) {
                     <span class="material-icons-round">check_circle</span>
                 </div>
                 <div class="stat-info">
-                    <span class="stat-label">Bestandene Prüfungen</span>
+                    <span class="stat-label">Bestandene Pr\u00fcfungen</span>
                     <span class="stat-value">${passedModules}</span>
                 </div>
             </div>
@@ -99,7 +99,7 @@ export function renderAdminExams(data) {
                     <span class="material-icons-round">event_note</span>
                 </div>
                 <div class="stat-info">
-                    <span class="stat-label">Geplante Prüfungen</span>
+                    <span class="stat-label">Geplante Pr\u00fcfungen</span>
                     <span class="stat-value">${allExams.length}</span>
                 </div>
             </div>
@@ -108,7 +108,7 @@ export function renderAdminExams(data) {
                     <span class="material-icons-round">meeting_room</span>
                 </div>
                 <div class="stat-info">
-                    <span class="stat-label">Gebuchte Räume</span>
+                    <span class="stat-label">Gebuchte R\u00e4ume</span>
                     <span class="stat-value">${new Set(allExams.map(m => m.exam.room).filter(Boolean)).size}</span>
                 </div>
             </div>
@@ -116,7 +116,7 @@ export function renderAdminExams(data) {
 
         <div class="card">
             <div class="card-header" style="margin-bottom: 1rem;">
-                <h3>Prüfungsübersicht</h3>
+                <h3>Pr\u00fcfungs\u00fcbersicht</h3>
             </div>
             <table class="data-table grades-table">
                 <thead>
@@ -136,7 +136,7 @@ export function renderAdminExams(data) {
                         let statusClass = 'pending';
                         if (e.status === 'registered') { statusText = 'Anmeldungen offen'; statusClass = 'passed'; }
                         else if (e.status === 'open') { statusText = 'Anmeldung offen'; statusClass = 'pending'; }
-                        else if (e.status === 'upcoming') { statusText = 'In Kürze'; statusClass = 'pending'; }
+                        else if (e.status === 'upcoming') { statusText = 'In K\u00fcrze'; statusClass = 'pending'; }
 
                         return `
                             <tr>
