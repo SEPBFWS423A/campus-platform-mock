@@ -3,6 +3,7 @@
 .calendar-wrapper {
     padding: 0;
     overflow: auto;
+    -webkit-overflow-scrolling: touch;
     background-color: var(--surface-color);
     border: 1px solid var(--border-color-subtle);
     border-radius: var(--radius-xl);
@@ -327,5 +328,47 @@ body.dark-mode .calendar-event {
 
     .event-loc {
         display: none;
+    }
+}
+
+/* Very small phones */
+@media (max-width: 480px) {
+    .calendar-controls {
+        gap: 0.5rem;
+    }
+
+    .calendar-controls h3 {
+        font-size: 0.85rem;
+    }
+
+    .calendar-controls .icon-btn {
+        padding: 0.35rem;
+    }
+
+    .calendar-wrapper {
+        height: 400px;
+        max-height: 55vh;
+    }
+
+    .calendar-grid-detailed {
+        min-width: 520px;
+    }
+
+    .time-column {
+        width: 35px;
+    }
+
+    .time-slot span {
+        font-size: 0.6rem;
+    }
+
+    .day-header {
+        font-size: 0.7rem;
+        padding: 0.4rem 0.15rem;
+    }
+
+    .calendar-event {
+        font-size: 0.65rem;
+        padding: 0.2rem;
     }
 }

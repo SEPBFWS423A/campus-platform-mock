@@ -63,3 +63,26 @@ Bestandene, Nicht Bestandene Prüfungen und dessen Ergebnisse sollen wie gewohnt
 #### 2.3 Kalender - Vorlesungen
 
 Die Kalenderwoche die angezeigt wird soll immer die aktuelle Woche sein und sich automatisch anpassen. Ansonsten können die Mock Vorlesungen statisch bleiben.
+
+---
+
+## Promt 3
+
+Verbessere die WebApp für Verwaltung und Dozenten (achte auf shared css, clean code und vermeide Redundaten Code):
+
+### Dashboard
+
+Überarbeite das Dashboard für Dozenten und Verwaltung, sodass es Logisch zu diesen Rollen passt und eine gute Übersicht und logische Schnellzugriffe bietet,
+
+### Für Rollengruppe Verwaltung
+
+Überarbeite die Tabs Belegungsplan und Auslastung sowie Prüfungsamt. Sorge für ein gefixtes UI und bessere Nutzerfreundlichkeit, auch bei den Popups.
+
+### Für Rollengruppe Dozenten
+
+Überarbeite meine Kurse und Notenvergabe für bessere Nutzerfreundlichkeit. Überlege, ob noch Funktionen für Dozenten fehlen.
+
+### Responsiveness für die gesamte App
+
+Die App ist noch nicht Responsive genug, überarbeite, verbessere und repariere das für alle Nutzergruppen
+

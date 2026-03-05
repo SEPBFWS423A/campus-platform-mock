@@ -413,6 +413,30 @@ body.dark-mode .grade-badge.good {
     }
 }
 
+/* Mid-size phones */
+@media (max-width: 480px) {
+    .grades-stats-row {
+        gap: 0.5rem;
+    }
+
+    .grade-stat {
+        min-width: 140px;
+        padding: 0.75rem;
+    }
+
+    .grade-stat-value {
+        font-size: 1.35rem;
+    }
+
+    .grades-table tr {
+        padding: 0.85rem;
+    }
+
+    .grades-table td:first-child {
+        font-size: 0.85rem;
+    }
+}
+
 /* Small phones */
 @media (max-width: 380px) {
     .grade-stat {

@@ -30,11 +30,16 @@
 .stats-row {
     margin-bottom: 2rem;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.stats-row.stats-row-4 {
+    grid-template-columns: repeat(4, 1fr);
 }
 
 @media (max-width: 960px) {
-    .stats-row {
+    .stats-row,
+    .stats-row.stats-row-4 {
         grid-template-columns: repeat(2, 1fr);
     }
 }
@@ -88,6 +93,10 @@
 
 .warning-bg {
     background: var(--warning-color);
+}
+
+.secondary-bg {
+    background: var(--gray-color);
 }
 
 .stat-info {
@@ -426,6 +435,156 @@ body.dark-mode .btn-action:hover {
     border-color: rgba(59, 130, 246, 0.2);
 }
 
+/* =============================================================================
+   Admin Dashboard – System Overview
+   ============================================================================= */
+
+.admin-overview {
+    padding: 0;
+}
+
+.admin-overview-section {
+    margin-bottom: 1.75rem;
+}
+
+.admin-overview-section:last-child {
+    margin-bottom: 0;
+}
+
+.admin-overview-heading {
+    margin: 0 0 1rem 0;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.admin-overview-heading .material-icons-round {
+    font-size: 1.1rem;
+}
+
+.admin-overview-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.admin-bar-item {
+    margin-bottom: 0;
+}
+
+.admin-bar-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    margin-bottom: 0.3rem;
+}
+
+.admin-bar-value {
+    font-weight: 600;
+}
+
+.progress-fill.progress-primary {
+    background: var(--primary-color);
+}
+
+.progress-fill.progress-warning {
+    background: var(--warning-color);
+}
+
+.admin-overview-divider {
+    margin: 0 0 1.75rem 0;
+    border: none;
+    border-top: 1px solid var(--border-color);
+}
+
+.admin-mini-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.admin-mini-stat {
+    background: var(--surface-color);
+    border-radius: var(--radius-md);
+    padding: 0.75rem;
+    text-align: center;
+    border: 1px solid var(--border-color-subtle);
+}
+
+.admin-mini-stat-value {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.admin-mini-stat-label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.admin-room-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.admin-room-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
+    background: var(--surface-color);
+    border-radius: var(--radius-md);
+    font-size: 0.85rem;
+    border: 1px solid var(--border-color-subtle);
+}
+
+.admin-room-name {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+}
+
+.admin-room-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.admin-room-dot.free {
+    background: var(--success-color);
+}
+
+.admin-room-dot.busy {
+    background: var(--warning-color);
+}
+
+.admin-room-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: var(--text-secondary);
+}
+
+.admin-room-status {
+    font-weight: 500;
+}
+
+.admin-room-status.free {
+    color: var(--success-color);
+}
+
+.admin-room-status.busy {
+    color: var(--warning-color);
+}
+
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
 
@@ -437,7 +596,8 @@ body.dark-mode .btn-action:hover {
     }
 
     /* Stats Row - Compact Horizontal Scroll */
-    .stats-row {
+    .stats-row,
+    .stats-row.stats-row-4 {
         display: flex;
         overflow-x: auto;
         scroll-snap-type: x mandatory;
@@ -447,6 +607,7 @@ body.dark-mode .btn-action:hover {
         padding-right: 1rem;
         scrollbar-width: none;
         -ms-overflow-style: none;
+        grid-template-columns: unset;
     }
 
     .stats-row::-webkit-scrollbar {
@@ -519,6 +680,30 @@ body.dark-mode .btn-action:hover {
 
     .btn-action {
         padding: 1rem 0.5rem;
+    }
+
+    /* Admin overview responsive */
+    .admin-room-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.35rem;
+    }
+
+    .admin-room-info {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .admin-mini-stats {
+        gap: 0.5rem;
+    }
+
+    .admin-mini-stat {
+        padding: 0.6rem;
+    }
+
+    .admin-mini-stat-value {
+        font-size: 1.1rem;
     }
 }
 

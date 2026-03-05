@@ -87,7 +87,7 @@ function buildOverviewTab(data) {
 
     return `
         <div class="management-tab-content active" data-tab="exam-overview">
-            <div class="grid-container stats-row" style="margin-bottom: 1.5rem;">
+            <div class="grid-container stats-row mgmt-stats-row">
                 <div class="card stat-card">
                     <div class="stat-icon primary-bg">
                         <span class="material-icons-round">event_note</span>
@@ -109,9 +109,10 @@ function buildOverviewTab(data) {
             </div>
 
             <div class="card">
-                <div class="card-header" style="margin-bottom: 1rem;">
+                <div class="card-header mgmt-card-header">
                     <h3>Prüfungsübersicht</h3>
                 </div>
+                <div class="exam-results-table-wrapper">
                 <table class="management-table">
                     <thead>
                         <tr>
@@ -153,6 +154,7 @@ function buildOverviewTab(data) {
                         }).join('')}
                     </tbody>
                 </table>
+                </div>
             </div>
         </div>`;
 }
@@ -169,11 +171,11 @@ function buildGradeEntryTab(data) {
     return `
         <div class="management-tab-content" data-tab="grade-entry">
             <div class="card">
-                <div class="card-header" style="margin-bottom: 1rem;">
+                <div class="card-header mgmt-card-header">
                     <h3>Noten eintragen</h3>
                 </div>
 
-                <div class="management-form" style="margin-bottom: 1.5rem;">
+                <div class="management-form mgmt-form-section">
                     <div class="form-row">
                         <div class="form-group">
                             <label for="ge-series-select">Veranstaltungsreihe</label>
@@ -270,7 +272,7 @@ function renderGradeEntryTable(tableArea, alertArea, data, seriesId, eventId) {
                 `).join('')}
             </tbody>
         </table>
-        <div style="margin-top: 1rem; display: flex; justify-content: flex-end;">
+        <div class="mgmt-actions-right">
             <button class="btn btn-primary" id="ge-save-btn">
                 <span class="material-icons-round">save</span>
                 Eintragen
@@ -313,11 +315,11 @@ function buildGradeDistributionTab(data) {
     return `
         <div class="management-tab-content" data-tab="grade-distribution">
             <div class="card">
-                <div class="card-header" style="margin-bottom: 1rem;">
+                <div class="card-header mgmt-card-header">
                     <h3>Notenverteilung</h3>
                 </div>
 
-                <div class="management-form" style="margin-bottom: 1.5rem;">
+                <div class="management-form mgmt-form-section">
                     <div class="form-row">
                         <div class="form-group">
                             <label for="gd-series-select">Veranstaltungsreihe</label>
@@ -419,11 +421,11 @@ function buildCsvImportTab(data) {
     return `
         <div class="management-tab-content" data-tab="csv-import">
             <div class="card">
-                <div class="card-header" style="margin-bottom: 1rem;">
+                <div class="card-header mgmt-card-header">
                     <h3>CSV-Import</h3>
                 </div>
 
-                <div class="management-form" style="margin-bottom: 1.5rem;">
+                <div class="management-form mgmt-form-section">
                     <div class="form-row">
                         <div class="form-group">
                             <label for="ci-series-select">Veranstaltungsreihe</label>
@@ -445,7 +447,7 @@ function buildCsvImportTab(data) {
                     <span class="material-icons-round">upload_file</span>
                     <p>CSV-Datei hier ablegen oder klicken</p>
                     <p class="hint">Format: Matrikelnummer;Note (eine Zeile pro Student)</p>
-                    <input type="file" accept=".csv" id="ci-file-input" style="display: none;">
+                    <input type="file" accept=".csv" id="ci-file-input" class="mgmt-hidden">
                 </div>
 
                 <div id="ci-alert-area"></div>
@@ -553,7 +555,7 @@ function handleCsvFile(file, container, data) {
         const errorCount = parsed.filter(p => !p.valid).length;
 
         previewArea.innerHTML = `
-            <table class="management-table" style="margin-bottom: 1rem;">
+            <table class="management-table mgmt-table-spaced">
                 <thead>
                     <tr>
                         <th scope="col" width="25%">Matrikelnummer</th>
@@ -579,7 +581,7 @@ function handleCsvFile(file, container, data) {
                 </tbody>
             </table>
             ${validCount > 0 ? `
-                <div style="display: flex; justify-content: flex-end;">
+                <div class="mgmt-actions-right">
                     <button class="btn btn-primary" id="ci-apply-btn">
                         <span class="material-icons-round">save</span>
                         Übernehmen (${validCount} gültig)

@@ -174,8 +174,8 @@ export function renderEventManagement(data) {
     // -----------------------------------------------------------------
     container.innerHTML = `
         <!-- US12: Inline create form -->
-        <div class="card" style="margin-bottom: 1.5rem;">
-            <div class="card-header" style="margin-bottom: 1rem;">
+        <div class="card mgmt-form-section">
+            <div class="card-header mgmt-card-header">
                 <h3>Neue Veranstaltungsreihe anlegen</h3>
             </div>
             <div class="inline-create-form">
@@ -196,10 +196,10 @@ export function renderEventManagement(data) {
 
         <!-- US22: Auto room planning -->
         <div class="card" style="margin-top: 2rem;">
-            <div class="card-header" style="margin-bottom: 1rem;">
+            <div class="card-header mgmt-card-header">
                 <h3>Automatische Raumplanung</h3>
             </div>
-            <p style="color: var(--text-secondary); margin-bottom: 1rem; font-size: 0.9rem;">
+            <p class="mgmt-desc-text">
                 Plant nicht zugewiesene Veranstaltungen automatisch in freie Räume und Zeitslots (Mo\u2013Fr, 09:00\u201317:00) ein.
             </p>
             <div class="inline-create-form">

@@ -42,7 +42,7 @@ export function renderRoomManagement(data) {
         : '0.0';
 
     container.innerHTML = `
-        <div class="grid-container stats-row" style="margin-bottom: 1.5rem;">
+        <div class="grid-container stats-row room-stats-row">
             <div class="card stat-card">
                 <div class="stat-icon primary-bg">
                     <span class="material-icons-round">meeting_room</span>
@@ -138,7 +138,7 @@ function renderRoomList(data) {
 
     panel.innerHTML = `
         <div class="card">
-            <div class="card-header" style="margin-bottom: 1rem;">
+            <div class="card-header room-card-header">
                 <h3>Neuen Raum anlegen</h3>
             </div>
             <form class="inline-create-form" id="room-create-form" autocomplete="off">
@@ -158,11 +158,11 @@ function renderRoomList(data) {
                     <span class="material-icons-round">add</span> Anlegen
                 </button>
             </form>
-            <div id="room-create-error" class="management-alert error" style="display:none;"></div>
+            <div id="room-create-error" class="management-alert error room-hidden"></div>
         </div>
 
-        <div class="card" style="margin-top:1rem;">
-            <div class="card-header" style="margin-bottom: 1rem;">
+        <div class="card room-card-spacing">
+            <div class="card-header room-card-header">
                 <h3>Alle Räume</h3>
             </div>
             ${rooms.length === 0
@@ -170,7 +170,7 @@ function renderRoomList(data) {
                         <span class="material-icons-round">meeting_room</span>
                         <p>Noch keine Räume angelegt.</p>
                    </div>`
-                : `<div style="overflow-x:auto;">
+                : `<div class="room-table-wrapper">
                     <table class="management-table" id="rooms-table">
                         <thead>
                             <tr>
@@ -184,7 +184,7 @@ function renderRoomList(data) {
                         <tbody>
                             ${rooms.map(room => `
                                 <tr data-room-id="${room.id}">
-                                    <td style="font-weight:600;">${escapeHTML(room.name)}</td>
+                                    <td class="room-name-cell">${escapeHTML(room.name)}</td>
                                     <td>${room.seats}</td>
                                     <td>${room.examSeats}</td>
                                     <td>${Array.isArray(room.bookings) ? room.bookings.length : 0}</td>
@@ -248,7 +248,7 @@ function handleCreateRoom(data) {
     const examSeats = parseInt(examSeatsInput.value, 10);
 
     // Hide previous error
-    if (errorDiv) errorDiv.style.display = 'none';
+    if (errorDiv) errorDiv.classList.add('room-hidden');
 
     // Validation
     if (!name) {
@@ -303,8 +303,8 @@ function handleCreateRoom(data) {
  */
 function showCreateError(errorDiv, message) {
     if (!errorDiv) return;
-    errorDiv.innerHTML = `<span class="material-icons-round" style="font-size:1.1rem;">error</span> ${message}`;
-    errorDiv.style.display = 'flex';
+    errorDiv.innerHTML = `<span class="material-icons-round room-error-icon">error</span> ${message}`;
+    errorDiv.classList.remove('room-hidden');
 }
 
 /**
@@ -332,7 +332,7 @@ function openEditRoomModal(data, roomId) {
                     <input type="number" id="edit-room-exam-seats" class="form-control" value="${room.examSeats}" min="0" step="1" required>
                 </div>
             </div>
-            <div id="edit-room-error" class="management-alert error" style="display:none;"></div>
+            <div id="edit-room-error" class="management-alert error room-hidden"></div>
         </form>
     `;
 
@@ -375,7 +375,7 @@ function handleSaveRoom(data, room) {
     const seats = parseInt(seatsInput.value, 10);
     const examSeats = parseInt(examSeatsInput.value, 10);
 
-    if (errorDiv) errorDiv.style.display = 'none';
+    if (errorDiv) errorDiv.classList.add('room-hidden');
 
     if (!name) {
         showCreateError(errorDiv, 'Bitte einen Raumnamen eingeben.');
@@ -458,7 +458,7 @@ function renderRoomSchedule(data) {
 
     panel.innerHTML = `
         <div class="card">
-            <div class="card-header" style="margin-bottom: 1rem;">
+            <div class="card-header room-card-header">
                 <h3>Belegungsplan</h3>
             </div>
             <div class="room-schedule-controls">
@@ -468,15 +468,17 @@ function renderRoomSchedule(data) {
                         : rooms.map(r => `<option value="${r.id}">${escapeHTML(r.name)}</option>`).join('')
                     }
                 </select>
-                <button class="btn btn-outline btn-sm" id="schedule-prev-week">
-                    <span class="material-icons-round">chevron_left</span> Vorige Woche
-                </button>
-                <span id="schedule-week-label" style="font-weight:600; font-size:0.9rem; color:var(--text-primary); white-space:nowrap;"></span>
-                <button class="btn btn-outline btn-sm" id="schedule-next-week">
-                    Nächste Woche <span class="material-icons-round">chevron_right</span>
-                </button>
+                <div class="room-schedule-nav">
+                    <button class="btn btn-outline btn-sm" id="schedule-prev-week">
+                        <span class="material-icons-round">chevron_left</span> Vorige Woche
+                    </button>
+                    <span id="schedule-week-label" class="room-schedule-week-label"></span>
+                    <button class="btn btn-outline btn-sm" id="schedule-next-week">
+                        Nächste Woche <span class="material-icons-round">chevron_right</span>
+                    </button>
+                </div>
             </div>
-            <div id="schedule-calendar-container" style="overflow-x:auto;"></div>
+            <div id="schedule-calendar-container" class="room-calendar-scroll-wrapper"></div>
         </div>
     `;
 
@@ -548,6 +550,9 @@ function getWeekData() {
     return { label, days, monday };
 }
 
+/** Booking color palette class indices 0-6 */
+const CALENDAR_COLOR_COUNT = 7;
+
 /**
  * Renders the weekly calendar grid for the given room into the
  * #schedule-calendar-container element.
@@ -576,11 +581,10 @@ function renderWeeklyCalendar(room) {
         hours.push(`${String(h).padStart(2, '0')}:00`);
     }
 
-    // Build time column
-    const timeRows = hours.map(h => `<div class="schedule-time-cell" style="height:60px; display:flex; align-items:flex-start; justify-content:flex-end; padding:0.25rem 0.5rem; font-size:0.75rem; color:var(--text-tertiary); border-bottom:1px solid var(--border-color-subtle);">${h}</div>`).join('');
-
-    // Booking color palette
-    const colors = ['#3b82f6', '#8b5cf6', '#f59e0b', '#22c55e', '#ef4444', '#06b6d4', '#ec4899'];
+    // Build time column cells
+    const timeRows = hours.map(h =>
+        `<div class="room-calendar-hour-cell room-calendar-time-label">${h}</div>`
+    ).join('');
 
     // Build day columns
     const dayColumns = weekData.days.map((dayLabel, dayIndex) => {
@@ -589,40 +593,26 @@ function renderWeeklyCalendar(room) {
         const bookingBlocks = dayBookings.map((b, bi) => {
             const startMin = timeToMinutes(b.start);
             const endMin = timeToMinutes(b.end);
-            const top = (startMin - 480); // 08:00 = 480 min
+            const top = startMin - 480; // 08:00 = 480 min
             const height = endMin - startMin;
-            const color = colors[bi % colors.length];
+            const colorClass = `room-calendar-event-${bi % CALENDAR_COLOR_COUNT}`;
 
-            return `<div style="
-                position:absolute;
-                top:${top}px;
-                left:2px;
-                right:2px;
-                height:${height}px;
-                background:${color};
-                opacity:0.85;
-                border-radius:4px;
-                padding:0.2rem 0.35rem;
-                font-size:0.7rem;
-                color:#fff;
-                overflow:hidden;
-                cursor:default;
-                line-height:1.3;
-                box-sizing:border-box;
-            " title="${escapeHTML(b.title)} (${escapeHTML(b.start)} - ${escapeHTML(b.end)})">
-                <strong>${escapeHTML(b.title)}</strong><br>
-                ${escapeHTML(b.start)} - ${escapeHTML(b.end)}
+            return `<div class="room-calendar-event ${colorClass}"
+                style="top:${top}px;height:${height}px;"
+                title="${escapeHTML(b.title)} (${escapeHTML(b.start)} - ${escapeHTML(b.end)})">
+                <strong>${escapeHTML(b.title)}</strong>
+                <span class="room-calendar-event-time">${escapeHTML(b.start)} - ${escapeHTML(b.end)}</span>
             </div>`;
         }).join('');
 
         const gridLines = hours.map(() =>
-            `<div style="height:60px; border-bottom:1px solid var(--border-color-subtle);"></div>`
+            `<div class="room-calendar-hour-cell"></div>`
         ).join('');
 
         return `
-            <div style="flex:1; min-width:120px;">
-                <div style="text-align:center; font-weight:600; font-size:0.8rem; padding:0.5rem 0; border-bottom:2px solid var(--border-color); color:var(--text-primary);">${dayLabel}</div>
-                <div style="position:relative;">
+            <div class="room-calendar-day-col">
+                <div class="room-calendar-day-header">${dayLabel}</div>
+                <div class="room-calendar-day-body">
                     ${gridLines}
                     ${bookingBlocks}
                 </div>
@@ -630,9 +620,9 @@ function renderWeeklyCalendar(room) {
     }).join('');
 
     container.innerHTML = `
-        <div style="display:flex; border:1px solid var(--border-color); border-radius:var(--radius-lg); overflow:hidden; background:var(--surface-color);">
-            <div style="width:55px; flex-shrink:0; border-right:1px solid var(--border-color);">
-                <div style="height:33px; border-bottom:2px solid var(--border-color);"></div>
+        <div class="room-calendar">
+            <div class="room-calendar-time-col">
+                <div class="room-calendar-time-header"></div>
                 ${timeRows}
             </div>
             ${dayColumns}
@@ -665,10 +655,10 @@ function renderRoomUtilization(data) {
 
     panel.innerHTML = `
         <div class="card">
-            <div class="card-header" style="margin-bottom: 1rem;">
+            <div class="card-header room-card-header">
                 <h3>Raumauslastung</h3>
             </div>
-            <div class="inline-create-form" style="margin-bottom:1.5rem;">
+            <div class="inline-create-form room-utilization-controls">
                 <div class="form-group">
                     <label for="util-start-date">Startdatum</label>
                     <input type="date" id="util-start-date" class="form-control" value="${formatISO(monday)}">
@@ -680,6 +670,18 @@ function renderRoomUtilization(data) {
                 <button class="btn btn-sm btn-primary" id="util-show-btn" type="button">
                     <span class="material-icons-round">search</span> Anzeigen
                 </button>
+            </div>
+            <div class="room-utilization-legend">
+                <span class="room-utilization-legend-title">Legende:</span>
+                <span class="room-utilization-legend-item">
+                    <span class="room-utilization-legend-swatch room-utilization-legend-low"></span> Niedrig (0-40%)
+                </span>
+                <span class="room-utilization-legend-item">
+                    <span class="room-utilization-legend-swatch room-utilization-legend-medium"></span> Mittel (41-70%)
+                </span>
+                <span class="room-utilization-legend-item">
+                    <span class="room-utilization-legend-swatch room-utilization-legend-high"></span> Hoch (71-100%)
+                </span>
             </div>
             <div id="utilization-results"></div>
         </div>
@@ -717,8 +719,8 @@ function computeUtilization(data) {
 
     if (Number.isNaN(startDate.getTime()) || Number.isNaN(endDate.getTime()) || startDate > endDate) {
         resultsDiv.innerHTML = `
-            <div class="management-alert error" style="display:flex;">
-                <span class="material-icons-round" style="font-size:1.1rem;">error</span>
+            <div class="management-alert error room-alert-visible">
+                <span class="material-icons-round room-error-icon">error</span>
                 Bitte gültigen Zeitraum auswählen (Startdatum <= Enddatum).
             </div>`;
         return;
@@ -730,8 +732,8 @@ function computeUtilization(data) {
 
     if (totalAvailableHours === 0) {
         resultsDiv.innerHTML = `
-            <div class="management-alert info" style="display:flex;">
-                <span class="material-icons-round" style="font-size:1.1rem;">info</span>
+            <div class="management-alert info room-alert-visible">
+                <span class="material-icons-round room-error-icon">info</span>
                 Keine Werktage im gewählten Zeitraum.
             </div>`;
         return;

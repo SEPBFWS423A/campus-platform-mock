@@ -29,7 +29,7 @@ export function renderUserManagement(data) {
     );
 
     container.innerHTML = `
-        <div class="grid-container stats-row" style="margin-bottom: 1.5rem;">
+        <div class="grid-container stats-row mgmt-stats-row">
             <div class="card stat-card">
                 <div class="stat-icon primary-bg">
                     <span class="material-icons-round">group</span>
@@ -59,8 +59,8 @@ export function renderUserManagement(data) {
             </div>
         </div>
 
-        <div class="card" style="margin-bottom: 1.5rem;">
-            <div class="card-header" style="margin-bottom: 1rem;">
+        <div class="card mgmt-form-section">
+            <div class="card-header mgmt-card-header">
                 <h3>Neuen Benutzer anlegen</h3>
             </div>
             <div id="user-create-alert"></div>
@@ -97,7 +97,7 @@ export function renderUserManagement(data) {
         </div>
 
         <div class="card">
-            <div class="card-header" style="margin-bottom: 1rem;">
+            <div class="card-header mgmt-card-header">
                 <h3>Benutzerliste</h3>
             </div>
             <div class="user-list-toolbar">
@@ -112,7 +112,7 @@ export function renderUserManagement(data) {
                     <option value="student">Student</option>
                 </select>
             </div>
-            <div style="overflow-x: auto;">
+            <div class="exam-results-table-wrapper">
                 <table class="management-table" id="user-table">
                     <thead>
                         <tr>
@@ -149,7 +149,7 @@ export function renderUserManagement(data) {
                     </tbody>
                 </table>
             </div>
-            <div id="user-no-results" class="management-empty" style="display: none;">
+            <div id="user-no-results" class="management-empty mgmt-hidden">
                 <span class="material-icons-round">search_off</span>
                 <p>Keine Benutzer gefunden.</p>
             </div>
@@ -201,7 +201,7 @@ export function renderUserManagement(data) {
             if (show) visible++;
         });
 
-        noResults.style.display = visible === 0 ? '' : 'none';
+        noResults.classList.toggle('mgmt-hidden', visible !== 0);
     }
 
     if (searchInput) searchInput.addEventListener('input', applyFilters);
