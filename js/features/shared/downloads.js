@@ -4,8 +4,8 @@ export function renderDownloads(data) {
     const filesContent = document.querySelector('.files-content');
     if (!filesContent) return;
 
-    const uploadZone = `
-        <div class="upload-zone mb-4" style="margin-bottom: 1rem;">
+    const uploadZoneHTML = `
+        <div class="upload-zone">
             <span class="material-icons-round upload-icon">cloud_upload</span>
             <h3>Datei hochladen</h3>
             <p>Drag & Drop oder klicken</p>
@@ -110,7 +110,15 @@ export function renderDownloads(data) {
         `;
     }).join('');
 
-    filesContent.innerHTML = uploadZone + fileSections;
+    filesContent.innerHTML = fileSections;
+
+    // Insert upload zone directly into downloads-layout (before sidebar) for proper mobile ordering
+    const downloadsLayout = document.querySelector('.downloads-layout');
+    if (downloadsLayout) {
+        const existingUploadZone = downloadsLayout.querySelector(':scope > .upload-zone');
+        if (existingUploadZone) existingUploadZone.remove();
+        downloadsLayout.insertAdjacentHTML('afterbegin', uploadZoneHTML);
+    }
 
     const categoryItems = document.querySelectorAll('.category-item');
     categoryItems.forEach(item => {

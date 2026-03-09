@@ -1,15 +1,51 @@
 .downloads-layout {
     display: grid;
     grid-template-columns: 280px 1fr;
+    grid-template-rows: auto 1fr;
     gap: 2rem;
     align-items: start;
     position: relative;
     padding-bottom: 2rem;
 }
 
+.downloads-layout > .upload-zone {
+    grid-column: 2;
+    grid-row: 1;
+    margin-bottom: 0;
+}
+
+.category-sidebar {
+    grid-column: 1;
+    grid-row: 1 / -1;
+}
+
+.files-content {
+    grid-column: 2;
+    grid-row: 2;
+}
+
 @media (max-width: 900px) {
     .downloads-layout {
         grid-template-columns: 1fr;
+        grid-template-rows: auto;
+    }
+
+    .downloads-layout > .upload-zone {
+        grid-column: 1;
+        grid-row: auto;
+        order: -1;
+    }
+
+    .category-sidebar {
+        grid-column: 1;
+        grid-row: auto;
+        order: 0;
+    }
+
+    .files-content {
+        grid-column: 1;
+        grid-row: auto;
+        order: 1;
     }
 }
 
@@ -329,14 +365,17 @@ body.dark-mode .upload-zone:hover {
         display: flex;
         flex-direction: column;
         gap: 1.5rem;
-        /* Ensure no overflow from grid conversion */
         width: 100%;
-        overflow: hidden;
-        /* Prevent layout blowouts */
+        overflow: visible;
+    }
+
+    .downloads-layout > .upload-zone {
+        order: -1;
     }
 
     .category-sidebar {
         padding: 0.75rem 0;
+        order: 0;
 
         position: -webkit-sticky;
         position: sticky;
@@ -346,13 +385,18 @@ body.dark-mode .upload-zone:hover {
         backdrop-filter: blur(8px);
         border-bottom: 1px solid var(--border-color);
 
-        /* Full width break-out using negative margins */
-        /* REMOVED explicit width calculation to avoid overflow issues */
         margin-left: -1rem;
         margin-right: -1rem;
 
         width: auto;
         box-shadow: 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+
+        /* Reset desktop card styles */
+        border-radius: 0;
+        border-left: none;
+        border-right: none;
+        border-top: none;
+        overflow: hidden;
     }
 
     .dark-mode .category-sidebar {
