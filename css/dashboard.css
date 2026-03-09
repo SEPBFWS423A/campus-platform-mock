@@ -5,6 +5,13 @@
     margin-bottom: 2rem;
 }
 
+@media (max-width: 768px) {
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
 .current-date {
     display: flex;
     align-items: center;
