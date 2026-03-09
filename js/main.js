@@ -1,3 +1,4 @@
+import { formatCurrentDateDE } from './core/utils.js';
 import { initTheme } from './core/theme.js';
 import { initAuth, checkAuth } from './core/auth.js';
 import { initNavigation } from './core/navigation.js';
@@ -26,6 +27,9 @@ document.addEventListener('DOMContentLoaded', () => {
     initAuth();
     initModal();
     initChangePassword();
+
+    const dateEl = document.getElementById('current-date');
+    if (dateEl) dateEl.textContent = formatCurrentDateDE();
     const navigation = initNavigation();
     applyRoleVisibility();
     initData(navigation);

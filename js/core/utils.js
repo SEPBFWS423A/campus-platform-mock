@@ -68,3 +68,17 @@ export function formatDateDE(dateStr) {
     const d = new Date(dateStr + 'T00:00:00');
     return d.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
 }
+
+/**
+ * Formats the current date as "Tag (ausgeschrieben), Monat (Zahl), Monat (ausgeschrieben), Jahr".
+ * Example: "Montag, 03, März, 2026"
+ * @returns {string} Formatted current date string.
+ */
+export function formatCurrentDateDE() {
+    const d = new Date();
+    const day = d.toLocaleDateString('de-DE', { weekday: 'long' });
+    const monthNum = String(d.getMonth() + 1).padStart(2, '0');
+    const monthName = d.toLocaleDateString('de-DE', { month: 'long' });
+    const year = d.getFullYear();
+    return `${day}, ${monthNum}. ${monthName} ${year}`;
+}
