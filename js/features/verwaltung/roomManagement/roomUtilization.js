@@ -1,15 +1,10 @@
 import { timeToMinutes, escapeHTML } from '../../../core/utils.js';
-import { countWeekdays, countDayOccurrences } from './index.js';
+import { countWeekdays, countDayOccurrences, AVAILABLE_HOURS_PER_DAY } from './index.js';
 
-/**
- * Renders the utilization tab with date-range inputs and per-room usage bars.
- * @param {object} data - The mockData object.
- */
 export function renderRoomUtilization(data) {
     const panel = document.getElementById('room-utilization');
     if (!panel) return;
 
-    // Default range: current week Mon-Fri
     const now = new Date();
     const day = now.getDay();
     const diffMon = (day === 0 ? -6 : 1) - day;
@@ -61,19 +56,9 @@ export function renderRoomUtilization(data) {
         });
     }
 
-    // Render initial results
     computeUtilization(data);
 }
 
-/**
- * Computes and renders the utilization bars for each room within the
- * selected date range.
- *
- * Utilization % = (total booked hours in period) / (weekdays * 9 hrs) * 100
- * Each recurring booking is counted once per matching weekday in the range.
- *
- * @param {object} data - The mockData object.
- */
 function computeUtilization(data) {
     const resultsDiv = document.getElementById('utilization-results');
     if (!resultsDiv) return;
@@ -93,9 +78,8 @@ function computeUtilization(data) {
         return;
     }
 
-    // Count weekdays in range
     const weekdays = countWeekdays(startDate, endDate);
-    const totalAvailableHours = weekdays * 9; // 8:00-17:00 = 9 hours per day
+    const totalAvailableHours = weekdays * AVAILABLE_HOURS_PER_DAY;
 
     if (totalAvailableHours === 0) {
         resultsDiv.innerHTML = `
@@ -106,7 +90,6 @@ function computeUtilization(data) {
         return;
     }
 
-    // Count weekday occurrences per day-of-week (0=Mon..4=Fri)
     const dayOccurrences = countDayOccurrences(startDate, endDate);
 
     const rooms = [...data.rooms].sort((a, b) => a.name.localeCompare(b.name, 'de'));

@@ -4,13 +4,8 @@ let allExams = [];
 let currentFilter = 'all';
 let isInitialized = false;
 
-/**
- * Renders exam appointment cards.
- * Only shows upcoming exams (registered, open, upcoming) – NOT completed/passed.
- */
 export function renderExams(data) {
     if (data) {
-        // Filter: nur anstehende Prüfungstermine, keine bestandenen/nicht bestandenen
         const examModules = data.modules.filter(m =>
             m.exam &&
             (m.exam.status === 'registered' || m.exam.status === 'upcoming' || m.exam.status === 'open') &&

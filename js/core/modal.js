@@ -1,18 +1,5 @@
-/**
- * Reusable modal dialog system for management features.
- * Provides show/close/confirm functionality with focus trapping and ARIA support.
- */
-
 let previousFocusElement = null;
 
-/**
- * Opens a modal dialog with the given content.
- * @param {string} title - The modal title.
- * @param {string} bodyHTML - HTML string for the modal body.
- * @param {string} [footerHTML=''] - HTML string for the modal footer.
- * @param {object} [options={}] - Optional settings.
- * @param {string} [options.sizeClass] - CSS class to add to the dialog (e.g. 'modal-lg').
- */
 export function showModal(title, bodyHTML, footerHTML = '', options = {}) {
     const overlay = document.getElementById('modal-overlay');
     const titleEl = document.getElementById('modal-title');
@@ -24,7 +11,6 @@ export function showModal(title, bodyHTML, footerHTML = '', options = {}) {
 
     previousFocusElement = document.activeElement;
 
-    // Reset size classes
     dialog.classList.remove('modal-lg');
     if (options.sizeClass) {
         dialog.classList.add(options.sizeClass);
@@ -38,7 +24,6 @@ export function showModal(title, bodyHTML, footerHTML = '', options = {}) {
     overlay.classList.add('active');
     document.body.style.overflow = 'hidden';
 
-    // Focus the first focusable element in the modal
     requestAnimationFrame(() => {
         const focusable = overlay.querySelector('input, select, textarea, button:not(.modal-close-btn)');
         if (focusable) {
@@ -50,9 +35,6 @@ export function showModal(title, bodyHTML, footerHTML = '', options = {}) {
     });
 }
 
-/**
- * Closes the currently open modal dialog.
- */
 export function closeModal() {
     const overlay = document.getElementById('modal-overlay');
     if (!overlay) return;
@@ -61,7 +43,6 @@ export function closeModal() {
     overlay.setAttribute('aria-hidden', 'true');
     document.body.style.overflow = '';
 
-    // Reset dialog size classes
     const dialog = overlay.querySelector('.modal-dialog');
     if (dialog) dialog.classList.remove('modal-lg');
 
@@ -71,12 +52,6 @@ export function closeModal() {
     previousFocusElement = null;
 }
 
-/**
- * Opens a confirmation dialog with OK/Cancel buttons.
- * @param {string} title - Dialog title.
- * @param {string} message - Confirmation message.
- * @param {Function} onConfirm - Callback invoked on confirmation.
- */
 export function showConfirmDialog(title, message, onConfirm) {
     const bodyHTML = `<p style="margin: 0.5rem 0 1rem; color: var(--text-secondary);">${message}</p>`;
     const footerHTML = `
@@ -101,34 +76,27 @@ export function showConfirmDialog(title, message, onConfirm) {
     }
 }
 
-/**
- * Initializes the modal system: close button, overlay click, and Escape key.
- */
 export function initModal() {
     const overlay = document.getElementById('modal-overlay');
     if (!overlay) return;
 
-    // Close button
     const closeBtn = overlay.querySelector('.modal-close-btn');
     if (closeBtn) {
         closeBtn.addEventListener('click', closeModal);
     }
 
-    // Click on overlay background closes modal
     overlay.addEventListener('click', (e) => {
         if (e.target === overlay) {
             closeModal();
         }
     });
 
-    // Escape key closes modal
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && overlay.classList.contains('active')) {
             closeModal();
         }
     });
 
-    // Focus trapping
     overlay.addEventListener('keydown', (e) => {
         if (e.key !== 'Tab') return;
         const focusableElements = overlay.querySelectorAll(

@@ -17,7 +17,6 @@ export function initAuth() {
             }
         });
 
-        // Close dropdown on Escape
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && userDropdown.classList.contains('active')) {
                 userDropdown.classList.remove('active');
@@ -37,10 +36,6 @@ export function initAuth() {
     renderUserSwitcher();
 }
 
-/**
- * Renders the user switch buttons in the dropdown menu.
- * Reads available users from mockData and highlights the current user.
- */
 function renderUserSwitcher() {
     const container = document.getElementById('user-switch-list');
     if (!container || typeof mockData === 'undefined') return;
@@ -88,7 +83,6 @@ function renderUserSwitcher() {
 
     container.innerHTML = html;
 
-    // Add click listeners for user switching
     container.querySelectorAll('.user-switch-item').forEach(btn => {
         btn.addEventListener('click', () => {
             const userId = parseInt(btn.dataset.userId);
@@ -99,11 +93,6 @@ function renderUserSwitcher() {
     });
 }
 
-/**
- * Checks if the user is authenticated.
- * Redirects to login.html if not logged in.
- * Returns true if authenticated.
- */
 export function checkAuth() {
     if (sessionStorage.getItem('isLoggedIn') !== 'true') {
         window.location.replace('login.html');

@@ -20,7 +20,6 @@ import { renderEventManagement } from './features/verwaltung/eventManagement/ind
 import { renderExamResultsManagement } from './features/verwaltung/examResults/index.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Redirect to login page if not authenticated
     if (!checkAuth()) return;
 
     initTheme();
@@ -37,20 +36,50 @@ document.addEventListener('DOMContentLoaded', () => {
     initViewAllScheduleLink(navigation);
 });
 
-/**
- * Shows/hides navigation items and content sections based on the current user's role.
- * Reads data-roles attributes from nav items.
- */
 function applyRoleVisibility() {
     if (typeof getCurrentUser !== 'function') return;
     const user = getCurrentUser();
     const role = user.role;
 
-    // Show/hide nav items based on data-roles attribute
     document.querySelectorAll('.nav-item[data-roles]').forEach(item => {
         const roles = item.getAttribute('data-roles').split(',');
         item.classList.toggle('hidden', !roles.includes(role));
     });
+}
+
+function renderContentForRole(user, navigation) {
+    if (user.role === 'student') {
+        renderDashboard(mockData);
+        renderSchedule(mockData);
+        renderGrades(mockData);
+        renderExams(mockData);
+        renderDownloads(mockData);
+        renderSubmissions(mockData);
+    } else if (user.role === 'dozent') {
+        renderDozentDashboard(mockData, user, navigation);
+        renderDozentCourses(mockData, user);
+        renderDozentGrading(mockData, user);
+        renderDownloads(mockData);
+    } else if (user.role === 'verwaltung') {
+        renderVerwaltungDashboard(mockData, user, navigation);
+        renderUserManagement(mockData);
+        renderRoomManagement(mockData);
+        renderEventManagement(mockData);
+        renderExamResultsManagement(mockData);
+        renderDownloads(mockData);
+    }
+}
+
+function updateUserInfo(user) {
+    const userNameElements = document.querySelectorAll('.dropdown-user-name');
+    const userRoleElements = document.querySelectorAll('.dropdown-user-role');
+    userNameElements.forEach(el => { el.textContent = user.name; });
+    userRoleElements.forEach(el => { el.textContent = user.roleLabel; });
+
+    const dashboardHeader = document.querySelector('#dashboard .header-content p');
+    if (dashboardHeader) {
+        dashboardHeader.textContent = `Willkommen zurück, ${user.name}!`;
+    }
 }
 
 function initData(navigation) {
@@ -61,7 +90,7 @@ function initData(navigation) {
                 <div class="card empty-state-block error-state">
                     <span class="material-icons-round">error_outline</span>
                     <h2>Daten konnten nicht geladen werden</h2>
-                    <p>Bitte versuchen Sie es sp\u00e4ter erneut.</p>
+                    <p>Bitte versuchen Sie es später erneut.</p>
                 </div>
             `;
         }
@@ -71,47 +100,13 @@ function initData(navigation) {
     const user = getCurrentUser();
 
     try {
-        // Render role-specific content
-        if (user.role === 'student') {
-            renderDashboard(mockData);
-            renderSchedule(mockData);
-            renderGrades(mockData);
-            renderExams(mockData);
-            renderDownloads(mockData);
-            renderSubmissions(mockData);
-        } else if (user.role === 'dozent') {
-            renderDozentDashboard(mockData, user, navigation);
-            renderDozentCourses(mockData, user);
-            renderDozentGrading(mockData, user);
-            renderDownloads(mockData);
-        } else if (user.role === 'verwaltung') {
-            renderVerwaltungDashboard(mockData, user, navigation);
-            renderUserManagement(mockData);
-            renderRoomManagement(mockData);
-            renderEventManagement(mockData);
-            renderExamResultsManagement(mockData);
-            renderDownloads(mockData);
-        }
+        renderContentForRole(user, navigation);
     } catch (_) {
-        // Silently handle render errors in production
     }
 
-    // Set User Info in header
-    const userNameElements = document.querySelectorAll('.dropdown-user-name');
-    const userRoleElements = document.querySelectorAll('.dropdown-user-role');
-    userNameElements.forEach(el => { el.textContent = user.name; });
-    userRoleElements.forEach(el => { el.textContent = user.roleLabel; });
-
-    const dashboardHeader = document.querySelector('#dashboard .header-content p');
-    if (dashboardHeader) {
-        dashboardHeader.textContent = `Willkommen zur\u00fcck, ${user.name}!`;
-    }
+    updateUserInfo(user);
 }
 
-/**
- * Wires up the "Alle ansehen" button on the dashboard to navigate
- * to the appropriate section based on the user's role.
- */
 function initViewAllScheduleLink(navigation) {
     const btn = document.getElementById('view-all-schedule');
     if (!btn) return;

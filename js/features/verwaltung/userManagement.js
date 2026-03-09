@@ -1,20 +1,12 @@
 import { escapeHTML } from '../../core/utils.js';
 import { showModal, closeModal, showConfirmDialog } from '../../core/modal.js';
 
-/**
- * Role label mapping for display in the UI.
- */
 const ROLE_LABELS = {
     student: 'Student',
     dozent: 'Dozent',
     verwaltung: 'Mitarbeiter'
 };
 
-/**
- * Renders the full user management view for the Verwaltung (admin) role.
- * Includes stats, inline create form, and user table with edit/delete actions.
- * @param {object} data - The central mockData object.
- */
 export function renderUserManagement(data) {
     const container = document.querySelector('.admin-users-content');
     if (!container) return;
@@ -156,7 +148,6 @@ export function renderUserManagement(data) {
         </div>
     `;
 
-    // --- Bind: Create User Form ---
     const createForm = container.querySelector('#user-create-form');
     if (createForm) {
         createForm.addEventListener('submit', (e) => {
@@ -165,7 +156,6 @@ export function renderUserManagement(data) {
         });
     }
 
-    // --- Bind: Delete Buttons ---
     container.querySelectorAll('[data-delete-user]').forEach(btn => {
         btn.addEventListener('click', () => {
             const userId = parseInt(btn.getAttribute('data-delete-user'));
@@ -173,7 +163,6 @@ export function renderUserManagement(data) {
         });
     });
 
-    // --- Bind: Edit Buttons ---
     container.querySelectorAll('[data-edit-user]').forEach(btn => {
         btn.addEventListener('click', () => {
             const userId = parseInt(btn.getAttribute('data-edit-user'));
@@ -181,7 +170,6 @@ export function renderUserManagement(data) {
         });
     });
 
-    // --- Bind: Search + Role Filter ---
     const searchInput = container.querySelector('#user-search');
     const roleFilter = container.querySelector('#user-role-filter');
     const tableBody = container.querySelector('#user-table tbody');
@@ -208,11 +196,6 @@ export function renderUserManagement(data) {
     if (roleFilter) roleFilter.addEventListener('change', applyFilters);
 }
 
-/**
- * Shows an alert message inside the create form area.
- * @param {string} message - The message text.
- * @param {'error'|'success'} type - Alert type.
- */
 function showCreateAlert(message, type) {
     const alertEl = document.getElementById('user-create-alert');
     if (!alertEl) return;
@@ -223,16 +206,11 @@ function showCreateAlert(message, type) {
             ${escapeHTML(message)}
         </div>
     `;
-    // Auto-clear success messages after a few seconds
     if (type === 'success') {
         setTimeout(() => { alertEl.innerHTML = ''; }, 3000);
     }
 }
 
-/**
- * Validates and creates a new user from the inline form (US3/US7).
- * @param {object} data - The central mockData object.
- */
 function handleCreateUser(data) {
     const username = document.getElementById('create-username').value.trim();
     const name = document.getElementById('create-name').value.trim();
@@ -240,38 +218,32 @@ function handleCreateUser(data) {
     const email = document.getElementById('create-email').value.trim();
     const role = document.getElementById('create-role').value;
 
-    // Validate: username not empty
     if (!username) {
         showCreateAlert('Benutzername darf nicht leer sein.', 'error');
         return;
     }
 
-    // Validate: username not duplicate
     const duplicate = data.users.find(u => u.username.toLowerCase() === username.toLowerCase());
     if (duplicate) {
         showCreateAlert('Dieser Benutzername ist bereits vergeben.', 'error');
         return;
     }
 
-    // Validate: password not empty
     if (!password) {
         showCreateAlert('Passwort darf nicht leer sein.', 'error');
         return;
     }
 
-    // Validate: email format if provided
     if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
         showCreateAlert('Bitte geben Sie eine gueltige E-Mail-Adresse ein.', 'error');
         return;
     }
 
-    // For students: name must not be empty
     if (role === 'student' && !name) {
         showCreateAlert('Fuer Studierende muss ein Name angegeben werden.', 'error');
         return;
     }
 
-    // Compute next available ID
     const maxId = data.users.reduce((max, u) => Math.max(max, u.id), 0);
     const newUser = {
         id: maxId + 1,
@@ -287,15 +259,9 @@ function handleCreateUser(data) {
 
     showCreateAlert(`Benutzer "${username}" wurde erfolgreich angelegt.`, 'success');
 
-    // Re-render
     renderUserManagement(data);
 }
 
-/**
- * Handles deletion of a user with confirmation dialog (US6).
- * @param {object} data - The central mockData object.
- * @param {number} userId - The ID of the user to delete.
- */
 function handleDeleteUser(data, userId) {
     const user = data.users.find(u => u.id === userId);
     if (!user) return;
@@ -304,10 +270,8 @@ function handleDeleteUser(data, userId) {
         'Benutzer loeschen',
         `Moechten Sie den Benutzer <strong>${escapeHTML(user.username)}</strong> (${escapeHTML(user.name || '-')}) wirklich loeschen? Diese Aktion kann nicht rueckgaengig gemacht werden.`,
         () => {
-            // Remove user from data
             data.users = data.users.filter(u => u.id !== userId);
 
-            // If the deleted user is the currently logged-in user, log out
             if (typeof getCurrentUser === 'function') {
                 const currentUser = getCurrentUser();
                 if (currentUser && currentUser.id === userId) {
@@ -317,23 +281,15 @@ function handleDeleteUser(data, userId) {
                 }
             }
 
-            // Re-render
             renderUserManagement(data);
         }
     );
 }
 
-/**
- * Opens a modal to edit a user's details.
- * For students, includes event series assignment management (US14/US15).
- * @param {object} data - The central mockData object.
- * @param {number} userId - The ID of the user to edit.
- */
 function handleEditUser(data, userId) {
     const user = data.users.find(u => u.id === userId);
     if (!user) return;
 
-    // Build assigned event series chips for students
     let eventSeriesSection = '';
     if (user.role === 'student' && Array.isArray(data.eventSeries)) {
         const assignedSeries = data.eventSeries.filter(
@@ -412,21 +368,18 @@ function handleEditUser(data, userId) {
 
     showModal('Benutzer bearbeiten', bodyHTML, footerHTML);
 
-    // --- Bind: Cancel ---
     const overlay = document.getElementById('modal-overlay');
     const cancelBtn = overlay.querySelector('.modal-cancel-btn');
     if (cancelBtn) {
         cancelBtn.addEventListener('click', () => closeModal(), { once: true });
     }
 
-    // --- Bind: Save ---
     const saveBtn = document.getElementById('edit-user-save-btn');
     if (saveBtn) {
         saveBtn.addEventListener('click', () => {
             const newName = document.getElementById('edit-name').value.trim();
             const newEmail = document.getElementById('edit-email').value.trim();
 
-            // Validate email format if provided
             if (newEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newEmail)) {
                 showEditAlert('Bitte geben Sie eine gueltige E-Mail-Adresse ein.', 'error');
                 return;
@@ -440,7 +393,6 @@ function handleEditUser(data, userId) {
         }, { once: true });
     }
 
-    // --- Bind: Remove series chip (US15) ---
     if (user.role === 'student') {
         overlay.querySelectorAll('[data-remove-series]').forEach(btn => {
             btn.addEventListener('click', () => {
@@ -449,13 +401,11 @@ function handleEditUser(data, userId) {
                 if (series && Array.isArray(series.studentIds)) {
                     series.studentIds = series.studentIds.filter(id => id !== userId);
                 }
-                // Re-open the edit modal to reflect updated state
                 closeModal();
                 handleEditUser(data, userId);
             }, { once: true });
         });
 
-        // --- Bind: Add series (US14) ---
         const addSeriesBtn = document.getElementById('edit-add-series-btn');
         if (addSeriesBtn) {
             addSeriesBtn.addEventListener('click', () => {
@@ -472,7 +422,6 @@ function handleEditUser(data, userId) {
                         series.studentIds.push(userId);
                     }
                 }
-                // Re-open the edit modal to reflect updated state
                 closeModal();
                 handleEditUser(data, userId);
             });
@@ -480,11 +429,6 @@ function handleEditUser(data, userId) {
     }
 }
 
-/**
- * Shows an alert message inside the edit modal.
- * @param {string} message - The message text.
- * @param {'error'|'success'} type - Alert type.
- */
 function showEditAlert(message, type) {
     const alertEl = document.getElementById('edit-user-alert');
     if (!alertEl) return;

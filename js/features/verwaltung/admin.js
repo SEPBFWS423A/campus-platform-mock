@@ -1,8 +1,5 @@
 import { escapeHTML } from '../../core/utils.js';
 
-/**
- * Renders the Verwaltung's student management view (basic placeholder).
- */
 export function renderAdminStudents(data) {
     const container = document.querySelector('.admin-students-content');
     if (!container) return;
@@ -81,9 +78,6 @@ export function renderAdminStudents(data) {
     `;
 }
 
-/**
- * Renders the Verwaltung's exam management view (basic placeholder).
- */
 export function renderAdminExams(data) {
     const container = document.querySelector('.admin-exams-content');
     if (!container) return;

@@ -2,10 +2,6 @@ import { escapeHTML } from '../../../core/utils.js';
 import { showModal, closeModal, showConfirmDialog } from '../../../core/modal.js';
 import { renderRoomManagement } from './index.js';
 
-/**
- * Renders the inline create form and the sortable room table.
- * @param {object} data - The mockData object.
- */
 export function renderRoomList(data) {
     const panel = document.getElementById('room-list');
     if (!panel) return;
@@ -83,7 +79,6 @@ export function renderRoomList(data) {
         </div>
     `;
 
-    // Bind create form
     const form = document.getElementById('room-create-form');
     if (form) {
         form.addEventListener('submit', (e) => {
@@ -92,7 +87,6 @@ export function renderRoomList(data) {
         });
     }
 
-    // Bind edit buttons
     panel.querySelectorAll('.edit-room-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             const roomId = parseInt(btn.dataset.roomId);
@@ -100,7 +94,6 @@ export function renderRoomList(data) {
         });
     });
 
-    // Bind delete buttons
     panel.querySelectorAll('.delete-room-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             const roomId = parseInt(btn.dataset.roomId);
@@ -109,10 +102,6 @@ export function renderRoomList(data) {
     });
 }
 
-/**
- * Validates and creates a new room from the inline form inputs.
- * @param {object} data - The mockData object.
- */
 function handleCreateRoom(data) {
     const nameInput = document.getElementById('new-room-name');
     const seatsInput = document.getElementById('new-room-seats');
@@ -123,10 +112,8 @@ function handleCreateRoom(data) {
     const seats = parseInt(seatsInput.value, 10);
     const examSeats = parseInt(examSeatsInput.value, 10);
 
-    // Hide previous error
     if (errorDiv) errorDiv.classList.add('room-hidden');
 
-    // Validation
     if (!name) {
         showCreateError(errorDiv, 'Bitte einen Raumnamen eingeben.');
         nameInput.focus();
@@ -158,7 +145,6 @@ function handleCreateRoom(data) {
         return;
     }
 
-    // Generate new unique ID
     const maxId = data.rooms.reduce((max, r) => Math.max(max, r.id || 0), 0);
     const newRoom = {
         id: maxId + 1,
@@ -172,22 +158,12 @@ function handleCreateRoom(data) {
     renderRoomManagement(data);
 }
 
-/**
- * Shows an inline error message in the create form area.
- * @param {HTMLElement|null} errorDiv - The .management-alert element.
- * @param {string} message - The error text.
- */
 function showCreateError(errorDiv, message) {
     if (!errorDiv) return;
     errorDiv.innerHTML = `<span class="material-icons-round room-error-icon">error</span> ${message}`;
     errorDiv.classList.remove('room-hidden');
 }
 
-/**
- * Opens a modal to edit the name, seats, and examSeats of an existing room.
- * @param {object} data - The mockData object.
- * @param {number} roomId - The ID of the room to edit.
- */
 function openEditRoomModal(data, roomId) {
     const room = data.rooms.find(r => r.id === roomId);
     if (!room) return;
@@ -236,11 +212,6 @@ function openEditRoomModal(data, roomId) {
     }
 }
 
-/**
- * Validates and persists changes from the edit-room modal.
- * @param {object} data - The mockData object.
- * @param {object} room - The room object being edited.
- */
 function handleSaveRoom(data, room) {
     const nameInput = document.getElementById('edit-room-name');
     const seatsInput = document.getElementById('edit-room-seats');
@@ -292,11 +263,6 @@ function handleSaveRoom(data, room) {
     renderRoomManagement(data);
 }
 
-/**
- * Shows a confirmation dialog and deletes the room from data.rooms on confirm.
- * @param {object} data - The mockData object.
- * @param {number} roomId - The ID of the room to delete.
- */
 function handleDeleteRoom(data, roomId) {
     const room = data.rooms.find(r => r.id === roomId);
     if (!room) return;

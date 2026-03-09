@@ -1,9 +1,5 @@
 import { calculateAverage, calculateECTS, escapeHTML } from '../../core/utils.js';
 
-/**
- * Renders the grades overview with semester tables.
- * Shows passed AND failed modules with attempt (Versuch) tracking.
- */
 export function renderGrades(data) {
     const passedModules = data.modules.filter(m => m.status === 'passed');
     const failedModules = data.modules.filter(m => m.status === 'failed');
@@ -33,7 +29,6 @@ export function renderGrades(data) {
          `).join('');
     }
 
-    // Group modules by semester – include all modules for full semester display
     const gradableModules = data.modules.filter(m =>
         m.status === 'passed' || m.status === 'failed' || m.status === 'active' || m.status === 'registered'
     );
@@ -46,7 +41,6 @@ export function renderGrades(data) {
         semestersMap[m.semester].push(m);
     });
 
-    // Chronological sort (newest first): WiSe YY/YY → year*2+2, SoSe YYYY → year*2+1
     function semesterSortKey(sem) {
         if (sem.startsWith('WiSe')) {
             const year = parseInt(sem.match(/\d+/)[0], 10);
@@ -151,7 +145,6 @@ export function renderGrades(data) {
         const statsRowHTML = gradesSection.querySelector('.grades-stats-row') ? gradesSection.querySelector('.grades-stats-row').outerHTML : '';
         gradesSection.innerHTML = header + statsRowHTML + semesterTables;
 
-        // Event delegation for semester collapse toggle
         gradesSection.addEventListener('click', (e) => {
             const semesterHeader = e.target.closest('.semester-header');
             if (semesterHeader) {
@@ -161,7 +154,6 @@ export function renderGrades(data) {
             }
         });
 
-        // Keyboard support for semester headers
         gradesSection.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' || e.key === ' ') {
                 const semesterHeader = e.target.closest('.semester-header');

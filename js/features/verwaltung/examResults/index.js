@@ -3,14 +3,8 @@ import { buildGradeEntryTab, initGradeEntryTab } from './gradeEntry.js';
 import { buildGradeDistributionTab, initGradeDistributionTab } from './gradeDistribution.js';
 import { buildCsvImportTab, initCsvImportTab } from './csvImport.js';
 
-// Valid German grade scale
 export const VALID_GRADES = ['1.0', '1.3', '1.7', '2.0', '2.3', '2.7', '3.0', '3.3', '3.7', '4.0', '5.0'];
 
-/**
- * Renders the exam results management view for the "verwaltung" role.
- * Contains four sub-tabs: Pruefungsuebersicht, Noten eintragen,
- * Notenverteilung, and CSV-Import.
- */
 export function renderExamResultsManagement(data) {
     const container = document.querySelector('.admin-exams-content');
     if (!container) return;
@@ -69,10 +63,6 @@ function buildTabContents(data) {
     `;
 }
 
-/**
- * Populates a Klausur dropdown with only "Klausur"-type events
- * from the selected event series.
- */
 export function populateKlausurDropdown(selectEl, data, seriesId) {
     selectEl.innerHTML = '<option value="">— Bitte wählen —</option>';
     selectEl.disabled = true;

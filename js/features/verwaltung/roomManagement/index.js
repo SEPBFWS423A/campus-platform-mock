@@ -3,14 +3,8 @@ import { renderRoomList } from './roomList.js';
 import { renderRoomSchedule } from './roomSchedule.js';
 import { renderRoomUtilization } from './roomUtilization.js';
 
-/**
- * Renders the Verwaltung's room management view with three sub-tabs:
- * 1. Raumliste   – CRUD for rooms (US8, US9, US10, US11)
- * 2. Belegungsplan – Weekly schedule per room (US23)
- * 3. Auslastung  – Utilization statistics per room (US30)
- *
- * @param {object} data - The mockData object containing rooms, modules, etc.
- */
+export const AVAILABLE_HOURS_PER_DAY = 9;
+
 export function renderRoomManagement(data) {
     const container = document.querySelector('.admin-rooms-content');
     if (!container) return;
@@ -18,7 +12,6 @@ export function renderRoomManagement(data) {
     const rooms = data.rooms;
     const totalSeats = rooms.reduce((sum, r) => sum + (r.seats || 0), 0);
 
-    // Compute overall utilization for the current week (Mon-Fri)
     const now = new Date();
     const dayOfWeek = now.getDay();
     const diffMon = (dayOfWeek === 0 ? -6 : 1) - dayOfWeek;
@@ -28,7 +21,7 @@ export function renderRoomManagement(data) {
     friday.setDate(monday.getDate() + 4);
     const dayOcc = countDayOccurrences(monday, friday);
     const weekdays = countWeekdays(monday, friday);
-    const totalAvailable = rooms.length * weekdays * 9; // 9h per day (08:00-17:00)
+    const totalAvailable = rooms.length * weekdays * AVAILABLE_HOURS_PER_DAY;
     let totalBookedMin = 0;
     rooms.forEach(room => {
         const bookings = Array.isArray(room.bookings) ? room.bookings : [];
@@ -97,11 +90,6 @@ export function renderRoomManagement(data) {
     renderRoomUtilization(data);
 }
 
-/**
- * Initialises click handlers for the management sub-tabs inside the given
- * container.  Toggles .active on both the tab buttons and their panels.
- * @param {HTMLElement} container - The .admin-rooms-content element.
- */
 function initRoomTabs(container) {
     const tabs = container.querySelectorAll('.management-tab');
     tabs.forEach(tab => {
@@ -120,12 +108,6 @@ function initRoomTabs(container) {
     });
 }
 
-/**
- * Counts the total number of weekdays (Mon-Fri) between two dates inclusive.
- * @param {Date} start - The start date.
- * @param {Date} end - The end date.
- * @returns {number} Number of weekdays.
- */
 export function countWeekdays(start, end) {
     let count = 0;
     const current = new Date(start);
@@ -141,13 +123,6 @@ export function countWeekdays(start, end) {
     return count;
 }
 
-/**
- * Counts how many times each weekday (Mon=0..Fri=4) occurs in the date
- * range [start, end] inclusive.
- * @param {Date} start - The start date.
- * @param {Date} end - The end date.
- * @returns {number[]} Array of length 5 with occurrence counts.
- */
 export function countDayOccurrences(start, end) {
     const counts = [0, 0, 0, 0, 0];
     const current = new Date(start);
@@ -156,9 +131,9 @@ export function countDayOccurrences(start, end) {
     endNorm.setHours(0, 0, 0, 0);
 
     while (current <= endNorm) {
-        const dow = current.getDay(); // 0=Sun, 1=Mon, ..., 5=Fri, 6=Sat
+        const dow = current.getDay();
         if (dow >= 1 && dow <= 5) {
-            counts[dow - 1]++; // Map JS Sunday-based to Mon=0..Fri=4
+            counts[dow - 1]++;
         }
         current.setDate(current.getDate() + 1);
     }

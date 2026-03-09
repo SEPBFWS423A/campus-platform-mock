@@ -1,9 +1,3 @@
-/* =============================================================================
-   Management Pages – Shared Styles
-   Modal, Tables, Forms, Charts, Badges
-   ============================================================================= */
-
-/* --- Modal Overlay --- */
 .modal-overlay {
     position: fixed;
     inset: 0;
@@ -97,7 +91,6 @@
     border-top: 1px solid var(--border-color);
 }
 
-/* --- User List Toolbar (Search + Filter) --- */
 .user-list-toolbar {
     display: flex;
     gap: 0.75rem;
@@ -175,7 +168,6 @@
     background-color: var(--surface-color);
 }
 
-/* --- Management Table --- */
 .management-table {
     width: 100%;
     border-collapse: collapse;
@@ -218,7 +210,6 @@
     gap: 0.5rem;
 }
 
-/* --- Management Form (inside modals) --- */
 .management-form .form-group {
     margin-bottom: 1rem;
 }
@@ -240,7 +231,6 @@
     box-sizing: border-box;
 }
 
-/* --- General Form Input (reusable across management pages) --- */
 .form-input,
 .form-group select,
 .inline-create-form input,
@@ -275,7 +265,6 @@
     background-color: var(--surface-color);
 }
 
-/* Select arrow indicator */
 select.form-input,
 .form-group select,
 .inline-create-form select {
@@ -309,7 +298,6 @@ select.form-input,
     margin-bottom: 1rem;
 }
 
-/* --- Inline Create Form --- */
 .inline-create-form {
     display: flex;
     gap: 0.75rem;
@@ -353,7 +341,6 @@ select.form-input,
     white-space: nowrap;
 }
 
-/* --- Section Sub-Tabs for Management Sections --- */
 .management-tabs {
     display: flex;
     gap: 0.25rem;
@@ -402,7 +389,6 @@ select.form-input,
     display: block;
 }
 
-/* --- Type Badges --- */
 .type-badge {
     display: inline-flex;
     align-items: center;
@@ -449,7 +435,6 @@ body.dark-mode .type-badge.lehrveranstaltung {
     color: var(--warning-color-dark);
 }
 
-/* --- Series Card (Event Management) --- */
 .series-cards-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
@@ -505,7 +490,6 @@ body.dark-mode .type-badge.lehrveranstaltung {
     margin-top: 0.75rem;
 }
 
-/* --- Event List Item --- */
 .event-list-item {
     display: flex;
     align-items: center;
@@ -602,7 +586,6 @@ body.dark-mode .type-badge.lehrveranstaltung {
     border-left: 1px solid var(--border-color-subtle);
 }
 
-/* Disabled state for icon buttons */
 .btn-icon-only:disabled,
 .btn-icon-only[disabled] {
     opacity: 0.3;
@@ -610,7 +593,6 @@ body.dark-mode .type-badge.lehrveranstaltung {
     pointer-events: none;
 }
 
-/* --- Bar Chart (Exam Results) --- */
 .bar-chart-container {
     display: flex;
     flex-direction: column;
@@ -679,7 +661,6 @@ body.dark-mode .type-badge.lehrveranstaltung {
     margin-left: 0.5rem;
 }
 
-/* --- Utilization Stats (Room Management) --- */
 .utilization-list {
     display: flex;
     flex-direction: column;
@@ -756,7 +737,6 @@ body.dark-mode .type-badge.lehrveranstaltung {
     color: var(--text-tertiary);
 }
 
-/* --- Room Schedule / Weekly Calendar in Management --- */
 .room-schedule-controls {
     display: flex;
     align-items: center;
@@ -769,7 +749,6 @@ body.dark-mode .type-badge.lehrveranstaltung {
     min-width: 180px;
 }
 
-/* --- CSV Upload Zone --- */
 .csv-upload-zone {
     border: 2px dashed var(--border-color);
     border-radius: var(--radius-lg);
@@ -803,7 +782,6 @@ body.dark-mode .type-badge.lehrveranstaltung {
     margin-top: 0.35rem;
 }
 
-/* --- Empty State --- */
 .management-empty {
     text-align: center;
     padding: 3rem 1.5rem;
@@ -822,7 +800,6 @@ body.dark-mode .type-badge.lehrveranstaltung {
     color: var(--text-secondary);
 }
 
-/* --- Student Chips --- */
 .student-chips {
     display: flex;
     flex-wrap: wrap;
@@ -866,7 +843,6 @@ body.dark-mode .type-badge.lehrveranstaltung {
     background: rgba(239, 68, 68, 0.1);
 }
 
-/* --- Alert / Feedback Messages --- */
 .management-alert {
     display: flex;
     align-items: center;
@@ -900,7 +876,6 @@ body.dark-mode .type-badge.lehrveranstaltung {
     border: 1px solid rgba(37, 99, 235, 0.2);
 }
 
-/* --- Inline Editor Forms (Duration/Booking) --- */
 .inline-editor-wrapper {
     width: 100%;
     overflow: hidden;
@@ -941,7 +916,6 @@ body.dark-mode .type-badge.lehrveranstaltung {
     letter-spacing: 0.03em;
 }
 
-/* --- Section heading inside modals --- */
 .modal-section-heading {
     font-size: 0.9rem;
     font-weight: 600;
@@ -963,7 +937,6 @@ body.dark-mode .type-badge.lehrveranstaltung {
     margin-top: 1.25rem;
 }
 
-/* --- Room Management Utility Classes --- */
 .room-hidden {
     display: none !important;
 }
@@ -996,7 +969,6 @@ body.dark-mode .type-badge.lehrveranstaltung {
     margin-bottom: 1.5rem;
 }
 
-/* --- Room Schedule / Weekly Calendar --- */
 .room-schedule-nav {
     display: flex;
     align-items: center;
@@ -1102,7 +1074,6 @@ body.dark-mode .type-badge.lehrveranstaltung {
     opacity: 0.9;
 }
 
-/* Calendar event color palette */
 .room-calendar-event-0 { background-color: #3b82f6; }
 .room-calendar-event-1 { background-color: #8b5cf6; }
 .room-calendar-event-2 { background-color: #f59e0b; }
@@ -1111,7 +1082,6 @@ body.dark-mode .type-badge.lehrveranstaltung {
 .room-calendar-event-5 { background-color: #06b6d4; }
 .room-calendar-event-6 { background-color: #ec4899; }
 
-/* --- Room Utilization Controls & Legend --- */
 .room-utilization-controls {
     margin-bottom: 1.5rem;
 }
@@ -1166,7 +1136,6 @@ body.dark-mode .room-utilization-legend {
     background-color: var(--error-color);
 }
 
-/* --- Responsive --- */
 @media (max-width: 768px) {
     .modal-dialog {
         max-width: 100%;
@@ -1219,7 +1188,6 @@ body.dark-mode .room-utilization-legend {
         padding-left: 0.35rem;
     }
 
-    /* Room schedule controls: stack on mobile */
     .room-schedule-controls {
         flex-direction: column;
         align-items: stretch;
@@ -1241,7 +1209,6 @@ body.dark-mode .room-utilization-legend {
         flex: 1;
     }
 
-    /* Calendar: allow horizontal scroll with hint */
     .room-calendar {
         min-width: 550px;
     }
@@ -1250,7 +1217,6 @@ body.dark-mode .room-utilization-legend {
         min-width: 90px;
     }
 
-    /* Utilization legend: wrap gracefully */
     .room-utilization-legend {
         gap: 0.5rem 1rem;
     }
@@ -1267,7 +1233,6 @@ body.dark-mode .room-utilization-legend {
         padding: 0.75rem 1rem;
     }
 
-    /* Compact schedule nav buttons on very small screens */
     .room-schedule-nav .btn {
         font-size: 0.75rem;
         padding: 0.25rem 0.4rem;
@@ -1288,11 +1253,6 @@ body.dark-mode .room-utilization-legend {
     }
 }
 
-/* =============================================================================
-   Dozent – Course Cards, Grading, Participant List
-   ============================================================================= */
-
-/* --- Course Card --- */
 .dozent-course-card {
     padding: 0;
     overflow: hidden;
@@ -1370,7 +1330,6 @@ body.dark-mode .room-utilization-legend {
     justify-content: center;
 }
 
-/* --- Past Courses Section --- */
 .dozent-past-section {
     margin-top: 1rem;
 }
@@ -1410,7 +1369,6 @@ body.dark-mode .room-utilization-legend {
     color: var(--text-secondary);
 }
 
-/* --- Participant Modal --- */
 .dozent-participant-summary {
     font-size: 0.875rem;
     color: var(--text-secondary);
@@ -1421,7 +1379,6 @@ body.dark-mode .room-utilization-legend {
     font-size: 0.85rem;
 }
 
-/* --- Grading Interface --- */
 .dozent-grading-selector {
     margin-bottom: 1rem;
     padding: 1.25rem;
@@ -1469,7 +1426,6 @@ body.dark-mode .room-utilization-legend {
     min-width: 80px;
 }
 
-/* Grade Color Classes */
 .dozent-grade-good {
     color: var(--success-color);
     font-weight: 600;
@@ -1485,7 +1441,6 @@ body.dark-mode .room-utilization-legend {
     font-weight: 600;
 }
 
-/* --- Dozent Responsive --- */
 @media (max-width: 768px) {
     .dozent-card-header {
         padding: 1rem;
@@ -1555,17 +1510,11 @@ body.dark-mode .room-utilization-legend {
     }
 }
 
-/* =============================================================================
-   Exam Results Management – Improved
-   ============================================================================= */
-
-/* Exam Results table scroll on small screens */
 .exam-results-table-wrapper {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
 }
 
-/* --- Shared Management Utility Classes --- */
 .mgmt-card-header {
     margin-bottom: 1rem;
 }
@@ -1598,7 +1547,6 @@ body.dark-mode .room-utilization-legend {
     font-size: 0.9rem;
 }
 
-/* --- Empty-state centred block (shared across roles) --- */
 .empty-state-block {
     text-align: center;
     padding: 2rem;
@@ -1625,7 +1573,6 @@ body.dark-mode .room-utilization-legend {
     color: var(--error-color);
 }
 
-/* --- Exam Results Responsive --- */
 @media (max-width: 768px) {
     .management-table th,
     .management-table td {
@@ -1650,7 +1597,6 @@ body.dark-mode .room-utilization-legend {
         width: 100%;
     }
 
-    /* Exam results: stack form rows on mobile */
     .management-form .form-row {
         flex-direction: column;
     }
@@ -1659,7 +1605,6 @@ body.dark-mode .room-utilization-legend {
         width: 100%;
     }
 
-    /* Management tabs: wrap nicely on mobile */
     .management-tabs {
         flex-wrap: wrap;
     }
@@ -1676,7 +1621,6 @@ body.dark-mode .room-utilization-legend {
         font-size: 1rem;
     }
 
-    /* CSV upload zone: smaller on mobile */
     .csv-upload-zone {
         padding: 1.5rem 1rem;
     }
@@ -1693,7 +1637,6 @@ body.dark-mode .room-utilization-legend {
         font-size: 0.75rem;
     }
 
-    /* Bar chart responsive */
     .bar-chart-row {
         gap: 0.5rem;
     }
@@ -1717,7 +1660,6 @@ body.dark-mode .room-utilization-legend {
     }
 }
 
-/* Very small phones - management */
 @media (max-width: 480px) {
     .bar-chart-track {
         height: 20px;

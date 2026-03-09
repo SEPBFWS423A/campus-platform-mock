@@ -1,4 +1,3 @@
-/* CSS Variables for Theming */
 :root {
     --primary-color: #2563EB;
     --primary-hover: #1D4ED8;
@@ -69,7 +68,6 @@ body.dark-mode {
     --gray-dark: #d1d5db;
 }
 
-/* Reset & Base Styles */
 *,
 *::before,
 *::after {
@@ -96,7 +94,6 @@ body {
     overflow-x: hidden;
 }
 
-/* Skip Link for Accessibility */
 .skip-link {
     position: absolute;
     top: -100%;
@@ -115,7 +112,6 @@ body {
     top: 1rem;
 }
 
-/* Hidden utility (replaces inline display:none) */
 .hidden {
     display: none !important;
 }
@@ -126,7 +122,6 @@ body {
     color: var(--primary-color);
 }
 
-/* Focus Visible Styles for Keyboard Navigation */
 :focus-visible {
     outline: 2px solid var(--primary-color);
     outline-offset: 3px;
@@ -137,20 +132,17 @@ body {
     outline: none;
 }
 
-/* Selection Styling */
 ::selection {
     background-color: rgba(59, 130, 246, 0.2);
     color: var(--text-primary);
 }
 
-/* Layout */
 #app {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
 }
 
-/* Navigation Bar */
 .navbar {
     border-bottom: 1px solid var(--border-color-subtle);
     padding: 0 1.5rem;
@@ -228,7 +220,6 @@ body.dark-mode .navbar {
     font-weight: 600;
 }
 
-/* User Dropdown */
 .nav-actions {
     position: relative;
     display: flex;
@@ -327,7 +318,6 @@ body.dark-mode .dropdown-menu {
     margin: 0;
 }
 
-/* User Switcher in Dropdown */
 .dropdown-section-label {
     padding: 0.5rem 1rem 0.25rem;
     font-size: 0.7rem;
@@ -422,7 +412,6 @@ body.dark-mode .dropdown-menu {
     color: var(--primary-color);
 }
 
-/* Main Content */
 #main-content {
     flex: 1;
     padding: 2rem 2rem;
@@ -449,7 +438,6 @@ body.dark-mode .dropdown-menu {
     color: var(--text-secondary);
 }
 
-/* Cards & Grid */
 .grid-container {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -500,7 +488,6 @@ body.dark-mode .card:hover {
     grid-column: 1 / -1;
 }
 
-/* Login Screen */
 .login-overlay {
     position: fixed;
     top: 0;
@@ -652,7 +639,6 @@ body.dark-mode .card:hover {
     width: 100%;
 }
 
-/* --- Shared Button Variants --- */
 .btn-outline {
     background: none;
     color: var(--text-primary);
@@ -758,7 +744,6 @@ body.dark-mode .card:hover {
     color: var(--primary-color);
 }
 
-/* Widget Styles */
 .widget-stats {
     display: flex;
     align-items: center;
@@ -818,7 +803,6 @@ body.dark-mode .card:hover {
     margin-bottom: 0.25rem;
 }
 
-/* Calendar Styles */
 .calendar-view {
     overflow: hidden;
 }
@@ -878,7 +862,6 @@ body.dark-mode .card:hover {
     opacity: 0.5;
 }
 
-/* Table Styles */
 .table-card {
     overflow-x: auto;
     padding: 0;
@@ -948,7 +931,6 @@ body.dark-mode .card:hover {
     font-weight: 700;
 }
 
-/* Exam Card */
 .exam-card {
     display: flex;
     flex-direction: row;
@@ -995,7 +977,6 @@ body.dark-mode .card:hover {
     font-size: 1rem;
 }
 
-/* File List */
 .file-list {
     list-style: none;
 }
@@ -1040,7 +1021,6 @@ body.dark-mode .card:hover {
     margin-top: 0.25rem;
 }
 
-/* Contact List */
 .contact-list {
     list-style: none;
     margin-top: 1rem;
@@ -1072,7 +1052,6 @@ body.dark-mode .card:hover {
     opacity: 0.4;
 }
 
-/* Link List Utility */
 .link-list {
     list-style: none;
     margin-top: 1rem;
@@ -1100,7 +1079,6 @@ body.dark-mode .card:hover {
     display: none;
 }
 
-/* Sub-Tab Navigation (within sections) */
 .section-tabs {
     display: flex;
     gap: 0.25rem;
@@ -1149,7 +1127,6 @@ body.dark-mode .card:hover {
     display: block;
 }
 
-/* Module Overview Table */
 .module-overview-card {
     background-color: var(--surface-color);
     border-radius: var(--radius-xl);
@@ -1211,7 +1188,6 @@ body.dark-mode .card:hover {
     border-bottom: 1px solid var(--border-color-subtle);
 }
 
-/* Module Overview Mobile */
 @media (max-width: 768px) {
     .section-tabs {
         gap: 0;
@@ -1266,7 +1242,6 @@ body.dark-mode .card:hover {
     }
 }
 
-/* Section tabs: icon-only on very small screens */
 @media (max-width: 480px) {
     .section-tab {
         padding: 0.6rem 0.4rem;
@@ -1275,7 +1250,6 @@ body.dark-mode .card:hover {
     }
 }
 
-/* Utility to hide/show sections */
 .content-section {
     display: none;
     animation: fadeIn 0.35s cubic-bezier(0.4, 0, 0.2, 1);
@@ -1285,7 +1259,6 @@ body.dark-mode .card:hover {
     display: block;
 }
 
-/* Mobile Sidebar */
 .sidebar {
     position: fixed;
     top: 0;
@@ -1360,7 +1333,6 @@ body.dark-mode .sidebar {
     }
 }
 
-/* Responsive Design - Tablet (icons-only nav) */
 @media (max-width: 1100px) and (min-width: 769px) {
     .nav-item span:not(.material-icons-round) {
         display: none;
@@ -1379,7 +1351,6 @@ body.dark-mode .sidebar {
     }
 }
 
-/* Responsive Design - Mobile */
 @media (max-width: 768px) {
     .navbar .nav-links {
         display: none;
@@ -1397,18 +1368,15 @@ body.dark-mode .sidebar {
         padding-bottom: max(2rem, env(safe-area-inset-bottom));
     }
 
-    /* Reduce card padding on mobile */
     .card {
         padding: 1.15rem;
         border-radius: var(--radius-lg);
     }
 
-    /* Fix grid-container overflow on small screens */
     .grid-container {
         grid-template-columns: 1fr;
     }
 
-    /* Section header: stack and style button */
     .section-header {
         flex-direction: column;
         align-items: flex-start;
@@ -1420,7 +1388,6 @@ body.dark-mode .sidebar {
         justify-content: center;
     }
 
-    /* Reduce header size */
     .section-header h1 {
         font-size: 1.35rem;
     }
@@ -1456,14 +1423,12 @@ body.dark-mode .sidebar {
         font-size: 1.25rem;
     }
 
-    /* Footer smaller on mobile */
     .app-footer {
         margin-top: 2rem;
         padding: 1.5rem 1rem;
     }
 }
 
-/* Footer */
 .app-footer {
     text-align: center;
     padding: 2rem 1.5rem;
@@ -1474,7 +1439,6 @@ body.dark-mode .sidebar {
     letter-spacing: 0.01em;
 }
 
-/* Address styling in contact section */
 address.contact-list {
     font-style: normal;
 }
@@ -1501,7 +1465,6 @@ address.contact-list a:hover {
     text-decoration: underline;
 }
 
-/* Scrollbar Styling */
 ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -1520,7 +1483,6 @@ address.contact-list a:hover {
     background: var(--text-tertiary);
 }
 
-/* Prefer Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -1552,7 +1514,6 @@ address.contact-list a:hover {
     }
 }
 
-/* Auto color scheme detection */
 @media (prefers-color-scheme: dark) {
     body:not(.light-mode):not(.dark-mode) {
         --bg-color: #080e1e;

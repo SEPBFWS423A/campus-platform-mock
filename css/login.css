@@ -1,8 +1,3 @@
-/* ===========================
-   Login Page – Standalone Styles
-   =========================== */
-
-/* Full-page layout */
 .login-page {
     min-height: 100vh;
     min-height: 100dvh;
@@ -15,7 +10,6 @@
     background: var(--bg-color);
 }
 
-/* Two-column layout wrapper – login card stays centered */
 .login-layout {
     display: flex;
     justify-content: center;
@@ -24,7 +18,6 @@
     width: 100%;
 }
 
-/* Top-right controls bar */
 .login-top-controls {
     position: fixed;
     top: 1.25rem;
@@ -35,12 +28,10 @@
     gap: 0.5rem;
 }
 
-/* Credentials dropdown wrapper */
 .credentials-dropdown {
     position: relative;
 }
 
-/* Credentials panel (dropdown) */
 .credentials-panel {
     position: absolute;
     top: calc(100% + 0.5rem);
@@ -65,7 +56,6 @@
     }
 }
 
-/* Theme Toggle Button */
 .login-theme-toggle {
     position: relative;
     width: 44px;
@@ -93,7 +83,6 @@
     outline-offset: 2px;
 }
 
-/* Credentials toggle – wider button with label */
 .credentials-toggle-btn {
     width: auto;
     padding: 0 0.85rem;
@@ -106,7 +95,6 @@
     white-space: nowrap;
 }
 
-/* Decorative Background */
 .login-bg-decoration {
     display: none;
 }
@@ -133,7 +121,6 @@
     66% { transform: translate(-20px, 15px) scale(0.95); }
 }
 
-/* Login Card */
 .login-card {
     background-color: var(--surface-color);
     padding: 2.5rem 2.5rem 2rem;
@@ -169,7 +156,6 @@
     }
 }
 
-/* Login Header */
 .login-header {
     text-align: center;
     margin-bottom: 2rem;
@@ -209,7 +195,6 @@
     line-height: 1.5;
 }
 
-/* Input Wrapper with Icon */
 .input-wrapper {
     position: relative;
     display: flex;
@@ -233,7 +218,6 @@
     color: var(--primary-color);
 }
 
-/* Login Button Enhancement */
 .btn-login {
     margin-top: 0.5rem;
     padding: 0.85rem 1.5rem;
@@ -265,7 +249,6 @@
     to { transform: rotate(360deg); }
 }
 
-/* Footer */
 .login-footer {
     text-align: center;
     margin-top: 2rem;
@@ -278,7 +261,6 @@
     color: var(--text-tertiary);
 }
 
-/* Login Error Message */
 .login-error {
     display: flex;
     align-items: center;
@@ -307,7 +289,6 @@
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Form Hint */
 .form-hint {
     font-size: 0.75rem;
     color: var(--text-tertiary);
@@ -315,14 +296,9 @@
     padding-left: 0.25rem;
 }
 
-/* Username Label */
 .login-card label[for="username"] {
-    /* Adjust label to reflect username usage */
 }
 
-/* ===========================
-   Credentials Card
-   =========================== */
 .credentials-card {
     background-color: var(--surface-color);
     border-radius: var(--radius-2xl);
@@ -436,9 +412,6 @@
     color: var(--text-tertiary);
 }
 
-/* ===========================
-   Responsive
-   =========================== */
 @media (max-width: 480px) {
     .login-page {
         padding: 1rem;
@@ -494,7 +467,6 @@
     }
 }
 
-/* Reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
     .login-card {
         animation: none;
@@ -517,7 +489,6 @@
     }
 }
 
-/* Error/Status Page Styles */
 .login-card--centered {
     text-align: center;
 }

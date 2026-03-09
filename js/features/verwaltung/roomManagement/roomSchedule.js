@@ -1,13 +1,7 @@
 import { timeToMinutes, escapeHTML } from '../../../core/utils.js';
 
-/** Module-level state for the schedule week offset. */
 let scheduleWeekOffset = 0;
 
-/**
- * Renders the room schedule tab with a room selector, week navigation,
- * and a simple weekly calendar grid (Mon-Fri, 08:00-17:00).
- * @param {object} data - The mockData object.
- */
 export function renderRoomSchedule(data) {
     const panel = document.getElementById('room-schedule');
     if (!panel) return;
@@ -66,15 +60,9 @@ export function renderRoomSchedule(data) {
         });
     }
 
-    // Initial render
     updateCalendar();
 }
 
-/**
- * Calculates week metadata (label and day headers) for the current date
- * shifted by {@link scheduleWeekOffset} weeks.
- * @returns {{ label: string, days: string[], monday: Date }}
- */
 function getWeekData() {
     const now = new Date();
     const day = now.getDay();
@@ -82,7 +70,6 @@ function getWeekData() {
     const monday = new Date(now);
     monday.setDate(now.getDate() + diff + scheduleWeekOffset * 7);
 
-    // ISO week number
     const jan4 = new Date(monday.getFullYear(), 0, 4);
     const dayOfYear = Math.floor((monday - new Date(monday.getFullYear(), 0, 1)) / 86400000);
     const weekNumber = Math.ceil((dayOfYear + jan4.getDay()) / 7);
@@ -108,14 +95,8 @@ function getWeekData() {
     return { label, days, monday };
 }
 
-/** Booking color palette class indices 0-6 */
 const CALENDAR_COLOR_COUNT = 7;
 
-/**
- * Renders the weekly calendar grid for the given room into the
- * #schedule-calendar-container element.
- * @param {object|undefined} room - The room with its bookings array.
- */
 function renderWeeklyCalendar(room) {
     const container = document.getElementById('schedule-calendar-container');
     const weekLabel = document.getElementById('schedule-week-label');
@@ -139,19 +120,17 @@ function renderWeeklyCalendar(room) {
         hours.push(`${String(h).padStart(2, '0')}:00`);
     }
 
-    // Build time column cells
     const timeRows = hours.map(h =>
         `<div class="room-calendar-hour-cell room-calendar-time-label">${h}</div>`
     ).join('');
 
-    // Build day columns
     const dayColumns = weekData.days.map((dayLabel, dayIndex) => {
         const dayBookings = bookings.filter(b => b.day === dayIndex);
 
         const bookingBlocks = dayBookings.map((b, bi) => {
             const startMin = timeToMinutes(b.start);
             const endMin = timeToMinutes(b.end);
-            const top = startMin - 480; // 08:00 = 480 min
+            const top = startMin - 480;
             const height = endMin - startMin;
             const colorClass = `room-calendar-event-${bi % CALENDAR_COLOR_COUNT}`;
 

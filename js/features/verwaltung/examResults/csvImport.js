@@ -65,12 +65,10 @@ export function initCsvImportTab(container, data) {
         previewArea.innerHTML = '';
     });
 
-    // Click to upload
     uploadZone.addEventListener('click', () => {
         fileInput.click();
     });
 
-    // Drag & Drop
     uploadZone.addEventListener('dragover', (e) => {
         e.preventDefault();
         uploadZone.classList.add('dragover');

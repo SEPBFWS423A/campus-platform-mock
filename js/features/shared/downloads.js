@@ -14,7 +14,6 @@ export function renderDownloads(data) {
 
     let allFiles = [];
 
-    // 1. Extract and categorize module files
     data.modules.forEach(m => {
         if (m.files) {
             m.files.forEach(f => {
@@ -34,7 +33,6 @@ export function renderDownloads(data) {
         }
     });
 
-    // 2. Extract and categorize general files
     if (data.generalFiles) {
         data.generalFiles.forEach(cat => {
             cat.files.forEach(f => {
@@ -52,7 +50,6 @@ export function renderDownloads(data) {
         });
     }
 
-    // 3. Update Badges
     const updateBadge = (id, count) => {
         const el = document.getElementById(id);
         if (el) el.textContent = count;
@@ -69,8 +66,6 @@ export function renderDownloads(data) {
     updateBadge('badge-certs', countCerts);
     updateBadge('badge-links', countLinks);
 
-
-    // 4. Render Groups
     const categories = ["Vorlesungsskripte", "Übungsblätter", "Bescheinigungen"];
     const categoryIcons = {
         "Vorlesungsskripte": "description",
@@ -117,7 +112,6 @@ export function renderDownloads(data) {
 
     filesContent.innerHTML = uploadZone + fileSections;
 
-    // Initialize Filter Logic
     const categoryItems = document.querySelectorAll('.category-item');
     categoryItems.forEach(item => {
         const newItem = item.cloneNode(true);

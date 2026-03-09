@@ -1,5 +1,3 @@
-/* === Downloads Section Styles === */
-
 .downloads-layout {
     display: grid;
     grid-template-columns: 280px 1fr;
@@ -15,7 +13,6 @@
     }
 }
 
-/* Category Sidebar */
 .category-sidebar {
     background: var(--surface-color);
     border-radius: var(--radius-xl);
@@ -82,7 +79,6 @@
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
-/* Downloads Section - Content */
 .files-content {
     display: flex;
     flex-direction: column;
@@ -91,7 +87,6 @@
     /* Prevent collapse if empty */
 }
 
-/* Upload Zone */
 .upload-zone {
     border: 2px dashed var(--border-color);
     border-radius: var(--radius-xl);
@@ -133,7 +128,6 @@
     font-size: 0.95rem;
 }
 
-/* File Sections */
 .file-section {
     background-color: var(--surface-color);
     border-radius: var(--radius-xl);
@@ -193,7 +187,6 @@
     background-color: var(--primary-light);
 }
 
-/* File Icon Styling */
 .file-type-icon-sm {
     width: 44px;
     height: 44px;
@@ -213,7 +206,6 @@
     z-index: 1;
 }
 
-/* Specific Colors for File Types - Flat Colors */
 .file-type-icon-sm.pdf {
     background-color: var(--error-color);
 }
@@ -233,8 +225,6 @@
 .file-type-icon-sm.default {
     background-color: var(--gray-color);
 }
-
-
 
 .file-info-row {
     flex: 1;
@@ -264,7 +254,6 @@
     gap: 0.5rem;
 }
 
-/* Pills for meta info */
 .meta-pill {
     padding: 2px 6px;
     background: var(--bg-color);
@@ -302,7 +291,6 @@
     background-color: var(--primary-color);
     border-color: var(--primary-color);
     color: white;
-
 }
 
 @keyframes fadeIn {
@@ -317,10 +305,8 @@
     }
 }
 
-/* Dark mode tweaks specific to downloads if not covered by global vars */
 .dark-mode .file-type-icon-sm {
     box-shadow: none;
-    /* Reduce glow in dark mode if too strong */
 }
 
 body.dark-mode .file-section-header {
@@ -338,7 +324,6 @@ body.dark-mode .upload-zone:hover {
     border-color: var(--primary-color);
 }
 
-/* Mobile Responsiveness */
 @media (max-width: 768px) {
     .downloads-layout {
         display: flex;
@@ -350,10 +335,9 @@ body.dark-mode .upload-zone:hover {
         /* Prevent layout blowouts */
     }
 
-    /* Horizontal Category Scroll */
     .category-sidebar {
         padding: 0.75rem 0;
-        /* Sticky positioning */
+
         position: -webkit-sticky;
         position: sticky;
         top: 60px;
@@ -366,7 +350,7 @@ body.dark-mode .upload-zone:hover {
         /* REMOVED explicit width calculation to avoid overflow issues */
         margin-left: -1rem;
         margin-right: -1rem;
-        /* Width auto will fill the space */
+
         width: auto;
         box-shadow: 0 4px 6px -4px rgba(0, 0, 0, 0.05);
     }
@@ -388,7 +372,7 @@ body.dark-mode .upload-zone:hover {
         -ms-overflow-style: none;
         scroll-snap-type: x mandatory;
         align-items: center;
-        /* Prevent shrinking */
+
         flex-wrap: nowrap;
     }
 
@@ -423,11 +407,10 @@ body.dark-mode .upload-zone:hover {
         transform: none;
     }
 
-    /* Upload Zone Mobile */
     .upload-zone {
         padding: 1.5rem;
         margin-bottom: 0.5rem;
-        /* Ensure box-sizing works */
+
         width: 100%;
         box-sizing: border-box;
     }
@@ -441,15 +424,12 @@ body.dark-mode .upload-zone:hover {
         font-size: 1.1rem;
     }
 
-    /* File Section Cards */
     .file-section {
         width: 100%;
-        /* Ensure container fits */
+
         overflow: hidden;
-        /* Clip inner content */
     }
 
-    /* Compact File List Items */
     .file-list-item {
         padding: 1rem;
         gap: 0.75rem;
@@ -464,7 +444,6 @@ body.dark-mode .upload-zone:hover {
         margin-top: 0;
         border-radius: 10px;
         flex-shrink: 0;
-        /* Don't squash icon */
     }
 
     .file-type-icon-sm .material-icons-round {
@@ -490,7 +469,6 @@ body.dark-mode .upload-zone:hover {
         justify-content: center;
         gap: 0.2rem;
         overflow: hidden;
-        /* Ensure text doesn't overflow */
     }
 
     .file-name {
@@ -529,7 +507,7 @@ body.dark-mode .upload-zone:hover {
         opacity: 1;
         gap: 0.5rem;
         flex-shrink: 0;
-        /* Ensure buttons aren't squashed or cut off */
+
         margin-left: 0.25rem;
     }
 
@@ -552,7 +530,6 @@ body.dark-mode .upload-zone:hover {
     }
 }
 
-/* Small phones */
 @media (max-width: 380px) {
     .category-item {
         font-size: 0.8rem;

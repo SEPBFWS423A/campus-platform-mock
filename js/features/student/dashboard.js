@@ -1,7 +1,6 @@
 import { timeToMinutes, calculateAverage, calculateECTS, escapeHTML } from '../../core/utils.js';
 
 export function renderDashboard(data) {
-    // 1. Stats
     const passedModules = data.modules.filter(m => m.status === 'passed');
     const avgGrade = calculateAverage(passedModules);
     const currentECTS = calculateECTS(passedModules);
@@ -32,7 +31,6 @@ export function renderDashboard(data) {
         `).join('');
     }
 
-    // 2. Timeline
     const currentDayIndex = (new Date(data.config.currentDate).getDay() + 6) % 7;
     let todaysEvents = [];
     data.modules.forEach(m => {
@@ -76,7 +74,6 @@ export function renderDashboard(data) {
         `).join('') : '<div class="timeline-item"><div class="content"><p>Keine Veranstaltungen heute.</p></div></div>';
     }
 
-    // 3. Activity
     const activityList = document.querySelector('.activity-list');
     if (activityList && data.notifications) {
         activityList.innerHTML = data.notifications.map(item => `

@@ -1,6 +1,3 @@
-/* === Exams Section Styles === */
-
-/* Helper for grid */
 .exams-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
@@ -8,7 +5,6 @@
     margin-bottom: 2rem;
 }
 
-/* Exam Card Enhanced */
 .exam-card-enhanced {
     background-color: var(--surface-color);
     border-radius: var(--radius-xl);
@@ -56,7 +52,6 @@
     flex: 1;
 }
 
-/* Date Box */
 .exam-date-box {
     display: flex;
     flex-direction: column;
@@ -97,7 +92,6 @@
     color: var(--text-secondary);
 }
 
-/* Exam Info */
 .exam-info {
     flex: 1;
 }
@@ -149,7 +143,6 @@
     color: var(--text-secondary);
 }
 
-/* Footer Actions */
 .exam-footer {
     padding: 0.85rem 1.5rem;
     background-color: var(--bg-color);
@@ -190,7 +183,6 @@
     color: var(--primary-color);
 }
 
-/* Filter Bar */
 .filter-bar {
     display: flex;
     gap: 0.75rem;
@@ -252,14 +244,12 @@ body.dark-mode .filter-chip {
     border-color: var(--glass-border);
 }
 
-/* Tablet Responsiveness */
 @media (max-width: 1024px) {
     .exams-grid {
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     }
 }
 
-/* Mobile Responsiveness */
 @media (max-width: 768px) {
     .exams-grid {
         grid-template-columns: 1fr;
@@ -311,7 +301,6 @@ body.dark-mode .filter-chip {
     }
 }
 
-/* Mid-size phones */
 @media (max-width: 480px) {
     .exam-card-enhanced {
         border-radius: var(--radius-lg);
@@ -335,7 +324,6 @@ body.dark-mode .filter-chip {
     }
 }
 
-/* Small phones */
 @media (max-width: 380px) {
     .exam-body {
         padding: 1rem;

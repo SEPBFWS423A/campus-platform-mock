@@ -1,16 +1,8 @@
 import { escapeHTML } from '../../core/utils.js';
+import { findMatchingEventSeries, findParticipantsForCourse, buildEmptyState } from './dozentHelpers.js';
 
-// Valid German grade scale
 const VALID_GRADES = ['1.0', '1.3', '1.7', '2.0', '2.3', '2.7', '3.0', '3.3', '3.7', '4.0', '5.0'];
 
-// =============================================================================
-// Public API
-// =============================================================================
-
-/**
- * Renders the Dozent's grading interface with course selector,
- * student table, grade inputs, and save functionality.
- */
 export function renderDozentGrading(data, user) {
     const container = document.querySelector('.dozent-grading-content');
     if (!container) return;
@@ -28,13 +20,6 @@ export function renderDozentGrading(data, user) {
     initGradingInteraction(container, data, activeCourses);
 }
 
-// =============================================================================
-// Grading Interface
-// =============================================================================
-
-/**
- * Builds the complete grading interface HTML.
- */
 function buildGradingInterface(data, activeCourses) {
     const courseOptions = activeCourses.map(c =>
         `<option value="${escapeHTML(c.code)}">${escapeHTML(c.name)} (${escapeHTML(c.code)})</option>`
@@ -57,9 +42,6 @@ function buildGradingInterface(data, activeCourses) {
         </div>`;
 }
 
-/**
- * Initializes event listeners for the grading interface.
- */
 function initGradingInteraction(container, data, activeCourses) {
     const courseSelect = container.querySelector('#dozent-course-select');
     const tableArea = container.querySelector('#dozent-grading-table-area');
@@ -86,10 +68,6 @@ function initGradingInteraction(container, data, activeCourses) {
     });
 }
 
-/**
- * Renders the grading table for a selected course.
- * Shows enrolled students with their current grades and grade input dropdowns.
- */
 function renderGradingTable(tableArea, alertArea, course, data) {
     const participants = findParticipantsForCourse(course, data);
     const matchedSeries = findMatchingEventSeries(course, data);
@@ -103,7 +81,6 @@ function renderGradingTable(tableArea, alertArea, course, data) {
         return;
     }
 
-    // Collect existing grades for these students from examResults
     const existingGrades = collectExistingGrades(data, matchedSeries);
 
     const rows = participants.map(student => {
@@ -156,7 +133,6 @@ function renderGradingTable(tableArea, alertArea, course, data) {
             </button>
         </div>`;
 
-    // Attach save handler
     const saveBtn = tableArea.querySelector('#dozent-save-grades-btn');
     if (saveBtn) {
         saveBtn.addEventListener('click', () => {
@@ -165,9 +141,6 @@ function renderGradingTable(tableArea, alertArea, course, data) {
     }
 }
 
-/**
- * Saves entered grades to mockData.examResults.
- */
 function saveGrades(tableArea, alertArea, course, data, matchedSeries) {
     const gradeInputs = tableArea.querySelectorAll('.dozent-grade-input');
     const results = [];
@@ -191,7 +164,6 @@ function saveGrades(tableArea, alertArea, course, data, matchedSeries) {
         return;
     }
 
-    // Store grades in examResults using the matched series
     let saved = false;
     if (matchedSeries) {
         const klausurEvent = (matchedSeries.events || []).find(ev => ev.type === 'Klausur');
@@ -202,7 +174,6 @@ function saveGrades(tableArea, alertArea, course, data, matchedSeries) {
         saved = true;
     }
 
-    // Sync grades into the module objects so the student view reflects them
     results.forEach(r => {
         const moduleEntry = data.modules.find(m => m.code === course.code);
         if (moduleEntry) {
@@ -225,83 +196,20 @@ function saveGrades(tableArea, alertArea, course, data, matchedSeries) {
             ${filledCount} Note(n) f\u00fcr ${escapeHTML(course.name)} erfolgreich gespeichert.
         </div>`;
 
-    // Re-render the grading table to reflect updated grades
     setTimeout(() => {
         renderGradingTable(tableArea, alertArea, course, data);
     }, 100);
 }
 
-// =============================================================================
-// Data Helpers
-// =============================================================================
-
-/**
- * Finds the eventSeries that matches a given module.
- * Uses name similarity: checks if the series name is contained
- * in the module name, or vice versa (case-insensitive).
- */
-function findMatchingEventSeries(course, data) {
-    if (!data.eventSeries) return null;
-
-    const courseName = course.name.toLowerCase();
-
-    // Try exact-ish match first
-    let match = data.eventSeries.find(s =>
-        s.name.toLowerCase() === courseName
-    );
-    if (match) return match;
-
-    // Try substring match: series name in module name or reverse
-    match = data.eventSeries.find(s => {
-        const seriesName = s.name.toLowerCase();
-        return courseName.includes(seriesName) || seriesName.includes(courseName);
-    });
-    if (match) return match;
-
-    // Try word overlap: find series with most words in common
-    const courseWords = courseName.split(/[\s\-]+/).filter(w => w.length > 2);
-    let bestMatch = null;
-    let bestScore = 0;
-
-    data.eventSeries.forEach(s => {
-        const seriesWords = s.name.toLowerCase().split(/[\s\-]+/).filter(w => w.length > 2);
-        const overlap = courseWords.filter(w => seriesWords.some(sw => sw.includes(w) || w.includes(sw))).length;
-        if (overlap > bestScore) {
-            bestScore = overlap;
-            bestMatch = s;
-        }
-    });
-
-    return bestScore > 0 ? bestMatch : null;
-}
-
-/**
- * Finds participant User objects for a course via eventSeries matching.
- */
-function findParticipantsForCourse(course, data) {
-    const series = findMatchingEventSeries(course, data);
-    if (!series || !series.studentIds || series.studentIds.length === 0) return [];
-
-    return series.studentIds
-        .map(sid => data.users.find(u => u.id === sid))
-        .filter(Boolean);
-}
-
-/**
- * Collects existing grades for students from a matched event series.
- * Returns a map of studentId -> grade string.
- */
 function collectExistingGrades(data, matchedSeries) {
     const grades = {};
     if (!matchedSeries || !data.examResults) return grades;
 
-    // Look through all examResults keys that start with this series ID
     const prefix = matchedSeries.id + '-';
     Object.keys(data.examResults).forEach(key => {
         if (key.startsWith(prefix)) {
             const results = data.examResults[key];
             results.forEach(r => {
-                // Only store the most recent grade (last key wins)
                 grades[r.studentId] = r.grade;
             });
         }
@@ -310,29 +218,9 @@ function collectExistingGrades(data, matchedSeries) {
     return grades;
 }
 
-/**
- * Returns a CSS class name for grade coloring.
- */
 function getGradeColorClass(gradeNum) {
     if (Number.isNaN(gradeNum)) return '';
     if (gradeNum <= 2.0) return 'dozent-grade-good';
     if (gradeNum <= 3.3) return 'dozent-grade-ok';
     return 'dozent-grade-bad';
-}
-
-// =============================================================================
-// Shared UI Helpers
-// =============================================================================
-
-/**
- * Builds a centered empty-state card.
- */
-function buildEmptyState(icon, message) {
-    return `
-        <div class="card full-width">
-            <div class="management-empty">
-                <span class="material-icons-round">${escapeHTML(icon)}</span>
-                <p>${escapeHTML(message)}</p>
-            </div>
-        </div>`;
 }

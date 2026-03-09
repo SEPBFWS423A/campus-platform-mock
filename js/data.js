@@ -1,18 +1,9 @@
-// =============================================================================
-// Mock-Datenbank – Zentrale Datenquelle für CampusPlatform
-// Alle Daten (Nutzer, Module, Noten, Prüfungen, etc.) werden hier verwaltet.
-// Kein Hardcoding in anderen JS-Dateien.
-// =============================================================================
-
 const mockData = {
     config: {
         currentDate: "2026-03-04",
         currentTime: "14:00"
     },
 
-    // -------------------------------------------------------------------------
-    // Nutzer – Drei Nutzergruppen: Student, Dozent, Verwaltung
-    // -------------------------------------------------------------------------
     users: [
         {
             id: 1,
@@ -114,12 +105,7 @@ const mockData = {
         }
     ],
 
-    // -------------------------------------------------------------------------
-    // Module – Zentrale Datenhaltung für Vorlesungen, Noten, Prüfungen
-    // Jedes Modul enthält: Status, Note, Versuch, Stundenplan, Prüfung, Dateien
-    // -------------------------------------------------------------------------
     modules: [
-        // --- 1. Semester (WiSe 23/24) – Abgeschlossen ---
         {
             code: "WIN-101", name: "Einführung Wirtschaftsinformatik", semester: "WiSe 23/24",
             ects: 6, grade: 1.3, status: "passed", attempt: 1, dozentId: 2,
@@ -145,7 +131,6 @@ const mockData = {
             exam: { date: "2024-02-05", grade: 2.0, type: "Klausur" }
         },
 
-        // --- 2. Semester (SoSe 2024) – Abgeschlossen ---
         {
             code: "INF-102", name: "Programmierung II", semester: "SoSe 2024",
             ects: 6, grade: 1.0, status: "passed", attempt: 1, dozentId: 8,
@@ -171,7 +156,6 @@ const mockData = {
             exam: { date: "2024-07-22", grade: 2.3, type: "Klausur" }
         },
 
-        // --- 3. Semester (WiSe 24/25) – Abgeschlossen ---
         {
             code: "WIN-201", name: "Geschäftsprozessmodellierung", semester: "WiSe 24/25",
             ects: 6, grade: 1.3, status: "passed", attempt: 1, dozentId: 2,
@@ -197,7 +181,6 @@ const mockData = {
             exam: { date: "2025-07-10", grade: 3.3, type: "Klausur" }
         },
 
-        // --- 4. Semester (SoSe 2025) – Abgeschlossen ---
         {
             code: "INF-301", name: "Datenbanken II", semester: "SoSe 2025",
             ects: 5, grade: 1.7, status: "passed", attempt: 1,
@@ -217,7 +200,6 @@ const mockData = {
             exam: { date: "2025-07-25", grade: 1.3, type: "Projektarbeit" }
         },
 
-        // --- 5. Semester (WiSe 25/26 – Aktuell) – Laufend ---
         {
             code: "WIN-401", name: "IT-Projektmanagement", semester: "WiSe 25/26",
             ects: 5, status: "active", attempt: 1, dozentId: 2,
@@ -280,9 +262,6 @@ const mockData = {
         }
     ],
 
-    // -------------------------------------------------------------------------
-    // Allgemeine Dateien (nicht Modul-spezifisch)
-    // -------------------------------------------------------------------------
     generalFiles: [
         {
             category: "Verwaltung",
@@ -293,9 +272,6 @@ const mockData = {
         }
     ],
 
-    // -------------------------------------------------------------------------
-    // Abgaben (Student-spezifisch)
-    // -------------------------------------------------------------------------
     submissions: [
         {
             id: 1,
@@ -335,18 +311,12 @@ const mockData = {
         }
     ],
 
-    // -------------------------------------------------------------------------
-    // Benachrichtigungen
-    // -------------------------------------------------------------------------
     notifications: [
         { text: "Neue Note in <strong>Mathematik II</strong>", time: "Vor 2 Stunden", icon: "grade", colorClass: "success" },
         { text: "Skript für <strong>Web Tech</strong> hochgeladen", time: "Gestern, 15:30", icon: "upload_file", colorClass: "primary" },
         { text: "Prüfungsanmeldung <strong>Betriebssysteme</strong>", time: "15. Feb", icon: "event", colorClass: "warning" }
     ],
 
-    // -------------------------------------------------------------------------
-    // Räume – Verwaltung der Hörsäle und Seminarräume
-    // -------------------------------------------------------------------------
     rooms: [
         { id: 1, name: "Hörsaal 1", seats: 200, examSeats: 100, bookings: [
             { day: 2, start: "09:45", end: "13:00", title: "Künstliche Intelligenz", eventSeriesId: 3, eventId: 1 }
@@ -375,9 +345,6 @@ const mockData = {
         { id: 9, name: "Audimax", seats: 500, examSeats: 250, bookings: [] }
     ],
 
-    // -------------------------------------------------------------------------
-    // Veranstaltungsreihen – Verwaltung von Lehrveranstaltungen und Klausuren
-    // -------------------------------------------------------------------------
     eventSeries: [
         {
             id: 1,
@@ -426,9 +393,6 @@ const mockData = {
         }
     ],
 
-    // -------------------------------------------------------------------------
-    // Prüfungsergebnisse – Noten pro Klausur (Schlüssel: seriesId-eventId)
-    // -------------------------------------------------------------------------
     examResults: {
         "1-2": [
             { studentId: 1, grade: "1.3" },

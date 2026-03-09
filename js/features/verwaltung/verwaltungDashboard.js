@@ -1,27 +1,14 @@
 import { escapeHTML, formatDateDE } from '../../core/utils.js';
 
-// ---------------------------------------------------------------------------
-// Verwaltung Dashboard
-// ---------------------------------------------------------------------------
-
-/**
- * Renders a comprehensive dashboard for the Verwaltung role, including:
- * - Stats row with user count, room count, event series, and exam results
- * - System overview with user breakdown by role and room utilization
- * - Upcoming exams across all modules
- * - Quick actions navigating to all admin management sections
- */
 export function renderVerwaltungDashboard(data, user, navigation) {
     const totalUsers = data.users.length;
     const totalRooms = (data.rooms || []).length;
     const totalSeries = (data.eventSeries || []).length;
 
-    // User breakdown
     const students = data.users.filter(u => u.role === 'student');
     const dozenten = data.users.filter(u => u.role === 'dozent');
     const verwaltungUsers = data.users.filter(u => u.role === 'verwaltung');
 
-    // Count total exam results entered
     const examResultsObj = data.examResults || {};
     let totalExamResults = 0;
     Object.values(examResultsObj).forEach(results => {
@@ -29,15 +16,12 @@ export function renderVerwaltungDashboard(data, user, navigation) {
     });
     const examResultKeys = Object.keys(examResultsObj).length;
 
-    // Room utilization
     const roomsWithBookings = (data.rooms || []).filter(r => r.bookings && r.bookings.length > 0);
     const totalBookings = (data.rooms || []).reduce((sum, r) => sum + (r.bookings ? r.bookings.length : 0), 0);
     const totalSeats = (data.rooms || []).reduce((sum, r) => sum + (r.seats || 0), 0);
 
-    // Total events across all series
     const totalEvents = (data.eventSeries || []).reduce((sum, es) => sum + (es.events ? es.events.length : 0), 0);
 
-    // --- 1. Stats Row (4 cards) ---
     const statsContainer = document.querySelector('.stats-row');
     if (statsContainer) {
         statsContainer.classList.add('stats-row-4');
@@ -85,13 +69,11 @@ export function renderVerwaltungDashboard(data, user, navigation) {
         `;
     }
 
-    // --- 2. Schedule Card becomes "System\u00fcbersicht" ---
     const scheduleCardHeader = document.querySelector('.schedule-card .card-header h3');
     if (scheduleCardHeader) {
         scheduleCardHeader.textContent = 'System\u00fcbersicht';
     }
 
-    // Hide the "Alle ansehen" button for verwaltung (not applicable)
     const viewAllBtn = document.getElementById('view-all-schedule');
     if (viewAllBtn) {
         viewAllBtn.classList.add('mgmt-hidden');
@@ -192,7 +174,6 @@ export function renderVerwaltungDashboard(data, user, navigation) {
         `;
     }
 
-    // --- 3. Activity Card: Upcoming Exams ---
     const activityCardHeader = document.querySelector('.activity-card .card-header h3');
     if (activityCardHeader) {
         activityCardHeader.textContent = 'Anstehende Pr\u00fcfungen';
@@ -238,7 +219,6 @@ export function renderVerwaltungDashboard(data, user, navigation) {
         }
     }
 
-    // --- 4. Quick Actions ---
     const actionsCardTitle = document.querySelector('.actions-card h3');
     if (actionsCardTitle) {
         actionsCardTitle.textContent = 'Schnellzugriff';
@@ -269,10 +249,6 @@ export function renderVerwaltungDashboard(data, user, navigation) {
     }
 }
 
-/**
- * Binds click events to quick-action buttons that navigate to the
- * section specified in their data-nav attribute.
- */
 function bindActionButtons(container, navigation) {
     container.querySelectorAll('.btn-action[data-nav]').forEach(btn => {
         btn.addEventListener('click', () => {

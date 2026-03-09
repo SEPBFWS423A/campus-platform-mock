@@ -69,7 +69,6 @@ function renderGradeDistributionChart(chartArea, data, seriesId, eventId) {
         return;
     }
 
-    // Count grades per bucket
     const counts = {};
     VALID_GRADES.forEach(g => { counts[g] = 0; });
     results.forEach(r => {

@@ -1,12 +1,7 @@
-/**
- * Initializes the theme toggle (light/dark mode).
- * Respects saved preference from localStorage, then system preference.
- */
 export function initTheme() {
     const themeToggleBtn = document.getElementById('theme-toggle');
     const body = document.body;
 
-    // Check saved preference, fallback to system preference
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme) {
         body.classList.add(savedTheme);
@@ -28,7 +23,6 @@ export function initTheme() {
         });
     }
 
-    // Listen for system preference changes
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
         if (!localStorage.getItem('theme')) {
             body.classList.replace(

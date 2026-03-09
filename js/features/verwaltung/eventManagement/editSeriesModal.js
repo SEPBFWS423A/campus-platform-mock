@@ -3,15 +3,6 @@ import { showModal, closeModal, showConfirmDialog } from '../../../core/modal.js
 import { renderEventManagement, DAY_NAMES, buildEventMeta, nextId } from './seriesCards.js';
 import { runAutoPlanning } from './autoPlanning.js';
 
-// =========================================================================
-// Edit Series Modal (US14–US21)
-// =========================================================================
-
-/**
- * Opens the edit modal for a given event series.
- * @param {object} data - The global mockData object.
- * @param {number} seriesId - The ID of the series to edit.
- */
 export function openEditSeriesModal(data, seriesId) {
     const series = data.eventSeries.find(s => s.id === seriesId);
     if (!series) return;
@@ -21,10 +12,8 @@ export function openEditSeriesModal(data, seriesId) {
 
     showModal(escapeHTML(series.name), bodyHTML, footerHTML, { sizeClass: 'modal-lg' });
 
-    // Attach all event listeners inside the modal
     attachEditSeriesListeners(data, series);
 
-    // Close button in footer
     const overlay = document.getElementById('modal-overlay');
     const closeBtn = overlay.querySelector('.modal-close-action');
     if (closeBtn) {
@@ -35,14 +24,7 @@ export function openEditSeriesModal(data, seriesId) {
     }
 }
 
-/**
- * Builds the inner HTML for the edit-series modal body.
- * @param {object} data - The global mockData object.
- * @param {object} series - The event series being edited.
- * @returns {string} HTML string.
- */
 function buildEditSeriesBody(data, series) {
-    // ---- Student assignment (US14/US15) ----
     const allStudents = data.users.filter(u => u.role === 'student');
     const assignedStudents = allStudents.filter(s => series.studentIds.includes(s.id));
     const availableStudents = allStudents.filter(s => !series.studentIds.includes(s.id));
@@ -84,7 +66,6 @@ function buildEditSeriesBody(data, series) {
         </div>
     `;
 
-    // ---- Events list (US17–US21) ----
     const sortedEvents = [...series.events].sort((a, b) => a.order - b.order);
 
     const eventsHTML = sortedEvents.length > 0
@@ -93,12 +74,10 @@ function buildEditSeriesBody(data, series) {
             const isLast = idx === sortedEvents.length - 1;
             const typeBadgeClass = ev.type === 'Klausur' ? 'klausur' : 'lehrveranstaltung';
 
-            // Room dropdown options
             const roomOptions = data.rooms.map(r =>
                 `<option value="${r.id}" ${ev.roomId === r.id ? 'selected' : ''}>${escapeHTML(r.name)}</option>`
             ).join('');
 
-            // Day dropdown options
             const dayOptions = DAY_NAMES.map((name, i) =>
                 `<option value="${i}" ${ev.schedule && ev.schedule.day === i ? 'selected' : ''}>${escapeHTML(name)}</option>`
             ).join('');
@@ -141,7 +120,6 @@ function buildEditSeriesBody(data, series) {
                         </div>
                     </div>
 
-                    <!-- Inline duration editor -->
                     <div class="inline-editor-wrapper" data-editor="duration" data-event-id="${ev.id}">
                         <div class="inline-editor-form">
                             <div class="form-group">
@@ -153,7 +131,6 @@ function buildEditSeriesBody(data, series) {
                         </div>
                     </div>
 
-                    <!-- Inline booking editor -->
                     <div class="inline-editor-wrapper" data-editor="booking" data-event-id="${ev.id}">
                         <div class="inline-editor-form">
                             <div class="form-group">
@@ -185,7 +162,6 @@ function buildEditSeriesBody(data, series) {
         }).join('')
         : '<p style="color: var(--text-secondary); font-size: 0.875rem;">Keine Veranstaltungen vorhanden.</p>';
 
-    // ---- Add event form (US16) ----
     const addEventHTML = `
         <div class="modal-section-divider">
             <h4 class="modal-section-heading">
@@ -230,16 +206,10 @@ function buildEditSeriesBody(data, series) {
     `;
 }
 
-/**
- * Attaches all interactive event listeners within the edit-series modal.
- * @param {object} data - The global mockData object.
- * @param {object} series - The event series being edited.
- */
 function attachEditSeriesListeners(data, series) {
     const overlay = document.getElementById('modal-overlay');
     if (!overlay) return;
 
-    // --- US14: Add student ---
     const btnAddStudent = overlay.querySelector('#modal-btn-add-student');
     const selectStudent = overlay.querySelector('#modal-add-student-select');
     if (btnAddStudent && selectStudent) {
@@ -253,7 +223,6 @@ function attachEditSeriesListeners(data, series) {
         });
     }
 
-    // --- US15: Remove student ---
     overlay.querySelectorAll('.btn-remove-student').forEach(btn => {
         btn.addEventListener('click', () => {
             const studentId = parseInt(btn.dataset.studentId, 10);
@@ -262,7 +231,6 @@ function attachEditSeriesListeners(data, series) {
         });
     });
 
-    // --- US18: Move event up/down ---
     overlay.querySelectorAll('.btn-move-up').forEach(btn => {
         btn.addEventListener('click', () => {
             const eventId = parseInt(btn.dataset.eventId, 10);
@@ -279,7 +247,6 @@ function attachEditSeriesListeners(data, series) {
         });
     });
 
-    // --- US19: Toggle event type ---
     overlay.querySelectorAll('.btn-toggle-type').forEach(btn => {
         btn.addEventListener('click', () => {
             const eventId = parseInt(btn.dataset.eventId, 10);
@@ -291,14 +258,12 @@ function attachEditSeriesListeners(data, series) {
         });
     });
 
-    // --- US20: Edit duration (show/hide inline form) ---
     overlay.querySelectorAll('.btn-edit-duration').forEach(btn => {
         btn.addEventListener('click', () => {
             const eventId = btn.dataset.eventId;
             const wrapper = overlay.querySelector(`.inline-editor-wrapper[data-editor="duration"][data-event-id="${eventId}"]`);
             if (wrapper) {
                 wrapper.classList.toggle('open');
-                // Close booking editor if open
                 const bookingWrapper = overlay.querySelector(`.inline-editor-wrapper[data-editor="booking"][data-event-id="${eventId}"]`);
                 if (bookingWrapper) bookingWrapper.classList.remove('open');
             }
@@ -329,14 +294,12 @@ function attachEditSeriesListeners(data, series) {
         });
     });
 
-    // --- US21: Edit booking (show/hide inline form) ---
     overlay.querySelectorAll('.btn-edit-booking').forEach(btn => {
         btn.addEventListener('click', () => {
             const eventId = btn.dataset.eventId;
             const wrapper = overlay.querySelector(`.inline-editor-wrapper[data-editor="booking"][data-event-id="${eventId}"]`);
             if (wrapper) {
                 wrapper.classList.toggle('open');
-                // Close duration editor if open
                 const durationWrapper = overlay.querySelector(`.inline-editor-wrapper[data-editor="duration"][data-event-id="${eventId}"]`);
                 if (durationWrapper) durationWrapper.classList.remove('open');
             }
@@ -360,7 +323,6 @@ function attachEditSeriesListeners(data, series) {
             const ev = series.events.find(e => e.id === eventId);
             if (!ev) return;
 
-            // Remove old booking if it existed
             if (ev.roomId) {
                 const oldRoom = data.rooms.find(r => r.id === ev.roomId);
                 if (oldRoom) {
@@ -370,11 +332,9 @@ function attachEditSeriesListeners(data, series) {
                 }
             }
 
-            // Set new schedule and room
             ev.schedule = { day, start, end };
             ev.roomId = roomId;
 
-            // Add new booking to the room
             const room = data.rooms.find(r => r.id === roomId);
             if (room) {
                 room.bookings.push({
@@ -399,14 +359,12 @@ function attachEditSeriesListeners(data, series) {
         });
     });
 
-    // --- US17: Remove event ---
     overlay.querySelectorAll('.btn-remove-event').forEach(btn => {
         btn.addEventListener('click', () => {
             const eventId = parseInt(btn.dataset.eventId, 10);
             const ev = series.events.find(e => e.id === eventId);
             if (!ev) return;
 
-            // Remove associated room booking
             if (ev.roomId) {
                 const room = data.rooms.find(r => r.id === ev.roomId);
                 if (room) {
@@ -418,7 +376,6 @@ function attachEditSeriesListeners(data, series) {
 
             series.events = series.events.filter(e => e.id !== eventId);
 
-            // Renumber remaining event orders
             const sorted = [...series.events].sort((a, b) => a.order - b.order);
             sorted.forEach((e, i) => { e.order = i + 1; });
 
@@ -426,7 +383,6 @@ function attachEditSeriesListeners(data, series) {
         });
     });
 
-    // --- US16: Add event ---
     const btnAddEvent = overlay.querySelector('#modal-btn-add-event');
     if (btnAddEvent) {
         btnAddEvent.addEventListener('click', () => {
@@ -460,11 +416,6 @@ function attachEditSeriesListeners(data, series) {
     }
 }
 
-/**
- * Refreshes the edit modal content without closing it.
- * @param {object} data - The global mockData object.
- * @param {object} series - The event series being edited.
- */
 function refreshEditModal(data, series) {
     const bodyEl = document.getElementById('modal-body');
     if (!bodyEl) return;
@@ -472,12 +423,6 @@ function refreshEditModal(data, series) {
     attachEditSeriesListeners(data, series);
 }
 
-/**
- * Moves an event up or down in the ordering.
- * @param {object} series - The event series.
- * @param {number} eventId - The ID of the event to move.
- * @param {number} direction - -1 for up, +1 for down.
- */
 function moveEvent(series, eventId, direction) {
     const sorted = [...series.events].sort((a, b) => a.order - b.order);
     const idx = sorted.findIndex(e => e.id === eventId);
@@ -486,7 +431,6 @@ function moveEvent(series, eventId, direction) {
     const swapIdx = idx + direction;
     if (swapIdx < 0 || swapIdx >= sorted.length) return;
 
-    // Swap order values
     const tempOrder = sorted[idx].order;
     sorted[idx].order = sorted[swapIdx].order;
     sorted[swapIdx].order = tempOrder;

@@ -1,24 +1,15 @@
 import { timeToMinutes, escapeHTML } from '../../core/utils.js';
 
-/**
- * Renders the schedule section with two sub-tabs:
- * 1. Module Overview (table with module, lecturer, exam type)
- * 2. Calendar (weekly timetable)
- */
 export function renderSchedule(data) {
     renderModuleOverview(data);
     renderCalendar(data);
     initScheduleTabs();
 }
 
-/**
- * Renders the module overview table showing only current semester modules.
- */
 function renderModuleOverview(data) {
     const container = document.querySelector('#schedule-overview .module-overview-card');
     if (!container) return;
 
-    // Filter to current semester only (modules with schedule = active semester)
     const currentModules = data.modules.filter(m => m.status === 'active' || m.status === 'registered');
 
     let rows = '';
@@ -56,9 +47,6 @@ function renderModuleOverview(data) {
         </table>`;
 }
 
-/**
- * Renders the weekly calendar. Automatically calculates the current calendar week.
- */
 function renderCalendar(data) {
     const now = new Date();
     const currentWeekData = getCurrentWeekData(now);
@@ -114,26 +102,17 @@ function renderCalendar(data) {
     }
 }
 
-/**
- * Initializes sub-tab switching within the schedule section.
- */
 function initScheduleTabs() {
     const section = document.getElementById('schedule');
     if (!section) return;
     initSectionTabs(section);
 }
 
-/**
- * Generic sub-tab switching for a given section element.
- * Looks for .section-tabs buttons with data-tab attributes
- * and toggles corresponding .tab-content elements.
- */
 export function initSectionTabs(section) {
     const tabs = section.querySelectorAll('.section-tab');
     tabs.forEach(tab => {
         tab.addEventListener('click', () => {
             const targetId = tab.dataset.tab;
-            // Update tab buttons
             tabs.forEach(t => {
                 t.classList.remove('active');
                 t.setAttribute('aria-selected', 'false');
@@ -141,7 +120,6 @@ export function initSectionTabs(section) {
             tab.classList.add('active');
             tab.setAttribute('aria-selected', 'true');
 
-            // Update tab content panels
             section.querySelectorAll('.tab-content').forEach(panel => {
                 panel.classList.remove('active');
             });
@@ -151,10 +129,6 @@ export function initSectionTabs(section) {
     });
 }
 
-/**
- * Calculates the current calendar week data from a given date.
- * Returns KW label and day labels for Mo-Fr of the current week.
- */
 function getCurrentWeekData(date) {
     const day = date.getDay();
     const diff = (day === 0 ? -6 : 1) - day;
@@ -187,9 +161,6 @@ function getCurrentWeekData(date) {
     return { label, days };
 }
 
-/**
- * Exported helper for dozent.js to reuse calendar rendering logic.
- */
 export function renderCalendarForModules(modules, gridSelector, weekLabelId) {
     const now = new Date();
     const currentWeekData = getCurrentWeekData(now);

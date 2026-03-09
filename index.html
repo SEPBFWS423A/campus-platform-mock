@@ -17,26 +17,22 @@
     <link rel="stylesheet" href="css/submissions.css">
     <link rel="stylesheet" href="css/management.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Material Icons for UI elements -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 </head>
 
 <body class="light-mode">
     <a href="#main-content" class="skip-link">Zum Hauptinhalt springen</a>
     <div id="app">
-        <!-- Navigation -->
         <nav id="main-nav" class="navbar" aria-label="Hauptnavigation">
             <div class="nav-brand">
                 <span class="material-icons-round">school</span>
                 <span>CampusPlatform</span>
             </div>
             <div class="nav-links" role="tablist" aria-label="Seitennavigation">
-                <!-- Alle Rollen -->
                 <a href="#" class="nav-item active" data-target="dashboard" data-roles="student,dozent,verwaltung" role="tab" aria-selected="true" aria-controls="dashboard">
                     <span class="material-icons-round" aria-hidden="true">dashboard</span>
                     <span>Dashboard</span>
                 </a>
-                <!-- Student -->
                 <a href="#" class="nav-item" data-target="schedule" data-roles="student" role="tab" aria-selected="false" aria-controls="schedule">
                     <span class="material-icons-round" aria-hidden="true">calendar_today</span>
                     <span>Vorlesungen</span>
@@ -49,7 +45,6 @@
                     <span class="material-icons-round" aria-hidden="true">upload_file</span>
                     <span>Abgaben</span>
                 </a>
-                <!-- Dozent -->
                 <a href="#" class="nav-item hidden" data-target="dozent-courses" data-roles="dozent" role="tab" aria-selected="false" aria-controls="dozent-courses">
                     <span class="material-icons-round" aria-hidden="true">menu_book</span>
                     <span>Meine Kurse</span>
@@ -58,7 +53,6 @@
                     <span class="material-icons-round" aria-hidden="true">grading</span>
                     <span>Notenvergabe</span>
                 </a>
-                <!-- Verwaltung -->
                 <a href="#" class="nav-item hidden" data-target="admin-users" data-roles="verwaltung" role="tab" aria-selected="false" aria-controls="admin-users">
                     <span class="material-icons-round" aria-hidden="true">manage_accounts</span>
                     <span>Benutzerverwaltung</span>
@@ -75,7 +69,6 @@
                     <span class="material-icons-round" aria-hidden="true">assessment</span>
                     <span>Prüfungsamt</span>
                 </a>
-                <!-- Alle Rollen -->
                 <a href="#" class="nav-item" data-target="downloads" data-roles="student,dozent,verwaltung" role="tab" aria-selected="false" aria-controls="downloads">
                     <span class="material-icons-round" aria-hidden="true">folder</span>
                     <span>Downloads</span>
@@ -93,7 +86,6 @@
                     <button id="profile-btn" class="icon-btn" aria-label="Benutzermenu öffnen" aria-expanded="false" aria-haspopup="true">
                         <span class="material-icons-round" aria-hidden="true">account_circle</span>
                     </button>
-                    <!-- Dropdown Menu -->
                     <div id="user-dropdown" class="dropdown-menu" role="menu" aria-label="Benutzermenu">
                         <div class="dropdown-header">
                             <span class="dropdown-user-name">Max Mustermann</span>
@@ -110,7 +102,6 @@
                         <div class="dropdown-divider" role="separator"></div>
                         <div class="dropdown-section-label">Ansicht wechseln</div>
                         <div id="user-switch-list">
-                            <!-- User switch items will be injected by auth.js -->
                         </div>
                         <div class="dropdown-divider" role="separator"></div>
                         <button class="dropdown-item danger" id="logout-btn" role="menuitem">
@@ -125,9 +116,7 @@
             </button>
         </nav>
 
-        <!-- Main Content Area -->
         <main id="main-content" tabindex="-1">
-            <!-- Dashboard -->
             <section id="dashboard" class="content-section active" role="tabpanel" aria-labelledby="tab-dashboard">
                 <header class="section-header">
                     <div class="header-content">
@@ -140,37 +129,28 @@
                     </div>
                 </header>
 
-                <!-- Overview Stats Row -->
                 <div class="grid-container stats-row">
-                    <!-- Stats will be injected here -->
                 </div>
 
-                <!-- Main Dashboard Grid -->
                 <div class="dashboard-grid">
-                    <!-- Left Col: Schedule Timeline -->
                     <div class="card schedule-card">
                         <div class="card-header">
                             <h3>Heutiger Stundenplan</h3>
                             <button id="view-all-schedule" class="icon-btn text-btn">Alle ansehen</button>
                         </div>
                         <div class="timeline">
-                            <!-- Timeline events will be injected here -->
-                        </div>
+                            </div>
                     </div>
 
-                    <!-- Right Col: Activity & News -->
                     <div class="right-col-stack">
-                        <!-- Recent Activity -->
                         <div class="card activity-card">
                             <div class="card-header">
                                 <h3>Neuigkeiten</h3>
                             </div>
                             <ul class="activity-list">
-                                <!-- Activity items will be injected here -->
-                            </ul>
+                                </ul>
                         </div>
 
-                        <!-- Quick Actions -->
                         <div class="card actions-card">
                             <h3>Schnellzugriff</h3>
                             <div class="action-buttons">
@@ -196,7 +176,6 @@
                 </div>
             </section>
 
-            <!-- Schedule / Vorlesungen -->
             <section id="schedule" class="content-section" role="tabpanel" aria-labelledby="tab-schedule">
                 <header class="section-header">
                     <div class="header-content">
@@ -205,7 +184,6 @@
                     </div>
                 </header>
 
-                <!-- Sub-Tabs -->
                 <div class="section-tabs" role="tablist" aria-label="Vorlesungen Ansicht">
                     <button class="section-tab active" data-tab="schedule-overview" role="tab" aria-selected="true">
                         <span class="material-icons-round" aria-hidden="true">list_alt</span>
@@ -221,14 +199,11 @@
                     </button>
                 </div>
 
-                <!-- Tab 1: Module Overview -->
                 <div id="schedule-overview" class="tab-content active">
                     <div class="module-overview-card">
-                        <!-- Injected by schedule.js -->
                     </div>
                 </div>
 
-                <!-- Tab 2: Calendar -->
                 <div id="schedule-calendar" class="tab-content">
                     <div class="calendar-controls">
                         <button class="icon-btn"><span class="material-icons-round">chevron_left</span></button>
@@ -238,8 +213,7 @@
                     </div>
                     <div class="card calendar-wrapper">
                         <div class="calendar-grid-detailed">
-                            <!-- Time Column -->
-                            <div class="time-column">
+                                <div class="time-column">
                                 <div class="time-slot-header"></div>
                                 <div class="time-slot"><span>08:00</span></div>
                                 <div class="time-slot"><span>09:00</span></div>
@@ -252,14 +226,11 @@
                                 <div class="time-slot"><span>16:00</span></div>
                                 <div class="time-slot"><span>17:00</span></div>
                             </div>
-                            <!-- Days Columns will be injected here -->
                         </div>
                     </div>
                 </div>
 
-                <!-- Tab 3: Prüfungstermine -->
                 <div id="schedule-exams" class="tab-content">
-                    <!-- Filter Chips -->
                     <div class="filter-bar exams-filter-bar" role="group" aria-label="Prüfungsfilter">
                         <button class="filter-chip active" data-filter="all" aria-pressed="true">Alle</button>
                         <button class="filter-chip" data-filter="registered" aria-pressed="false">Angemeldet</button>
@@ -268,12 +239,10 @@
                     </div>
 
                     <div class="exams-grid" aria-live="polite">
-                        <!-- Exam cards will be injected here -->
                     </div>
                 </div>
             </section>
 
-            <!-- Grades -->
             <section id="grades" class="content-section" role="tabpanel" aria-labelledby="tab-grades">
                 <header class="section-header">
                     <div class="header-content">
@@ -284,15 +253,11 @@
                         Leistungsspiegel</button>
                 </header>
 
-                <!-- Grades Statistics -->
                 <div class="grades-stats-row">
-                    <!-- Stats will be injected here -->
                 </div>
 
-                <!-- Semester Groups will be injected here -->
             </section>
 
-            <!-- Submissions -->
             <section id="submissions" class="content-section" role="tabpanel" aria-labelledby="tab-submissions">
                 <header class="section-header">
                     <div class="header-content">
@@ -317,11 +282,9 @@
                 </div>
 
                 <div class="submissions-grid" aria-live="polite">
-                    <!-- Submission cards will be injected here -->
                 </div>
             </section>
 
-            <!-- Dozent: Meine Kurse -->
             <section id="dozent-courses" class="content-section" role="tabpanel" aria-labelledby="tab-dozent-courses">
                 <header class="section-header">
                     <div class="header-content">
@@ -330,7 +293,6 @@
                     </div>
                 </header>
 
-                <!-- Sub-Tabs -->
                 <div class="section-tabs" role="tablist" aria-label="Kurse Ansicht">
                     <button class="section-tab active" data-tab="dozent-overview" role="tab" aria-selected="true">
                         <span class="material-icons-round" aria-hidden="true">list_alt</span>
@@ -342,14 +304,11 @@
                     </button>
                 </div>
 
-                <!-- Tab 1: Module Overview -->
                 <div id="dozent-overview" class="tab-content active">
                     <div class="dozent-courses-grid grid-container">
-                        <!-- Injected by dozent.js -->
                     </div>
                 </div>
 
-                <!-- Tab 2: Calendar -->
                 <div id="dozent-calendar" class="tab-content">
                     <div class="calendar-controls">
                         <button class="icon-btn"><span class="material-icons-round">chevron_left</span></button>
@@ -359,8 +318,7 @@
                     </div>
                     <div class="card calendar-wrapper">
                         <div class="dozent-calendar-grid calendar-grid-detailed">
-                            <!-- Time Column -->
-                            <div class="time-column">
+                                <div class="time-column">
                                 <div class="time-slot-header"></div>
                                 <div class="time-slot"><span>08:00</span></div>
                                 <div class="time-slot"><span>09:00</span></div>
@@ -373,13 +331,11 @@
                                 <div class="time-slot"><span>16:00</span></div>
                                 <div class="time-slot"><span>17:00</span></div>
                             </div>
-                            <!-- Days Columns will be injected here -->
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- Dozent: Notenvergabe -->
             <section id="dozent-grading" class="content-section" role="tabpanel" aria-labelledby="tab-dozent-grading">
                 <header class="section-header">
                     <div class="header-content">
@@ -388,11 +344,9 @@
                     </div>
                 </header>
                 <div class="dozent-grading-content">
-                    <!-- Injected by dozent.js -->
                 </div>
             </section>
 
-            <!-- Verwaltung: Benutzerverwaltung -->
             <section id="admin-users" class="content-section" role="tabpanel" aria-labelledby="tab-admin-users">
                 <header class="section-header">
                     <div class="header-content">
@@ -401,11 +355,9 @@
                     </div>
                 </header>
                 <div class="admin-users-content">
-                    <!-- Injected by userManagement.js -->
                 </div>
             </section>
 
-            <!-- Verwaltung: Raumverwaltung -->
             <section id="admin-rooms" class="content-section" role="tabpanel" aria-labelledby="tab-admin-rooms">
                 <header class="section-header">
                     <div class="header-content">
@@ -414,11 +366,9 @@
                     </div>
                 </header>
                 <div class="admin-rooms-content">
-                    <!-- Injected by roomManagement.js -->
                 </div>
             </section>
 
-            <!-- Verwaltung: Veranstaltungsverwaltung -->
             <section id="admin-events" class="content-section" role="tabpanel" aria-labelledby="tab-admin-events">
                 <header class="section-header">
                     <div class="header-content">
@@ -427,11 +377,9 @@
                     </div>
                 </header>
                 <div class="admin-events-content">
-                    <!-- Injected by eventManagement.js -->
                 </div>
             </section>
 
-            <!-- Verwaltung: Prüfungsamt -->
             <section id="admin-exams" class="content-section" role="tabpanel" aria-labelledby="tab-admin-exams">
                 <header class="section-header">
                     <div class="header-content">
@@ -440,11 +388,9 @@
                     </div>
                 </header>
                 <div class="admin-exams-content">
-                    <!-- Injected by admin.js -->
                 </div>
             </section>
 
-            <!-- Downloads -->
             <section id="downloads" class="content-section" role="tabpanel" aria-labelledby="tab-downloads">
                 <header class="section-header">
                     <div class="header-content">
@@ -484,14 +430,11 @@
                         </ul>
                     </aside>
 
-                    <!-- Main Content: Files List -->
                     <div class="files-content">
-                        <!-- File sections will be injected here -->
                     </div>
                 </div>
             </section>
 
-            <!-- Info -->
             <section id="info" class="content-section" role="tabpanel" aria-labelledby="tab-info">
                 <header class="section-header">
                     <div class="header-content">
@@ -543,7 +486,6 @@
             <p>&copy; 2026 CampusPlatform. Alle Rechte vorbehalten.</p>
         </footer>
 
-        <!-- Mobile Sidebar Overlay -->
         <div id="mobile-sidebar" class="sidebar" role="dialog" aria-modal="true" aria-label="Navigationsmenü">
             <div class="sidebar-header">
                 <div class="nav-brand">
@@ -555,12 +497,10 @@
                 </button>
             </div>
             <nav class="sidebar-links" aria-label="Mobile Navigation">
-                <!-- Alle Rollen -->
                 <a href="#" class="nav-item active" data-target="dashboard" data-roles="student,dozent,verwaltung">
                     <span class="material-icons-round" aria-hidden="true">dashboard</span>
                     <span>Dashboard</span>
                 </a>
-                <!-- Student -->
                 <a href="#" class="nav-item" data-target="schedule" data-roles="student">
                     <span class="material-icons-round" aria-hidden="true">calendar_today</span>
                     <span>Vorlesungen</span>
@@ -573,7 +513,6 @@
                     <span class="material-icons-round" aria-hidden="true">upload_file</span>
                     <span>Abgaben</span>
                 </a>
-                <!-- Dozent -->
                 <a href="#" class="nav-item hidden" data-target="dozent-courses" data-roles="dozent">
                     <span class="material-icons-round" aria-hidden="true">menu_book</span>
                     <span>Meine Kurse</span>
@@ -582,7 +521,6 @@
                     <span class="material-icons-round" aria-hidden="true">grading</span>
                     <span>Notenvergabe</span>
                 </a>
-                <!-- Verwaltung -->
                 <a href="#" class="nav-item hidden" data-target="admin-users" data-roles="verwaltung">
                     <span class="material-icons-round" aria-hidden="true">manage_accounts</span>
                     <span>Benutzerverwaltung</span>
@@ -599,7 +537,6 @@
                     <span class="material-icons-round" aria-hidden="true">assessment</span>
                     <span>Prüfungsamt</span>
                 </a>
-                <!-- Alle Rollen -->
                 <a href="#" class="nav-item" data-target="downloads" data-roles="student,dozent,verwaltung">
                     <span class="material-icons-round" aria-hidden="true">folder</span>
                     <span>Downloads</span>
@@ -612,7 +549,6 @@
         </div>
         <div id="sidebar-overlay" class="overlay" aria-hidden="true"></div>
 
-        <!-- Modal Dialog Container -->
         <div id="modal-overlay" class="modal-overlay" aria-hidden="true">
             <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modal-title">
                 <div class="modal-header">

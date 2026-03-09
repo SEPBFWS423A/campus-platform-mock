@@ -1,6 +1,3 @@
-/* === New Dashboard Styles === */
-
-/* Header Improvements */
 .section-header {
     display: flex;
     justify-content: space-between;
@@ -26,7 +23,6 @@
     color: var(--primary-color);
 }
 
-/* Stats Row */
 .stats-row {
     margin-bottom: 2rem;
     display: grid;
@@ -55,21 +51,6 @@
     min-height: 100px;
 }
 
-.stat-card::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    opacity: 0.04;
-    transform: translate(30%, -30%);
-}
-
-.stat-card:nth-child(1)::after { background: var(--primary-color); }
-.stat-card:nth-child(2)::after { background: var(--success-color); }
-.stat-card:nth-child(3)::after { background: var(--warning-color); }
 
 .stat-icon {
     width: 3.25rem;
@@ -135,7 +116,6 @@
     color: var(--error-color);
 }
 
-/* Stat Description */
 .stat-desc {
     font-size: 0.8rem;
     color: var(--text-secondary);
@@ -143,7 +123,6 @@
     line-height: 1.4;
 }
 
-/* Progress Bar */
 .progress-bar {
     height: 6px;
     background-color: var(--border-color-subtle);
@@ -159,7 +138,6 @@
     transition: width 0.6s ease;
 }
 
-/* Dashboard Grid Layout */
 .dashboard-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -185,7 +163,6 @@
     }
 }
 
-/* Timeline/Schedule Card */
 .schedule-card {
     height: 100%;
 }
@@ -314,7 +291,6 @@
     text-transform: uppercase;
 }
 
-/* Activity List */
 .right-col-stack {
     display: flex;
     flex-direction: column;
@@ -382,7 +358,6 @@
     color: var(--text-secondary);
 }
 
-/* Quick Actions Grid */
 .action-buttons {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -438,10 +413,6 @@ body.dark-mode .btn-action:hover {
     background-color: rgba(59, 130, 246, 0.08);
     border-color: rgba(59, 130, 246, 0.2);
 }
-
-/* =============================================================================
-   Admin Dashboard – System Overview
-   ============================================================================= */
 
 .admin-overview {
     padding: 0;
@@ -589,17 +560,14 @@ body.dark-mode .btn-action:hover {
     color: var(--warning-color);
 }
 
-/* Mobile Responsiveness */
 @media (max-width: 768px) {
 
-    /* Current Date */
     .current-date {
         width: 100%;
         padding-top: 0.5rem;
         border-top: 1px solid var(--border-color);
     }
 
-    /* Stats Row - Compact Horizontal Scroll */
     .stats-row,
     .stats-row.stats-row-4 {
         display: flex;
@@ -641,7 +609,6 @@ body.dark-mode .btn-action:hover {
         font-size: 0.75rem;
     }
 
-    /* Schedule Card - Prominent */
     .schedule-card {
         min-height: 400px;
     }
@@ -677,7 +644,6 @@ body.dark-mode .btn-action:hover {
         height: 16px;
     }
 
-    /* Activity List */
     .activity-list li {
         padding: 0.5rem 0;
     }
@@ -686,7 +652,6 @@ body.dark-mode .btn-action:hover {
         padding: 1rem 0.5rem;
     }
 
-    /* Admin overview responsive */
     .admin-room-item {
         flex-direction: column;
         align-items: flex-start;
@@ -711,7 +676,6 @@ body.dark-mode .btn-action:hover {
     }
 }
 
-/* Small phones */
 @media (max-width: 380px) {
     .stat-card {
         min-width: 80%;

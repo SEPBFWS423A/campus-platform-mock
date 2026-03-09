@@ -1,15 +1,10 @@
 import { showModal, closeModal } from '../../core/modal.js';
 import { escapeHTML } from '../../core/utils.js';
 
-/**
- * Initializes the "Change Password" feature.
- * Adds a button to the user dropdown that opens a password change modal.
- */
 export function initChangePassword() {
     const dropdown = document.getElementById('user-dropdown');
     if (!dropdown) return;
 
-    // Insert "Passwort ändern" button before the logout divider
     const dividers = dropdown.querySelectorAll('.dropdown-divider');
     const lastDivider = dividers[dividers.length - 1];
     if (!lastDivider) return;
@@ -26,7 +21,6 @@ export function initChangePassword() {
 
     changePwBtn.addEventListener('click', () => {
         openChangePasswordModal();
-        // Close dropdown
         dropdown.classList.remove('active');
         const profileBtn = document.getElementById('profile-btn');
         if (profileBtn) profileBtn.setAttribute('aria-expanded', 'false');
@@ -79,47 +73,39 @@ function handleChangePassword() {
 
     if (!feedback) return;
 
-    // Get current user
     const user = getCurrentUser();
     if (!user) {
         showFeedback(feedback, 'error', 'Benutzer nicht gefunden.');
         return;
     }
 
-    // Validate current password
     if (currentPw !== user.password) {
         showFeedback(feedback, 'error', 'Aktuelles Passwort ist nicht korrekt.');
         return;
     }
 
-    // Validate new password not empty
     if (!newPw.trim()) {
         showFeedback(feedback, 'error', 'Das neue Passwort darf nicht leer sein.');
         return;
     }
 
-    // Validate new password differs from old
     if (newPw === currentPw) {
         showFeedback(feedback, 'error', 'Das neue Passwort muss sich vom aktuellen unterscheiden.');
         return;
     }
 
-    // Validate confirmation matches
     if (newPw !== confirmPw) {
         showFeedback(feedback, 'error', 'Die Passwörter stimmen nicht überein.');
         return;
     }
 
-    // Update password in mock data
     user.password = newPw;
 
     showFeedback(feedback, 'success', 'Passwort wurde erfolgreich geändert.');
 
-    // Disable submit button after success
     const submitBtn = document.getElementById('change-pw-submit');
     if (submitBtn) submitBtn.disabled = true;
 
-    // Close modal after delay
     setTimeout(closeModal, 1500);
 }
 

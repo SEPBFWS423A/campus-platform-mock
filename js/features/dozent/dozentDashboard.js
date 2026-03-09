@@ -1,16 +1,5 @@
 import { escapeHTML, timeToMinutes, formatDateDE } from '../../core/utils.js';
 
-// ---------------------------------------------------------------------------
-// Dozent Dashboard
-// ---------------------------------------------------------------------------
-
-/**
- * Renders a comprehensive dashboard for the Dozent role, including:
- * - Stats row with active courses, student count, upcoming exams, and average grade
- * - Today's teaching schedule as a timeline
- * - Upcoming exams and recent activity feed
- * - Quick actions navigating to Dozent-specific sections
- */
 export function renderDozentDashboard(data, user, navigation) {
     const dayNames = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'];
 
@@ -21,10 +10,8 @@ export function renderDozentDashboard(data, user, navigation) {
         .filter(m => m.exam && m.exam.date)
         .sort((a, b) => new Date(a.exam.date) - new Date(b.exam.date));
 
-    // Count total students (from user database)
     const totalStudents = data.users.filter(u => u.role === 'student').length;
 
-    // Average grade across the dozent's graded courses
     let gradeSum = 0;
     let gradeCount = 0;
     passedCourses.forEach(c => {
@@ -35,7 +22,6 @@ export function renderDozentDashboard(data, user, navigation) {
     });
     const avgGrade = gradeCount > 0 ? (gradeSum / gradeCount).toFixed(1) : '-';
 
-    // --- 1. Stats Row (4 cards) ---
     const statsContainer = document.querySelector('.stats-row');
     if (statsContainer) {
         statsContainer.classList.add('stats-row-4');
@@ -83,7 +69,6 @@ export function renderDozentDashboard(data, user, navigation) {
         `;
     }
 
-    // --- 2. Schedule Card: Today's Teaching Schedule ---
     const scheduleCardHeader = document.querySelector('.schedule-card .card-header h3');
     if (scheduleCardHeader) {
         scheduleCardHeader.textContent = 'Heutige Lehrveranstaltungen';
@@ -149,7 +134,6 @@ export function renderDozentDashboard(data, user, navigation) {
         }
     }
 
-    // --- 3. Activity Card: Upcoming Exams and Recent Activity ---
     const activityCardHeader = document.querySelector('.activity-card .card-header h3');
     if (activityCardHeader) {
         activityCardHeader.textContent = 'Pr\u00fcfungen & Aktivit\u00e4t';
@@ -159,7 +143,6 @@ export function renderDozentDashboard(data, user, navigation) {
     if (activityList) {
         const items = [];
 
-        // Upcoming exams for dozent's courses
         upcomingExams.forEach(c => {
             const dateStr = formatDateDE(c.exam.date);
             items.push(`
@@ -175,7 +158,6 @@ export function renderDozentDashboard(data, user, navigation) {
             `);
         });
 
-        // Simulated recent activity entries relevant to a dozent
         items.push(`
             <li>
                 <div class="activity-icon primary">
@@ -213,7 +195,6 @@ export function renderDozentDashboard(data, user, navigation) {
         activityList.innerHTML = items.join('');
     }
 
-    // --- 4. Quick Actions ---
     const actionsCardTitle = document.querySelector('.actions-card h3');
     if (actionsCardTitle) {
         actionsCardTitle.textContent = 'Schnellzugriff';
@@ -244,10 +225,6 @@ export function renderDozentDashboard(data, user, navigation) {
     }
 }
 
-/**
- * Binds click events to quick-action buttons that navigate to the
- * section specified in their data-nav attribute.
- */
 function bindActionButtons(container, navigation) {
     container.querySelectorAll('.btn-action[data-nav]').forEach(btn => {
         btn.addEventListener('click', () => {

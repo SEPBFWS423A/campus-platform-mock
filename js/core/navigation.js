@@ -6,7 +6,6 @@ export function initNavigation() {
     const overlay = document.getElementById('sidebar-overlay');
     const closeSidebarBtn = document.getElementById('close-sidebar-btn');
 
-    // Tab Switching
     navItems.forEach(item => {
         item.addEventListener('click', (e) => {
             e.preventDefault();
@@ -14,7 +13,6 @@ export function initNavigation() {
             setActiveTab(targetId);
         });
 
-        // Keyboard support for tab navigation
         item.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
@@ -24,7 +22,6 @@ export function initNavigation() {
         });
     });
 
-    // Mobile Menu
     function toggleSidebar() {
         if (!sidebar || !overlay) return;
         const isActive = sidebar.classList.contains('active');
@@ -33,7 +30,6 @@ export function initNavigation() {
             overlay.classList.remove('active');
             sidebar.setAttribute('aria-hidden', 'true');
             document.body.style.overflow = '';
-            // Return focus to mobile menu button
             if (mobileMenuBtn) mobileMenuBtn.focus();
             setTimeout(() => {
                 overlay.style.display = 'none';
@@ -45,14 +41,12 @@ export function initNavigation() {
                 sidebar.classList.add('active');
                 overlay.classList.add('active');
                 sidebar.setAttribute('aria-hidden', 'false');
-                // Focus first nav item in sidebar
                 const firstLink = sidebar.querySelector('.nav-item');
                 if (firstLink) firstLink.focus();
             }, 10);
         }
     }
 
-    // Close sidebar on Escape key
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && sidebar && sidebar.classList.contains('active')) {
             toggleSidebar();
@@ -63,7 +57,6 @@ export function initNavigation() {
     if (closeSidebarBtn) closeSidebarBtn.addEventListener('click', toggleSidebar);
     if (overlay) overlay.addEventListener('click', toggleSidebar);
 
-    // Sidebar Links
     const sidebarLinks = sidebar ? sidebar.querySelectorAll('.nav-item') : [];
     sidebarLinks.forEach(item => {
         item.addEventListener('click', (e) => {
@@ -74,16 +67,10 @@ export function initNavigation() {
         });
     });
 
-    /**
-     * Activates a tab and its corresponding content section.
-     * Updates ARIA attributes for accessibility.
-     * @param {string} targetId - The ID of the section to activate.
-     */
     function setActiveTab(targetId) {
         navItems.forEach(nav => {
             const isTarget = nav.getAttribute('data-target') === targetId;
             nav.classList.toggle('active', isTarget);
-            // Update ARIA attributes for tabs
             nav.setAttribute('aria-selected', String(isTarget));
         });
 
@@ -93,7 +80,6 @@ export function initNavigation() {
             section.setAttribute('aria-hidden', String(!isTarget));
         });
 
-        // Update document title
         const sectionTitle = document.querySelector(`#${targetId} .section-header h1`);
         if (sectionTitle) {
             document.title = `CampusPlatform - ${sectionTitle.textContent}`;

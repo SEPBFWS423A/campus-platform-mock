@@ -7,13 +7,11 @@ let searchQuery = '';
 let isInitialized = false;
 
 export function renderSubmissions(data) {
-    // Update data if provided
     if (data) {
         submissionsData = data.submissions || [];
         currentDate = data.config ? data.config.currentDate : null;
     }
 
-    // Initialize listeners once
     if (!isInitialized) {
         setupEventListeners();
         isInitialized = true;
@@ -26,7 +24,6 @@ function setupEventListeners() {
     const filterBtns = document.querySelectorAll('.submissions-controls .filter-chip');
     filterBtns.forEach(btn => {
         btn.addEventListener('click', () => {
-            // Update UI and ARIA
             filterBtns.forEach(b => {
                 b.classList.remove('active');
                 b.setAttribute('aria-pressed', 'false');
@@ -34,7 +31,6 @@ function setupEventListeners() {
             btn.classList.add('active');
             btn.setAttribute('aria-pressed', 'true');
 
-            // Update State
             currentFilter = btn.dataset.filter;
             renderList();
         });
@@ -53,9 +49,7 @@ function renderList() {
     const container = document.querySelector('.submissions-grid');
     if (!container) return;
 
-    // Filter Data
     let filtered = submissionsData.filter(item => {
-        // Status Filter
         if (currentFilter !== 'all') {
             if (currentFilter === 'open') {
                 if (!['upcoming', 'pending'].includes(item.status)) return false;
@@ -64,7 +58,6 @@ function renderList() {
             }
         }
 
-        // Search Filter
         if (searchQuery) {
             const term = searchQuery.toLowerCase();
             const matchesTitle = item.title.toLowerCase().includes(term);
@@ -75,7 +68,6 @@ function renderList() {
         return true;
     });
 
-    // Render Empty State
     if (filtered.length === 0) {
         container.innerHTML = `
             <div class="empty-state">
@@ -94,7 +86,6 @@ function renderList() {
         return;
     }
 
-    // Render Cards
     const cards = filtered.map((sub, index) => {
         const icon = getSubmissionIcon(sub.type);
         const statusClass = getStatusClass(sub.status);
@@ -178,7 +169,6 @@ function resetFilters() {
     currentFilter = 'all';
     searchQuery = '';
 
-    // Update UI Controls
     const filterBtns = document.querySelectorAll('.submissions-controls .filter-chip');
     filterBtns.forEach(btn => {
         if (btn.dataset.filter === 'all') btn.classList.add('active');
