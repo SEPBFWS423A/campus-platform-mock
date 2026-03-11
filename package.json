@@ -1,0 +1,29 @@
+{
+  "name": "campus-platform-mock",
+  "version": "1.0.0",
+  "description": "A mock web application for a student campus management platform.",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx playwright test",
+    "test:headed": "npx playwright test --headed",
+    "test:demo": "npx playwright test --headed --workers=1 --reporter=list",
+    "test:ui": "npx playwright test --ui",
+    "test:report": "npx playwright show-report"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SEPBFWS423A/campus-platform-mock.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/SEPBFWS423A/campus-platform-mock/issues"
+  },
+  "homepage": "https://github.com/SEPBFWS423A/campus-platform-mock#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.58.2",
+    "serve": "^14.2.6"
+  }
+}
