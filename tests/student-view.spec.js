@@ -133,3 +133,20 @@ test.describe('Logout', () => {
     await expect(page.locator('#login-form')).toBeVisible();
   });
 });
+
+  test.describe('Dark Mode', () => {
+    test('schaltet das Design um und speichert die Einstellung', async ({ page }) => {
+      await loginAsStudent(page);
+      const body = page.locator('body');
+      const initialHasDark = await body.evaluate(el => el.classList.contains('dark-mode'));
+
+      await page.locator('#theme-toggle').click();
+
+      const hasDarkAfter = await body.evaluate(el => el.classList.contains('dark-mode'));
+      expect(hasDarkAfter).not.toBe(initialHasDark);
+
+      await page.reload();
+      const hasDarkAfterReload = await body.evaluate(el => el.classList.contains('dark-mode'));
+      expect(hasDarkAfterReload).toBe(hasDarkAfter);
+    });
+  });
