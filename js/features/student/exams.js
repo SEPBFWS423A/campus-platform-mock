@@ -3,9 +3,11 @@ import { escapeHTML } from '../../core/utils.js';
 let allExams = [];
 let currentFilter = 'all';
 let isInitialized = false;
+let dataRef = null;
 
 export function renderExams(data) {
     if (data) {
+        dataRef = data;
         const examModules = data.modules.filter(m =>
             m.exam &&
             (m.exam.status === 'registered' || m.exam.status === 'upcoming' || m.exam.status === 'open') &&
@@ -59,7 +61,7 @@ function renderExamCards() {
     }
 
     examsGrid.innerHTML = filtered.map(exam => `
-        <div class="exam-card-enhanced ${exam.statusClass}" role="article" aria-label="${escapeHTML(exam.title)}">
+        <div class="exam-card-enhanced ${exam.statusClass}" role="article" aria-label="${escapeHTML(exam.title)}" data-code="${escapeHTML(exam.code)}">
             <div class="exam-body">
                 <div class="exam-date-box">
                     <span class="exam-day">${escapeHTML(exam.day)}</span>
@@ -87,10 +89,43 @@ function renderExamCards() {
                     <span class="material-symbols-rounded" aria-hidden="true">${exam.footerIcon}</span>
                     ${exam.footerStatus}
                 </div>
-                <a href="#" class="action-link">${exam.actionText} <span class="material-symbols-rounded" aria-hidden="true">${exam.actionIcon}</span></a>
+                ${exam.examStatus === 'open'
+                    ? `<button class="btn btn-sm btn-primary exam-register-btn" data-code="${escapeHTML(exam.code)}">
+                        <span class="material-symbols-rounded" aria-hidden="true">how_to_reg</span> Anmelden
+                       </button>`
+                    : exam.examStatus === 'registered'
+                    ? `<button class="btn btn-sm btn-outline exam-unregister-btn" data-code="${escapeHTML(exam.code)}">
+                        <span class="material-symbols-rounded" aria-hidden="true">person_remove</span> Abmelden
+                       </button>`
+                    : `<a href="#" class="action-link">${exam.actionText} <span class="material-symbols-rounded" aria-hidden="true">${exam.actionIcon}</span></a>`
+                }
             </div>
         </div>
     `).join('');
+
+    examsGrid.querySelectorAll('.exam-register-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            toggleExamRegistration(btn.dataset.code, 'registered');
+        });
+    });
+
+    examsGrid.querySelectorAll('.exam-unregister-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            toggleExamRegistration(btn.dataset.code, 'open');
+        });
+    });
+}
+
+function toggleExamRegistration(code, newStatus) {
+    if (!dataRef) return;
+
+    const module = dataRef.modules.find(m => m.code === code);
+    if (!module || !module.exam) return;
+
+    module.exam.status = newStatus;
+    renderExams(null);
 }
 
 function buildExamData(m) {
@@ -134,6 +169,7 @@ function buildExamData(m) {
     return {
         statusClass,
         filterStatus,
+        examStatus: e.status,
         day, month, year,
         type: e.type || 'Klausur',
         code: m.code,

@@ -1,7 +1,6 @@
 import { escapeHTML } from '../../../core/utils.js';
-import { showModal, closeModal, showConfirmDialog } from '../../../core/modal.js';
+import { showModal, closeModal } from '../../../core/modal.js';
 import { renderEventManagement, DAY_NAMES, buildEventMeta, nextId } from './seriesCards.js';
-import { runAutoPlanning } from './autoPlanning.js';
 
 export function openEditSeriesModal(data, seriesId) {
     const series = data.eventSeries.find(s => s.id === seriesId);

@@ -1,4 +1,6 @@
 import { timeToMinutes, escapeHTML } from '../../core/utils.js';
+import { initTabs } from '../shared/tabSwitching.js';
+import { getWeekData } from '../shared/scheduleUtils.js';
 
 export function renderSchedule(data) {
     renderModuleOverview(data);
@@ -37,7 +39,7 @@ function renderModuleOverview(data) {
                 <tr>
                     <th scope="col">Modul</th>
                     <th scope="col">Dozent</th>
-                    <th scope="col">Prüfungsform</th>
+                    <th scope="col">Pr\u00fcfungsform</th>
                     <th scope="col">ECTS</th>
                 </tr>
             </thead>
@@ -49,7 +51,7 @@ function renderModuleOverview(data) {
 
 function renderCalendar(data) {
     const now = new Date();
-    const currentWeekData = getCurrentWeekData(now);
+    const currentWeekData = getWeekData(now);
 
     const weekHeader = document.getElementById('calendar-week-label');
     if (weekHeader) weekHeader.textContent = currentWeekData.label;
@@ -109,61 +111,12 @@ function initScheduleTabs() {
 }
 
 export function initSectionTabs(section) {
-    const tabs = section.querySelectorAll('.section-tab');
-    tabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-            const targetId = tab.dataset.tab;
-            tabs.forEach(t => {
-                t.classList.remove('active');
-                t.setAttribute('aria-selected', 'false');
-            });
-            tab.classList.add('active');
-            tab.setAttribute('aria-selected', 'true');
-
-            section.querySelectorAll('.tab-content').forEach(panel => {
-                panel.classList.remove('active');
-            });
-            const targetPanel = document.getElementById(targetId);
-            if (targetPanel) targetPanel.classList.add('active');
-        });
-    });
-}
-
-function getCurrentWeekData(date) {
-    const day = date.getDay();
-    const diff = (day === 0 ? -6 : 1) - day;
-    const monday = new Date(date);
-    monday.setDate(date.getDate() + diff);
-
-    const jan4 = new Date(monday.getFullYear(), 0, 4);
-    const dayOfYear = Math.floor((monday - new Date(monday.getFullYear(), 0, 1)) / 86400000);
-    const weekNumber = Math.ceil((dayOfYear + jan4.getDay()) / 7);
-
-    const dayNames = ['Mo', 'Di', 'Mi', 'Do', 'Fr'];
-    const days = [];
-    for (let i = 0; i < 5; i++) {
-        const d = new Date(monday);
-        d.setDate(monday.getDate() + i);
-        const dd = String(d.getDate()).padStart(2, '0');
-        const mm = String(d.getMonth() + 1).padStart(2, '0');
-        days.push(`${dayNames[i]} ${dd}.${mm}`);
-    }
-
-    const friday = new Date(monday);
-    friday.setDate(monday.getDate() + 4);
-    const monDD = String(monday.getDate()).padStart(2, '0');
-    const monMM = String(monday.getMonth() + 1).padStart(2, '0');
-    const friDD = String(friday.getDate()).padStart(2, '0');
-    const friMM = String(friday.getMonth() + 1).padStart(2, '0');
-
-    const label = `KW ${weekNumber} (${monDD}.${monMM} - ${friDD}.${friMM})`;
-
-    return { label, days };
+    initTabs(section, { tabSelector: '.section-tab', panelSelector: '.tab-content', useAria: true });
 }
 
 export function renderCalendarForModules(modules, gridSelector, weekLabelId) {
     const now = new Date();
-    const currentWeekData = getCurrentWeekData(now);
+    const currentWeekData = getWeekData(now);
 
     const weekHeader = document.getElementById(weekLabelId);
     if (weekHeader) weekHeader.textContent = currentWeekData.label;
