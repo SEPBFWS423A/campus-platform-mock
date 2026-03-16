@@ -34,7 +34,7 @@ function buildEditSeriesBody(data, series) {
             <span class="student-chip" data-student-id="${s.id}">
                 ${escapeHTML(s.name)}
                 <button class="btn-icon-only btn-remove-student" data-student-id="${s.id}" type="button" title="Entfernen">
-                    <span class="material-icons-round">close</span>
+                    <span class="material-symbols-rounded">close</span>
                 </button>
             </span>`).join('')
         : '<span style="color: var(--text-secondary); font-size: 0.875rem;">Keine Studierenden zugewiesen.</span>';
@@ -46,7 +46,7 @@ function buildEditSeriesBody(data, series) {
     const studentSectionHTML = `
         <div style="margin-bottom: 1.5rem;">
             <h4 class="modal-section-heading">
-                <span class="material-icons-round">people</span>
+                <span class="material-symbols-rounded">people</span>
                 Zugewiesene Studierende
             </h4>
             <div class="student-chips" id="modal-student-chips">
@@ -59,7 +59,7 @@ function buildEditSeriesBody(data, series) {
                         ${studentOptionsHTML}
                     </select>
                     <button class="btn btn-sm btn-primary" id="modal-btn-add-student" type="button">
-                        <span class="material-icons-round">person_add</span> Hinzuf\u00fcgen
+                        <span class="material-symbols-rounded">person_add</span> Hinzuf\u00fcgen
                     </button>
                 </div>
             ` : ''}
@@ -96,26 +96,26 @@ function buildEditSeriesBody(data, series) {
                     <div class="event-list-item-actions">
                         <div class="action-group">
                             <button class="btn-icon-only btn-move-up" data-event-id="${ev.id}" ${isFirst ? 'disabled' : ''} type="button" title="Nach oben">
-                                <span class="material-icons-round">arrow_upward</span>
+                                <span class="material-symbols-rounded">arrow_upward</span>
                             </button>
                             <button class="btn-icon-only btn-move-down" data-event-id="${ev.id}" ${isLast ? 'disabled' : ''} type="button" title="Nach unten">
-                                <span class="material-icons-round">arrow_downward</span>
+                                <span class="material-symbols-rounded">arrow_downward</span>
                             </button>
                         </div>
                         <div class="action-group">
                             <button class="btn-icon-only btn-toggle-type" data-event-id="${ev.id}" type="button" title="Typ wechseln">
-                                <span class="material-icons-round">swap_horiz</span>
+                                <span class="material-symbols-rounded">swap_horiz</span>
                             </button>
                             <button class="btn-icon-only btn-edit-duration" data-event-id="${ev.id}" type="button" title="Dauer bearbeiten">
-                                <span class="material-icons-round">timer</span>
+                                <span class="material-symbols-rounded">timer</span>
                             </button>
                             <button class="btn-icon-only btn-edit-booking" data-event-id="${ev.id}" type="button" title="Buchung bearbeiten">
-                                <span class="material-icons-round">event</span>
+                                <span class="material-symbols-rounded">event</span>
                             </button>
                         </div>
                         <div class="action-group">
                             <button class="btn-icon-only danger btn-remove-event" data-event-id="${ev.id}" type="button" title="Entfernen">
-                                <span class="material-icons-round">delete</span>
+                                <span class="material-symbols-rounded">delete</span>
                             </button>
                         </div>
                     </div>
@@ -165,7 +165,7 @@ function buildEditSeriesBody(data, series) {
     const addEventHTML = `
         <div class="modal-section-divider">
             <h4 class="modal-section-heading">
-                <span class="material-icons-round">add_circle_outline</span>
+                <span class="material-symbols-rounded">add_circle_outline</span>
                 Veranstaltung hinzuf\u00fcgen
             </h4>
             <div class="inline-editor-form">
@@ -185,7 +185,7 @@ function buildEditSeriesBody(data, series) {
                     <input type="number" id="modal-new-event-duration" class="form-input" value="90" min="1" style="width: 100px;" />
                 </div>
                 <button class="btn btn-sm btn-primary" id="modal-btn-add-event" type="button">
-                    <span class="material-icons-round">add</span> Hinzuf\u00fcgen
+                    <span class="material-symbols-rounded">add</span> Hinzuf\u00fcgen
                 </button>
             </div>
         </div>
@@ -195,7 +195,7 @@ function buildEditSeriesBody(data, series) {
         ${studentSectionHTML}
         <div class="modal-section-divider">
             <h4 class="modal-section-heading">
-                <span class="material-icons-round">event</span>
+                <span class="material-symbols-rounded">event</span>
                 Veranstaltungen
             </h4>
             <div id="modal-events-list">

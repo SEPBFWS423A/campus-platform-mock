@@ -20,19 +20,19 @@ function buildTabs() {
     return `
         <div class="management-tabs">
             <button class="management-tab active" data-tab="exam-overview">
-                <span class="material-icons-round">event_note</span>
+                <span class="material-symbols-rounded">event_note</span>
                 Prüfungsübersicht
             </button>
             <button class="management-tab" data-tab="grade-entry">
-                <span class="material-icons-round">edit_note</span>
+                <span class="material-symbols-rounded">edit_note</span>
                 Noten eintragen
             </button>
             <button class="management-tab" data-tab="grade-distribution">
-                <span class="material-icons-round">bar_chart</span>
+                <span class="material-symbols-rounded">bar_chart</span>
                 Notenverteilung
             </button>
             <button class="management-tab" data-tab="csv-import">
-                <span class="material-icons-round">upload_file</span>
+                <span class="material-symbols-rounded">upload_file</span>
                 CSV-Import
             </button>
         </div>`;

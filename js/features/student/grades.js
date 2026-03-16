@@ -19,7 +19,7 @@ export function renderGrades(data) {
         gradesStatsRow.innerHTML = stats.map(stat => `
             <div class="grade-stat">
                 <div class="grade-stat-icon ${stat.colorClass}">
-                    <span class="material-icons-round">${stat.icon}</span>
+                    <span class="material-symbols-rounded">${stat.icon}</span>
                 </div>
                 <div class="grade-stat-info">
                     <span class="grade-stat-label">${stat.label}</span>
@@ -138,7 +138,7 @@ export function renderGrades(data) {
                     <h1>Notenübersicht</h1>
                     <p>Bachelor ${escapeHTML(user.courseOfStudy || '')} (B.Sc.) ${user.semester ? '- ' + user.semester + '. Semester' : ''}</p>
                 </div>
-                <button class="btn btn-primary"><span class="material-icons-round">print</span>
+                <button class="btn btn-primary"><span class="material-symbols-rounded">print</span>
                     Leistungsspiegel</button>
             </header>`;
 

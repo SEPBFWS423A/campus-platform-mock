@@ -71,7 +71,7 @@ function renderList() {
     if (filtered.length === 0) {
         container.innerHTML = `
             <div class="empty-state">
-                <span class="material-icons-round" style="font-size: 3rem; color: var(--text-secondary); margin-bottom: 0.5rem; display: block;">search_off</span>
+                <span class="material-symbols-rounded" style="font-size: 3rem; color: var(--text-secondary); margin-bottom: 0.5rem; display: block;">search_off</span>
                 <p>Keine Abgaben gefunden.</p>
                 ${(currentFilter !== 'all' || searchQuery) ?
                 '<button class="btn btn-outline btn-sm" style="margin-top: 1rem;" id="reset-filters">Filter zurücksetzen</button>' : ''
@@ -115,13 +115,13 @@ function renderList() {
             metaContent = `
                 <div class="submission-meta">
                     <div class="due-date-badge ${urgentClass}">
-                        <span class="material-icons-round">event</span>
+                        <span class="material-symbols-rounded">event</span>
                         <span>${daysLabel}</span>
                     </div>
                 </div>
                 <div class="submission-actions">
                     <button class="btn btn-primary btn-sm btn-action-glow">
-                        <span class="material-icons-round">upload</span>
+                        <span class="material-symbols-rounded">upload</span>
                         Abgeben
                     </button>
                 </div>
@@ -130,7 +130,7 @@ function renderList() {
             metaContent = `
                 <div class="submission-meta">
                     <div class="submitted-state">
-                        <span class="material-icons-round" style="font-size:1rem;color:var(--primary-color)">check_circle</span>
+                        <span class="material-symbols-rounded" style="font-size:1rem;color:var(--primary-color)">check_circle</span>
                         <span class="submitted-text">${formatDate(sub.dateSubmitted)}</span>
                     </div>
                 </div>
@@ -144,7 +144,7 @@ function renderList() {
             <div class="submission-card" role="article" aria-label="${escapeHTML(sub.title)}">
                 <div class="submission-header">
                     <div class="submission-type-icon ${typeClass}">
-                        <span class="material-icons-round" aria-hidden="true">${icon}</span>
+                        <span class="material-symbols-rounded" aria-hidden="true">${icon}</span>
                     </div>
                     <div class="submission-info">
                         <h3>${escapeHTML(sub.title)}</h3>

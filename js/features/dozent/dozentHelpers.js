@@ -45,7 +45,7 @@ export function buildEmptyState(icon, message) {
     return `
         <div class="card full-width">
             <div class="management-empty">
-                <span class="material-icons-round">${escapeHTML(icon)}</span>
+                <span class="material-symbols-rounded">${escapeHTML(icon)}</span>
                 <p>${escapeHTML(message)}</p>
             </div>
         </div>`;

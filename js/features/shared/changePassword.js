@@ -13,7 +13,7 @@ export function initChangePassword() {
     changePwBtn.className = 'dropdown-item';
     changePwBtn.setAttribute('role', 'menuitem');
     changePwBtn.innerHTML = `
-        <span class="material-icons-round" aria-hidden="true">lock_reset</span>
+        <span class="material-symbols-rounded" aria-hidden="true">lock_reset</span>
         Passwort ändern
     `;
 
@@ -113,7 +113,7 @@ function showFeedback(container, type, message) {
     const icon = type === 'success' ? 'check_circle' : 'error_outline';
     container.innerHTML = `
         <div class="management-alert ${type}">
-            <span class="material-icons-round" aria-hidden="true">${icon}</span>
+            <span class="material-symbols-rounded" aria-hidden="true">${icon}</span>
             ${escapeHTML(message)}
         </div>
     `;

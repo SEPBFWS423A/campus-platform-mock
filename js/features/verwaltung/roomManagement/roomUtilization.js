@@ -30,7 +30,7 @@ export function renderRoomUtilization(data) {
                     <input type="date" id="util-end-date" class="form-control" value="${formatISO(friday)}">
                 </div>
                 <button class="btn btn-sm btn-primary" id="util-show-btn" type="button">
-                    <span class="material-icons-round">search</span> Anzeigen
+                    <span class="material-symbols-rounded">search</span> Anzeigen
                 </button>
             </div>
             <div class="room-utilization-legend">
@@ -72,7 +72,7 @@ function computeUtilization(data) {
     if (Number.isNaN(startDate.getTime()) || Number.isNaN(endDate.getTime()) || startDate > endDate) {
         resultsDiv.innerHTML = `
             <div class="management-alert error room-alert-visible">
-                <span class="material-icons-round room-error-icon">error</span>
+                <span class="material-symbols-rounded room-error-icon">error</span>
                 Bitte gültigen Zeitraum auswählen (Startdatum <= Enddatum).
             </div>`;
         return;
@@ -84,7 +84,7 @@ function computeUtilization(data) {
     if (totalAvailableHours === 0) {
         resultsDiv.innerHTML = `
             <div class="management-alert info room-alert-visible">
-                <span class="material-icons-round room-error-icon">info</span>
+                <span class="material-symbols-rounded room-error-icon">info</span>
                 Keine Werktage im gewählten Zeitraum.
             </div>`;
         return;

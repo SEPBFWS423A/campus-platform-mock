@@ -76,7 +76,7 @@ function renderGradeEntryTable(tableArea, alertArea, data, seriesId, eventId) {
     if (students.length === 0) {
         tableArea.innerHTML = `
             <div class="management-empty">
-                <span class="material-icons-round">people_outline</span>
+                <span class="material-symbols-rounded">people_outline</span>
                 <p>Keine Studierenden in dieser Veranstaltungsreihe.</p>
             </div>`;
         return;
@@ -112,7 +112,7 @@ function renderGradeEntryTable(tableArea, alertArea, data, seriesId, eventId) {
         </table>
         <div class="mgmt-actions-right">
             <button class="btn btn-primary" id="ge-save-btn">
-                <span class="material-icons-round">save</span>
+                <span class="material-symbols-rounded">save</span>
                 Eintragen
             </button>
         </div>`;
@@ -135,7 +135,7 @@ function renderGradeEntryTable(tableArea, alertArea, data, seriesId, eventId) {
 
         alertArea.innerHTML = `
             <div class="management-alert success">
-                <span class="material-icons-round">check_circle</span>
+                <span class="material-symbols-rounded">check_circle</span>
                 ${results.length} Note(n) erfolgreich eingetragen.
             </div>`;
     });

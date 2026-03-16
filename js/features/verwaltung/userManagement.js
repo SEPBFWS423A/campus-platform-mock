@@ -24,7 +24,7 @@ export function renderUserManagement(data) {
         <div class="grid-container stats-row mgmt-stats-row">
             <div class="card stat-card">
                 <div class="stat-icon primary-bg">
-                    <span class="material-icons-round">group</span>
+                    <span class="material-symbols-rounded">group</span>
                 </div>
                 <div class="stat-info">
                     <span class="stat-label">Benutzer gesamt</span>
@@ -33,7 +33,7 @@ export function renderUserManagement(data) {
             </div>
             <div class="card stat-card">
                 <div class="stat-icon warning-bg">
-                    <span class="material-icons-round">badge</span>
+                    <span class="material-symbols-rounded">badge</span>
                 </div>
                 <div class="stat-info">
                     <span class="stat-label">Mitarbeiter</span>
@@ -42,7 +42,7 @@ export function renderUserManagement(data) {
             </div>
             <div class="card stat-card">
                 <div class="stat-icon success-bg">
-                    <span class="material-icons-round">school</span>
+                    <span class="material-symbols-rounded">school</span>
                 </div>
                 <div class="stat-info">
                     <span class="stat-label">Studierende</span>
@@ -82,7 +82,7 @@ export function renderUserManagement(data) {
                     </select>
                 </div>
                 <button type="submit" class="btn btn-sm btn-primary">
-                    <span class="material-icons-round">add</span>
+                    <span class="material-symbols-rounded">add</span>
                     Anlegen
                 </button>
             </form>
@@ -94,7 +94,7 @@ export function renderUserManagement(data) {
             </div>
             <div class="user-list-toolbar">
                 <div class="user-search-wrapper">
-                    <span class="material-icons-round user-search-icon">search</span>
+                    <span class="material-symbols-rounded user-search-icon">search</span>
                     <input type="text" id="user-search" class="user-search-input" placeholder="Benutzer suchen\u2026">
                 </div>
                 <select id="user-role-filter" class="user-role-filter">
@@ -129,10 +129,10 @@ export function renderUserManagement(data) {
                                 <td>
                                     <div class="actions-cell">
                                         <button class="btn-icon-only" data-edit-user="${u.id}" title="Bearbeiten" type="button">
-                                            <span class="material-icons-round">edit</span>
+                                            <span class="material-symbols-rounded">edit</span>
                                         </button>
                                         <button class="btn-icon-only danger" data-delete-user="${u.id}" title="Loeschen" type="button">
-                                            <span class="material-icons-round">delete</span>
+                                            <span class="material-symbols-rounded">delete</span>
                                         </button>
                                     </div>
                                 </td>
@@ -142,7 +142,7 @@ export function renderUserManagement(data) {
                 </table>
             </div>
             <div id="user-no-results" class="management-empty mgmt-hidden">
-                <span class="material-icons-round">search_off</span>
+                <span class="material-symbols-rounded">search_off</span>
                 <p>Keine Benutzer gefunden.</p>
             </div>
         </div>
@@ -202,7 +202,7 @@ function showCreateAlert(message, type) {
     const icon = type === 'error' ? 'error_outline' : 'check_circle';
     alertEl.innerHTML = `
         <div class="management-alert ${type}">
-            <span class="material-icons-round" style="font-size: 1.1rem;">${icon}</span>
+            <span class="material-symbols-rounded" style="font-size: 1.1rem;">${icon}</span>
             ${escapeHTML(message)}
         </div>
     `;
@@ -307,7 +307,7 @@ function handleEditUser(data, userId) {
                         <span class="student-chip" data-series-id="${es.id}">
                             ${escapeHTML(es.name)}
                             <button type="button" class="remove-chip" data-remove-series="${es.id}" title="Entfernen">
-                                <span class="material-icons-round" style="font-size: 0.875rem;">close</span>
+                                <span class="material-symbols-rounded" style="font-size: 0.875rem;">close</span>
                             </button>
                         </span>
                     `).join('') : '<span style="font-size: 0.8rem; color: var(--text-tertiary);">Keine Zuweisungen</span>'}
@@ -321,7 +321,7 @@ function handleEditUser(data, userId) {
                             `).join('')}
                         </select>
                         <button type="button" id="edit-add-series-btn" class="btn btn-sm btn-outline">
-                            <span class="material-icons-round" style="font-size: 1rem;">add</span>
+                            <span class="material-symbols-rounded" style="font-size: 1rem;">add</span>
                             Hinzufuegen
                         </button>
                     </div>
@@ -361,7 +361,7 @@ function handleEditUser(data, userId) {
     const footerHTML = `
         <button class="btn btn-outline modal-cancel-btn" type="button">Abbrechen</button>
         <button class="btn btn-sm" type="button" id="edit-user-save-btn">
-            <span class="material-icons-round" style="font-size: 1rem;">save</span>
+            <span class="material-symbols-rounded" style="font-size: 1rem;">save</span>
             Speichern
         </button>
     `;
@@ -435,7 +435,7 @@ function showEditAlert(message, type) {
     const icon = type === 'error' ? 'error_outline' : 'check_circle';
     alertEl.innerHTML = `
         <div class="management-alert ${type}">
-            <span class="material-icons-round" style="font-size: 1.1rem;">${icon}</span>
+            <span class="material-symbols-rounded" style="font-size: 1.1rem;">${icon}</span>
             ${escapeHTML(message)}
         </div>
     `;

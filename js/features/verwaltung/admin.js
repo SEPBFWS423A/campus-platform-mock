@@ -12,7 +12,7 @@ export function renderAdminStudents(data) {
         <div class="grid-container stats-row" style="margin-bottom: 1.5rem;">
             <div class="card stat-card">
                 <div class="stat-icon primary-bg">
-                    <span class="material-icons-round">people</span>
+                    <span class="material-symbols-rounded">people</span>
                 </div>
                 <div class="stat-info">
                     <span class="stat-label">Eingeschriebene Studierende</span>
@@ -21,7 +21,7 @@ export function renderAdminStudents(data) {
             </div>
             <div class="card stat-card">
                 <div class="stat-icon success-bg">
-                    <span class="material-icons-round">school</span>
+                    <span class="material-symbols-rounded">school</span>
                 </div>
                 <div class="stat-info">
                     <span class="stat-label">Module gesamt</span>
@@ -30,7 +30,7 @@ export function renderAdminStudents(data) {
             </div>
             <div class="card stat-card">
                 <div class="stat-icon warning-bg">
-                    <span class="material-icons-round">check_circle</span>
+                    <span class="material-symbols-rounded">check_circle</span>
                 </div>
                 <div class="stat-info">
                     <span class="stat-label">Bestandene Pr\u00fcfungen</span>
@@ -90,7 +90,7 @@ export function renderAdminExams(data) {
         <div class="grid-container stats-row" style="margin-bottom: 1.5rem;">
             <div class="card stat-card">
                 <div class="stat-icon primary-bg">
-                    <span class="material-icons-round">event_note</span>
+                    <span class="material-symbols-rounded">event_note</span>
                 </div>
                 <div class="stat-info">
                     <span class="stat-label">Geplante Pr\u00fcfungen</span>
@@ -99,7 +99,7 @@ export function renderAdminExams(data) {
             </div>
             <div class="card stat-card">
                 <div class="stat-icon warning-bg">
-                    <span class="material-icons-round">meeting_room</span>
+                    <span class="material-symbols-rounded">meeting_room</span>
                 </div>
                 <div class="stat-info">
                     <span class="stat-label">Gebuchte R\u00e4ume</span>

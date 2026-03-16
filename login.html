@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/login.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
 </head>
 
 <body class="light-mode">
@@ -19,12 +19,12 @@
         <div class="login-top-controls">
             <div class="credentials-dropdown">
                 <button id="credentials-toggle" class="login-theme-toggle credentials-toggle-btn" type="button" aria-label="Testzugänge anzeigen" aria-expanded="false" aria-controls="credentials-panel">
-                    <span class="material-icons-round" aria-hidden="true">vpn_key</span>
+                    <span class="material-symbols-rounded" aria-hidden="true">vpn_key</span>
                     <span class="credentials-toggle-label">Testzugänge</span>
                 </button>
                 <aside id="credentials-panel" class="credentials-card credentials-panel" aria-label="Testzugangsdaten" hidden>
                     <div class="credentials-header">
-                        <span class="material-icons-round" aria-hidden="true">vpn_key</span>
+                        <span class="material-symbols-rounded" aria-hidden="true">vpn_key</span>
                         <h2>Testzugänge</h2>
                     </div>
                     <div id="credentials-list" class="credentials-list">
@@ -32,7 +32,7 @@
                 </aside>
             </div>
             <button id="theme-toggle" class="login-theme-toggle" type="button" aria-label="Dunkles Design aktivieren">
-                <span class="material-icons-round" aria-hidden="true">dark_mode</span>
+                <span class="material-symbols-rounded" aria-hidden="true">dark_mode</span>
             </button>
         </div>
 
@@ -46,7 +46,7 @@
             <main class="login-card" role="main">
                 <div class="login-header">
                     <div class="login-brand">
-                        <span class="material-icons-round login-logo" aria-hidden="true">school</span>
+                        <span class="material-symbols-rounded login-logo" aria-hidden="true">school</span>
                         <span class="login-brand-name">CampusPlatform</span>
                     </div>
                     <h1 id="login-title">Willkommen</h1>
@@ -57,25 +57,25 @@
                     <div class="form-group">
                         <label for="username">Benutzername</label>
                         <div class="input-wrapper">
-                            <span class="material-icons-round input-icon" aria-hidden="true">person</span>
+                            <span class="material-symbols-rounded input-icon" aria-hidden="true">person</span>
                             <input type="text" id="username" placeholder="benutzername" required autocomplete="username" aria-required="true">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="password">Passwort</label>
                         <div class="input-wrapper">
-                            <span class="material-icons-round input-icon" aria-hidden="true">lock</span>
+                            <span class="material-symbols-rounded input-icon" aria-hidden="true">lock</span>
                             <input type="password" id="password" placeholder="••••••••" required autocomplete="current-password" aria-required="true">
                         </div>
                         <p class="form-hint">Bitte halten Sie Ihr Passwort geheim.</p>
                     </div>
                     <div id="login-error" class="login-error" role="alert" aria-live="assertive" hidden>
-                        <span class="material-icons-round" aria-hidden="true">error_outline</span>
+                        <span class="material-symbols-rounded" aria-hidden="true">error_outline</span>
                         <span id="login-error-text">Benutzername oder Passwort nicht korrekt.</span>
                     </div>
                     <button type="submit" class="btn btn-primary btn-block btn-login">
                         <span class="btn-text">Anmelden</span>
-                        <span class="material-icons-round btn-icon" aria-hidden="true">arrow_forward</span>
+                        <span class="material-symbols-rounded btn-icon" aria-hidden="true">arrow_forward</span>
                     </button>
                     <a href="#" class="forgot-password">Passwort vergessen?</a>
                 </form>
@@ -254,7 +254,7 @@
                 html += `
                     <div class="credentials-group">
                         <div class="credentials-group-label">
-                            <span class="material-icons-round" aria-hidden="true">${roleIcons[role]}</span>
+                            <span class="material-symbols-rounded" aria-hidden="true">${roleIcons[role]}</span>
                             ${roleLabels[role]}
                         </div>
                         ${users.map(u => `
@@ -263,8 +263,8 @@
                                     title="Klicken zum Ausfüllen">
                                 <div class="credentials-name">${u.name}</div>
                                 <div class="credentials-details">
-                                    <span class="credentials-user"><span class="material-icons-round" aria-hidden="true">person</span>${u.username}</span>
-                                    <span class="credentials-pass"><span class="material-icons-round" aria-hidden="true">lock</span>${u.password}</span>
+                                    <span class="credentials-user"><span class="material-symbols-rounded" aria-hidden="true">person</span>${u.username}</span>
+                                    <span class="credentials-pass"><span class="material-symbols-rounded" aria-hidden="true">lock</span>${u.password}</span>
                                 </div>
                             </button>
                         `).join('')}

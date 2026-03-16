@@ -28,7 +28,7 @@ export function renderVerwaltungDashboard(data, user, navigation) {
         statsContainer.innerHTML = `
             <div class="card stat-card">
                 <div class="stat-icon primary-bg">
-                    <span class="material-icons-round">people</span>
+                    <span class="material-symbols-rounded">people</span>
                 </div>
                 <div class="stat-info">
                     <span class="stat-label">Benutzer gesamt</span>
@@ -38,7 +38,7 @@ export function renderVerwaltungDashboard(data, user, navigation) {
             </div>
             <div class="card stat-card">
                 <div class="stat-icon warning-bg">
-                    <span class="material-icons-round">meeting_room</span>
+                    <span class="material-symbols-rounded">meeting_room</span>
                 </div>
                 <div class="stat-info">
                     <span class="stat-label">R\u00e4ume</span>
@@ -48,7 +48,7 @@ export function renderVerwaltungDashboard(data, user, navigation) {
             </div>
             <div class="card stat-card">
                 <div class="stat-icon success-bg">
-                    <span class="material-icons-round">event</span>
+                    <span class="material-symbols-rounded">event</span>
                 </div>
                 <div class="stat-info">
                     <span class="stat-label">Veranstaltungsreihen</span>
@@ -58,7 +58,7 @@ export function renderVerwaltungDashboard(data, user, navigation) {
             </div>
             <div class="card stat-card">
                 <div class="stat-icon secondary-bg">
-                    <span class="material-icons-round">assessment</span>
+                    <span class="material-symbols-rounded">assessment</span>
                 </div>
                 <div class="stat-info">
                     <span class="stat-label">Pr\u00fcfungsergebnisse</span>
@@ -91,7 +91,7 @@ export function renderVerwaltungDashboard(data, user, navigation) {
         timelineContainer.innerHTML = `
             <div class="admin-overview-section">
                 <h4 class="admin-overview-heading">
-                    <span class="material-icons-round">group</span>
+                    <span class="material-symbols-rounded">group</span>
                     Benutzer nach Rolle
                 </h4>
                 <div class="admin-overview-bars">
@@ -123,7 +123,7 @@ export function renderVerwaltungDashboard(data, user, navigation) {
 
             <div class="admin-overview-section">
                 <h4 class="admin-overview-heading">
-                    <span class="material-icons-round">meeting_room</span>
+                    <span class="material-symbols-rounded">meeting_room</span>
                     Raumauslastung
                 </h4>
                 <div class="admin-bar-item">
@@ -149,7 +149,7 @@ export function renderVerwaltungDashboard(data, user, navigation) {
 
             <div class="admin-overview-section">
                 <h4 class="admin-overview-heading">
-                    <span class="material-icons-round">inventory</span>
+                    <span class="material-symbols-rounded">inventory</span>
                     R\u00e4ume im Detail
                 </h4>
                 <div class="admin-room-list">
@@ -195,7 +195,7 @@ export function renderVerwaltungDashboard(data, user, navigation) {
                 return `
                     <li>
                         <div class="activity-icon ${iconColor}">
-                            <span class="material-icons-round">event_note</span>
+                            <span class="material-symbols-rounded">event_note</span>
                         </div>
                         <div class="activity-content">
                             <p class="activity-text"><strong>${escapeHTML(m.name)}</strong></p>
@@ -208,7 +208,7 @@ export function renderVerwaltungDashboard(data, user, navigation) {
             activityList.innerHTML = `
                 <li>
                     <div class="activity-icon primary">
-                        <span class="material-icons-round">check_circle</span>
+                        <span class="material-symbols-rounded">check_circle</span>
                     </div>
                     <div class="activity-content">
                         <p class="activity-text">Keine anstehenden Pr\u00fcfungen</p>
@@ -228,19 +228,19 @@ export function renderVerwaltungDashboard(data, user, navigation) {
     if (actionButtons) {
         actionButtons.innerHTML = `
             <button class="btn-action" data-nav="admin-users">
-                <span class="material-icons-round">manage_accounts</span>
+                <span class="material-symbols-rounded">manage_accounts</span>
                 <span>Benutzer</span>
             </button>
             <button class="btn-action" data-nav="admin-rooms">
-                <span class="material-icons-round">meeting_room</span>
+                <span class="material-symbols-rounded">meeting_room</span>
                 <span>R\u00e4ume</span>
             </button>
             <button class="btn-action" data-nav="admin-events">
-                <span class="material-icons-round">event</span>
+                <span class="material-symbols-rounded">event</span>
                 <span>Veranstaltungen</span>
             </button>
             <button class="btn-action" data-nav="admin-exams">
-                <span class="material-icons-round">assessment</span>
+                <span class="material-symbols-rounded">assessment</span>
                 <span>Pr\u00fcfungsamt</span>
             </button>
         `;

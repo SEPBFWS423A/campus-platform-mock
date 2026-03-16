@@ -377,7 +377,7 @@ select.form-input,
     font-weight: 600;
 }
 
-.management-tab .material-icons-round {
+.management-tab .material-symbols-rounded {
     font-size: 1.1rem;
 }
 
@@ -475,7 +475,7 @@ body.dark-mode .type-badge.lehrveranstaltung {
     gap: 0.35rem;
 }
 
-.series-card-subtitle .material-icons-round {
+.series-card-subtitle .material-symbols-rounded {
     font-size: 0.9rem;
     color: var(--text-tertiary);
 }
@@ -559,7 +559,7 @@ body.dark-mode .type-badge.lehrveranstaltung {
     white-space: nowrap;
 }
 
-.event-list-item-meta .meta-item .material-icons-round {
+.event-list-item-meta .meta-item .material-symbols-rounded {
     font-size: 0.85rem;
     color: var(--text-tertiary);
 }
@@ -765,7 +765,7 @@ body.dark-mode .type-badge.lehrveranstaltung {
     background-color: rgba(37, 99, 235, 0.04);
 }
 
-.csv-upload-zone .material-icons-round {
+.csv-upload-zone .material-symbols-rounded {
     font-size: 2.5rem;
     color: var(--text-tertiary);
     margin-bottom: 0.5rem;
@@ -788,7 +788,7 @@ body.dark-mode .type-badge.lehrveranstaltung {
     color: var(--text-secondary);
 }
 
-.management-empty .material-icons-round {
+.management-empty .material-symbols-rounded {
     font-size: 3rem;
     margin-bottom: 0.75rem;
     opacity: 0.35;
@@ -853,7 +853,7 @@ body.dark-mode .type-badge.lehrveranstaltung {
     margin-bottom: 1rem;
 }
 
-.management-alert .material-icons-round {
+.management-alert .material-symbols-rounded {
     font-size: 1.15rem;
     flex-shrink: 0;
 }
@@ -926,7 +926,7 @@ body.dark-mode .type-badge.lehrveranstaltung {
     gap: 0.4rem;
 }
 
-.modal-section-heading .material-icons-round {
+.modal-section-heading .material-symbols-rounded {
     font-size: 1.1rem;
     color: var(--text-tertiary);
 }
@@ -1279,7 +1279,7 @@ body.dark-mode .room-utilization-legend {
     flex-shrink: 0;
 }
 
-.dozent-card-icon .material-icons-round {
+.dozent-card-icon .material-symbols-rounded {
     font-size: 1.35rem;
 }
 
@@ -1313,7 +1313,7 @@ body.dark-mode .room-utilization-legend {
     color: var(--text-secondary);
 }
 
-.dozent-meta-row .material-icons-round {
+.dozent-meta-row .material-symbols-rounded {
     font-size: 1.05rem;
     color: var(--text-tertiary);
     flex-shrink: 0;
@@ -1402,7 +1402,7 @@ body.dark-mode .room-utilization-legend {
     border-left: 3px solid var(--primary-color);
 }
 
-.dozent-grading-course-info .material-icons-round {
+.dozent-grading-course-info .material-symbols-rounded {
     font-size: 1.1rem;
     color: var(--primary-color);
     flex-shrink: 0;
@@ -1493,7 +1493,7 @@ body.dark-mode .room-utilization-legend {
         height: 2.5rem;
     }
 
-    .dozent-card-icon .material-icons-round {
+    .dozent-card-icon .material-symbols-rounded {
         font-size: 1.15rem;
     }
 
@@ -1552,7 +1552,7 @@ body.dark-mode .room-utilization-legend {
     padding: 2rem;
 }
 
-.empty-state-block .material-icons-round {
+.empty-state-block .material-symbols-rounded {
     font-size: 2.5rem;
     color: var(--text-secondary);
     margin-bottom: 0.5rem;
@@ -1568,7 +1568,7 @@ body.dark-mode .room-utilization-legend {
     padding: 3rem;
 }
 
-.empty-state-block.error-state .material-icons-round {
+.empty-state-block.error-state .material-symbols-rounded {
     font-size: 3rem;
     color: var(--error-color);
 }
@@ -1617,7 +1617,7 @@ body.dark-mode .room-utilization-legend {
         white-space: nowrap;
     }
 
-    .management-tab .material-icons-round {
+    .management-tab .material-symbols-rounded {
         font-size: 1rem;
     }
 
@@ -1625,7 +1625,7 @@ body.dark-mode .room-utilization-legend {
         padding: 1.5rem 1rem;
     }
 
-    .csv-upload-zone .material-icons-round {
+    .csv-upload-zone .material-symbols-rounded {
         font-size: 2rem;
     }
 
@@ -1678,7 +1678,7 @@ body.dark-mode .room-utilization-legend {
         padding: 1.5rem 1rem;
     }
 
-    .empty-state-block .material-icons-round {
+    .empty-state-block .material-symbols-rounded {
         font-size: 2rem;
     }
 }

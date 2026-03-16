@@ -12,7 +12,7 @@ export function buildOverviewTab(data) {
             <div class="grid-container stats-row mgmt-stats-row">
                 <div class="card stat-card">
                     <div class="stat-icon primary-bg">
-                        <span class="material-icons-round">event_note</span>
+                        <span class="material-symbols-rounded">event_note</span>
                     </div>
                     <div class="stat-info">
                         <span class="stat-label">Geplante Prüfungen</span>
@@ -21,7 +21,7 @@ export function buildOverviewTab(data) {
                 </div>
                 <div class="card stat-card">
                     <div class="stat-icon warning-bg">
-                        <span class="material-icons-round">meeting_room</span>
+                        <span class="material-symbols-rounded">meeting_room</span>
                     </div>
                     <div class="stat-info">
                         <span class="stat-label">Gebuchte Räume</span>

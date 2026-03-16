@@ -40,7 +40,7 @@ export function renderRoomManagement(data) {
         <div class="grid-container stats-row room-stats-row">
             <div class="card stat-card">
                 <div class="stat-icon primary-bg">
-                    <span class="material-icons-round">meeting_room</span>
+                    <span class="material-symbols-rounded">meeting_room</span>
                 </div>
                 <div class="stat-info">
                     <span class="stat-label">Räume gesamt</span>
@@ -49,7 +49,7 @@ export function renderRoomManagement(data) {
             </div>
             <div class="card stat-card">
                 <div class="stat-icon success-bg">
-                    <span class="material-icons-round">event_seat</span>
+                    <span class="material-symbols-rounded">event_seat</span>
                 </div>
                 <div class="stat-info">
                     <span class="stat-label">Sitzplätze gesamt</span>
@@ -58,7 +58,7 @@ export function renderRoomManagement(data) {
             </div>
             <div class="card stat-card">
                 <div class="stat-icon warning-bg">
-                    <span class="material-icons-round">speed</span>
+                    <span class="material-symbols-rounded">speed</span>
                 </div>
                 <div class="stat-info">
                     <span class="stat-label">Gesamtauslastung</span>
@@ -69,13 +69,13 @@ export function renderRoomManagement(data) {
 
         <div class="management-tabs">
             <button class="management-tab active" data-tab="room-list">
-                <span class="material-icons-round">list</span> Raumliste
+                <span class="material-symbols-rounded">list</span> Raumliste
             </button>
             <button class="management-tab" data-tab="room-schedule">
-                <span class="material-icons-round">calendar_month</span> Belegungsplan
+                <span class="material-symbols-rounded">calendar_month</span> Belegungsplan
             </button>
             <button class="management-tab" data-tab="room-utilization">
-                <span class="material-icons-round">bar_chart</span> Auslastung
+                <span class="material-symbols-rounded">bar_chart</span> Auslastung
             </button>
         </div>
 

@@ -70,12 +70,12 @@ function renderUserSwitcher() {
                 <button class="dropdown-item user-switch-item ${isActive ? 'active' : ''}"
                         data-user-id="${user.id}" role="menuitem"
                         ${isActive ? 'aria-current="true"' : ''}>
-                    <span class="material-icons-round" aria-hidden="true">${roleIcons[user.role] || 'person'}</span>
+                    <span class="material-symbols-rounded" aria-hidden="true">${roleIcons[user.role] || 'person'}</span>
                     <span class="user-switch-info">
                         <span class="user-switch-name">${user.name}</span>
                         <span class="user-switch-role">${user.roleLabel}</span>
                     </span>
-                    ${isActive ? '<span class="material-icons-round user-switch-check" aria-hidden="true">check</span>' : ''}
+                    ${isActive ? '<span class="material-symbols-rounded user-switch-check" aria-hidden="true">check</span>' : ''}
                 </button>
             `;
         }).join('');

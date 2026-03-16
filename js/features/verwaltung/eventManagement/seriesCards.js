@@ -19,24 +19,24 @@ function formatSchedule(schedule) {
 
 function buildEventMeta(ev, rooms) {
     const durationHTML = `<span class="meta-item">
-        <span class="material-icons-round">timer</span>${ev.duration} min
+        <span class="material-symbols-rounded">timer</span>${ev.duration} min
     </span>`;
 
     const scheduleHTML = ev.schedule
         ? `<span class="meta-item">
-            <span class="material-icons-round">schedule</span>${DAY_SHORT[ev.schedule.day]} ${ev.schedule.start}\u2013${ev.schedule.end}
+            <span class="material-symbols-rounded">schedule</span>${DAY_SHORT[ev.schedule.day]} ${ev.schedule.start}\u2013${ev.schedule.end}
           </span>`
         : `<span class="meta-item unplanned">
-            <span class="material-icons-round">event_busy</span>Nicht geplant
+            <span class="material-symbols-rounded">event_busy</span>Nicht geplant
           </span>`;
 
     const roomName = getRoomName(rooms, ev.roomId);
     const roomHTML = ev.roomId != null
         ? `<span class="meta-item">
-            <span class="material-icons-round">meeting_room</span>${escapeHTML(roomName)}
+            <span class="material-symbols-rounded">meeting_room</span>${escapeHTML(roomName)}
           </span>`
         : `<span class="meta-item unplanned">
-            <span class="material-icons-round">meeting_room</span>Kein Raum
+            <span class="material-symbols-rounded">meeting_room</span>Kein Raum
           </span>`;
 
     return `${durationHTML}${scheduleHTML}${roomHTML}`;
@@ -83,16 +83,16 @@ export function renderEventManagement(data) {
                     <div>
                         <div class="series-card-title">${escapeHTML(series.name)}</div>
                         <div class="series-card-subtitle">
-                            <span class="material-icons-round">group</span>
+                            <span class="material-symbols-rounded">group</span>
                             ${studentCount} Studierende zugewiesen
                         </div>
                     </div>
                     <div class="series-card-actions">
                         <button class="btn btn-sm btn-outline btn-edit-series" data-series-id="${series.id}" type="button">
-                            <span class="material-icons-round">edit</span> Bearbeiten
+                            <span class="material-symbols-rounded">edit</span> Bearbeiten
                         </button>
                         <button class="btn btn-sm btn-danger btn-delete-series" data-series-id="${series.id}" type="button">
-                            <span class="material-icons-round">delete</span> L\u00f6schen
+                            <span class="material-symbols-rounded">delete</span> L\u00f6schen
                         </button>
                     </div>
                 </div>
@@ -113,13 +113,13 @@ export function renderEventManagement(data) {
                     <input type="text" id="new-series-name" placeholder="z.\u00a0B. Datenbanken II" />
                 </div>
                 <button class="btn btn-sm btn-primary" id="btn-create-series" type="button">
-                    <span class="material-icons-round">add</span> Anlegen
+                    <span class="material-symbols-rounded">add</span> Anlegen
                 </button>
             </div>
         </div>
 
         <div class="series-cards-grid">
-            ${cardsHTML || '<div class="management-empty"><span class="material-icons-round">event_busy</span><p>Keine Veranstaltungsreihen vorhanden.</p></div>'}
+            ${cardsHTML || '<div class="management-empty"><span class="material-symbols-rounded">event_busy</span><p>Keine Veranstaltungsreihen vorhanden.</p></div>'}
         </div>
 
         <div class="card" style="margin-top: 2rem;">
@@ -139,7 +139,7 @@ export function renderEventManagement(data) {
                     <input type="date" id="auto-plan-end" />
                 </div>
                 <button class="btn btn-sm btn-primary" id="btn-auto-plan" type="button">
-                    <span class="material-icons-round">auto_fix_high</span> Planung starten
+                    <span class="material-symbols-rounded">auto_fix_high</span> Planung starten
                 </button>
             </div>
             <div id="auto-plan-result"></div>

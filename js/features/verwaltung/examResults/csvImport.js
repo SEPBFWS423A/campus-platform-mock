@@ -32,7 +32,7 @@ export function buildCsvImportTab(data) {
                 </div>
 
                 <div class="csv-upload-zone" id="ci-upload-zone">
-                    <span class="material-icons-round">upload_file</span>
+                    <span class="material-symbols-rounded">upload_file</span>
                     <p>CSV-Datei hier ablegen oder klicken</p>
                     <p class="hint">Format: Matrikelnummer;Note (eine Zeile pro Student)</p>
                     <input type="file" accept=".csv" id="ci-file-input" class="mgmt-hidden">
@@ -104,7 +104,7 @@ function handleCsvFile(file, container, data) {
     if (!seriesId || !eventId) {
         alertArea.innerHTML = `
             <div class="management-alert error">
-                <span class="material-icons-round">error</span>
+                <span class="material-symbols-rounded">error</span>
                 Bitte zuerst Veranstaltungsreihe und Klausur auswählen.
             </div>`;
         return;
@@ -169,7 +169,7 @@ function handleCsvFile(file, container, data) {
             ${validCount > 0 ? `
                 <div class="mgmt-actions-right">
                     <button class="btn btn-primary" id="ci-apply-btn">
-                        <span class="material-icons-round">save</span>
+                        <span class="material-symbols-rounded">save</span>
                         Übernehmen (${validCount} gültig)
                     </button>
                 </div>` : ''}
@@ -194,7 +194,7 @@ function handleCsvFile(file, container, data) {
 
                 alertArea.innerHTML = `
                     <div class="management-alert success">
-                        <span class="material-icons-round">check_circle</span>
+                        <span class="material-symbols-rounded">check_circle</span>
                         Import abgeschlossen: ${validCount} Note(n) übernommen${errorCount > 0 ? `, ${errorCount} Fehler übersprungen` : ''}.
                     </div>`;
 

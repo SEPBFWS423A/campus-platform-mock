@@ -93,7 +93,7 @@
     box-shadow: none;
 }
 
-.category-item .material-icons-round {
+.category-item .material-symbols-rounded {
     font-size: 1.25rem;
 }
 
@@ -197,7 +197,7 @@
     font-weight: 600;
 }
 
-.file-section-header h3 .material-icons-round {
+.file-section-header h3 .material-symbols-rounded {
     color: var(--primary-color);
 }
 
@@ -236,7 +236,7 @@
     overflow: hidden;
 }
 
-.file-type-icon-sm .material-icons-round {
+.file-type-icon-sm .material-symbols-rounded {
     font-size: 1.6rem;
     color: white;
     z-index: 1;
@@ -502,7 +502,7 @@ body.dark-mode .upload-zone:hover {
         flex-shrink: 0;
     }
 
-    .file-type-icon-sm .material-icons-round {
+    .file-type-icon-sm .material-symbols-rounded {
         font-size: 1.5rem;
     }
 

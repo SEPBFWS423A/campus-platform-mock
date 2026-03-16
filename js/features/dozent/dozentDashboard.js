@@ -28,7 +28,7 @@ export function renderDozentDashboard(data, user, navigation) {
         statsContainer.innerHTML = `
             <div class="card stat-card">
                 <div class="stat-icon primary-bg">
-                    <span class="material-icons-round">menu_book</span>
+                    <span class="material-symbols-rounded">menu_book</span>
                 </div>
                 <div class="stat-info">
                     <span class="stat-label">Aktive Kurse</span>
@@ -38,7 +38,7 @@ export function renderDozentDashboard(data, user, navigation) {
             </div>
             <div class="card stat-card">
                 <div class="stat-icon success-bg">
-                    <span class="material-icons-round">people</span>
+                    <span class="material-symbols-rounded">people</span>
                 </div>
                 <div class="stat-info">
                     <span class="stat-label">Studierende</span>
@@ -48,7 +48,7 @@ export function renderDozentDashboard(data, user, navigation) {
             </div>
             <div class="card stat-card">
                 <div class="stat-icon warning-bg">
-                    <span class="material-icons-round">event</span>
+                    <span class="material-symbols-rounded">event</span>
                 </div>
                 <div class="stat-info">
                     <span class="stat-label">Anstehende Pr\u00fcfungen</span>
@@ -58,7 +58,7 @@ export function renderDozentDashboard(data, user, navigation) {
             </div>
             <div class="card stat-card">
                 <div class="stat-icon secondary-bg">
-                    <span class="material-icons-round">bar_chart</span>
+                    <span class="material-symbols-rounded">bar_chart</span>
                 </div>
                 <div class="stat-info">
                     <span class="stat-label">Notenschnitt</span>
@@ -127,7 +127,7 @@ export function renderDozentDashboard(data, user, navigation) {
             timelineContainer.innerHTML = `
                 <div class="timeline-item">
                     <div class="content empty-state-block">
-                        <span class="material-icons-round">event_busy</span>
+                        <span class="material-symbols-rounded">event_busy</span>
                         <p>Keine Lehrveranstaltungen am ${escapeHTML(dayNames[currentDayIndex] || 'heute')}.</p>
                     </div>
                 </div>`;
@@ -148,7 +148,7 @@ export function renderDozentDashboard(data, user, navigation) {
             items.push(`
                 <li>
                     <div class="activity-icon warning">
-                        <span class="material-icons-round">event_note</span>
+                        <span class="material-symbols-rounded">event_note</span>
                     </div>
                     <div class="activity-content">
                         <p class="activity-text"><strong>${escapeHTML(c.name)}</strong> \u2013 ${escapeHTML(c.exam.type || 'Klausur')}</p>
@@ -161,7 +161,7 @@ export function renderDozentDashboard(data, user, navigation) {
         items.push(`
             <li>
                 <div class="activity-icon primary">
-                    <span class="material-icons-round">upload_file</span>
+                    <span class="material-symbols-rounded">upload_file</span>
                 </div>
                 <div class="activity-content">
                     <p class="activity-text">3 neue Abgaben in <strong>IT-Projektmanagement</strong></p>
@@ -172,7 +172,7 @@ export function renderDozentDashboard(data, user, navigation) {
         items.push(`
             <li>
                 <div class="activity-icon success">
-                    <span class="material-icons-round">check_circle</span>
+                    <span class="material-symbols-rounded">check_circle</span>
                 </div>
                 <div class="activity-content">
                     <p class="activity-text">Notenvergabe f\u00fcr <strong>E-Business</strong> abgeschlossen</p>
@@ -183,7 +183,7 @@ export function renderDozentDashboard(data, user, navigation) {
         items.push(`
             <li>
                 <div class="activity-icon warning">
-                    <span class="material-icons-round">schedule</span>
+                    <span class="material-symbols-rounded">schedule</span>
                 </div>
                 <div class="activity-content">
                     <p class="activity-text">Notenfrist <strong>Gesch\u00e4ftsprozessmodellierung</strong> l\u00e4uft ab</p>
@@ -204,19 +204,19 @@ export function renderDozentDashboard(data, user, navigation) {
     if (actionButtons) {
         actionButtons.innerHTML = `
             <button class="btn-action" data-nav="dozent-courses">
-                <span class="material-icons-round">menu_book</span>
+                <span class="material-symbols-rounded">menu_book</span>
                 <span>Meine Kurse</span>
             </button>
             <button class="btn-action" data-nav="dozent-grading">
-                <span class="material-icons-round">grading</span>
+                <span class="material-symbols-rounded">grading</span>
                 <span>Notenvergabe</span>
             </button>
             <button class="btn-action" data-nav="downloads">
-                <span class="material-icons-round">folder</span>
+                <span class="material-symbols-rounded">folder</span>
                 <span>Downloads</span>
             </button>
             <button class="btn-action" data-nav="info">
-                <span class="material-icons-round">info</span>
+                <span class="material-symbols-rounded">info</span>
                 <span>Uni-Info</span>
             </button>
         `;

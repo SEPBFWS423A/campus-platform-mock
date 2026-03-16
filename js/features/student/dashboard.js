@@ -18,12 +18,12 @@ export function renderDashboard(data) {
         statsContainer.innerHTML = stats.map(stat => `
             <div class="card stat-card">
                 <div class="stat-icon ${stat.colorClass}">
-                    <span class="material-icons-round">${stat.icon}</span>
+                    <span class="material-symbols-rounded">${stat.icon}</span>
                 </div>
                 <div class="stat-info">
                     <span class="stat-label">${stat.label}</span>
                     <span class="stat-value">${stat.value}</span>
-                    ${stat.trend ? `<span class="stat-trend ${stat.trendClass}"><span class="material-icons-round">${stat.trendIcon}</span> ${stat.trend}</span>` : ''}
+                    ${stat.trend ? `<span class="stat-trend ${stat.trendClass}"><span class="material-symbols-rounded">${stat.trendIcon}</span> ${stat.trend}</span>` : ''}
                     ${stat.progress ? `<div class="progress-bar"><div class="progress-fill" style="width: ${stat.progress}%;"></div></div>` : ''}
                     ${stat.desc ? `<span class="stat-desc">${stat.desc}</span>` : ''}
                 </div>
@@ -78,7 +78,7 @@ export function renderDashboard(data) {
     if (activityList && data.notifications) {
         activityList.innerHTML = data.notifications.map(item => `
             <li>
-                <div class="activity-icon ${item.colorClass}"><span class="material-icons-round">${item.icon}</span></div>
+                <div class="activity-icon ${item.colorClass}"><span class="material-symbols-rounded">${item.icon}</span></div>
                 <div class="activity-content">
                     <p class="activity-text">${item.text}</p>
                     <span class="activity-time">${item.time}</span>

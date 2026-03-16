@@ -68,6 +68,193 @@ body.dark-mode {
     --gray-dark: #d1d5db;
 }
 
+/* ── Material Symbols Base ── */
+.material-symbols-rounded {
+    font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24;
+    transition: font-variation-settings 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                color 0.2s ease,
+                transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: font-variation-settings;
+}
+
+/* Filled variant for active/selected states */
+.icon-filled,
+.nav-item.active .material-symbols-rounded,
+.sidebar-links .nav-item.active .material-symbols-rounded {
+    font-variation-settings:
+        'FILL' 1,
+        'wght' 500,
+        'GRAD' 0,
+        'opsz' 24;
+}
+
+/* Nav icons fill on hover */
+.nav-item:hover .material-symbols-rounded {
+    font-variation-settings:
+        'FILL' 0.5,
+        'wght' 450,
+        'GRAD' 0,
+        'opsz' 24;
+}
+
+/* Icon buttons: subtle scale + fill on hover */
+.icon-btn:hover .material-symbols-rounded {
+    transform: scale(1.1);
+    font-variation-settings:
+        'FILL' 0.6,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24;
+}
+
+/* Theme toggle rotation */
+#theme-toggle .material-symbols-rounded {
+    transition: font-variation-settings 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                color 0.2s ease,
+                transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#theme-toggle:hover .material-symbols-rounded {
+    transform: rotate(30deg) scale(1.15);
+}
+
+/* Quick-action buttons: bounce effect */
+.btn-action:hover .material-symbols-rounded {
+    transform: translateY(-2px) scale(1.08);
+    font-variation-settings:
+        'FILL' 1,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24;
+}
+
+/* Primary buttons: filled icons */
+.btn-primary .material-symbols-rounded {
+    font-variation-settings:
+        'FILL' 1,
+        'wght' 500,
+        'GRAD' 0,
+        'opsz' 24;
+}
+
+/* Activity feed icons: always filled */
+.activity-icon .material-symbols-rounded {
+    font-variation-settings:
+        'FILL' 1,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24;
+}
+
+/* Stat card icons: filled + bolder */
+.stat-icon .material-symbols-rounded {
+    font-variation-settings:
+        'FILL' 1,
+        'wght' 600,
+        'GRAD' 0,
+        'opsz' 24;
+}
+
+/* Widget icons: filled */
+.widget-icon .material-symbols-rounded {
+    font-variation-settings:
+        'FILL' 1,
+        'wght' 500,
+        'GRAD' 0,
+        'opsz' 24;
+}
+
+/* File/download icons: filled */
+.file-icon .material-symbols-rounded {
+    font-variation-settings:
+        'FILL' 1,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24;
+}
+
+/* Heading icons: filled for brand emphasis */
+.heading-icon {
+    font-variation-settings:
+        'FILL' 1,
+        'wght' 500,
+        'GRAD' 0,
+        'opsz' 24;
+}
+
+/* Category sidebar: fill on hover/active */
+.category-item:hover .material-symbols-rounded {
+    font-variation-settings:
+        'FILL' 0.6,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24;
+}
+
+.category-item.active .material-symbols-rounded {
+    font-variation-settings:
+        'FILL' 1,
+        'wght' 500,
+        'GRAD' 0,
+        'opsz' 24;
+}
+
+/* Dropdown menuitem icons: fill on hover */
+.dropdown-item:hover .material-symbols-rounded {
+    font-variation-settings:
+        'FILL' 0.7,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24;
+}
+
+/* Danger/error state: heavier weight */
+.dropdown-item.danger .material-symbols-rounded {
+    font-variation-settings:
+        'FILL' 0,
+        'wght' 500,
+        'GRAD' 0,
+        'opsz' 24;
+}
+
+.dropdown-item.danger:hover .material-symbols-rounded {
+    font-variation-settings:
+        'FILL' 1,
+        'wght' 500,
+        'GRAD' 0,
+        'opsz' 24;
+}
+
+/* Section tabs: fill active tab icon */
+.section-tab.active .material-symbols-rounded {
+    font-variation-settings:
+        'FILL' 1,
+        'wght' 500,
+        'GRAD' 0,
+        'opsz' 24;
+}
+
+/* Nav brand icon: always filled, bolder */
+.nav-brand .material-symbols-rounded {
+    font-variation-settings:
+        'FILL' 1,
+        'wght' 600,
+        'GRAD' 0,
+        'opsz' 24;
+}
+
+/* Reduce motion: disable icon transitions */
+@media (prefers-reduced-motion: reduce) {
+    .material-symbols-rounded {
+        transition: none !important;
+        animation: none !important;
+    }
+}
+
 *,
 *::before,
 *::after {
@@ -181,7 +368,7 @@ body.dark-mode .navbar {
     letter-spacing: -0.035em;
 }
 
-.nav-brand .material-icons-round {
+.nav-brand .material-symbols-rounded {
     font-size: 1.6rem;
     color: var(--primary-color);
 }
@@ -205,7 +392,7 @@ body.dark-mode .navbar {
     position: relative;
 }
 
-.nav-item .material-icons-round {
+.nav-item .material-symbols-rounded {
     font-size: 1.2rem;
 }
 
@@ -616,7 +803,7 @@ body.dark-mode .card:hover {
     letter-spacing: -0.01em;
 }
 
-.btn .material-icons-round {
+.btn .material-symbols-rounded {
     font-size: 1.15rem;
 }
 
@@ -702,7 +889,7 @@ body.dark-mode .card:hover {
     font-size: 0.8rem;
 }
 
-.btn-sm .material-icons-round {
+.btn-sm .material-symbols-rounded {
     font-size: 1rem;
 }
 
@@ -1047,7 +1234,7 @@ body.dark-mode .card:hover {
     border: 1px dashed var(--border-color);
 }
 
-.placeholder-map .material-icons-round {
+.placeholder-map .material-symbols-rounded {
     font-size: 3rem;
     opacity: 0.4;
 }
@@ -1104,7 +1291,7 @@ body.dark-mode .card:hover {
     font-family: inherit;
 }
 
-.section-tab .material-icons-round {
+.section-tab .material-symbols-rounded {
     font-size: 1.1rem;
 }
 
@@ -1201,7 +1388,7 @@ body.dark-mode .card:hover {
         white-space: nowrap;
     }
 
-    .section-tab .material-icons-round {
+    .section-tab .material-symbols-rounded {
         font-size: 1rem;
     }
 
@@ -1334,7 +1521,7 @@ body.dark-mode .sidebar {
 }
 
 @media (max-width: 1100px) and (min-width: 769px) {
-    .nav-item span:not(.material-icons-round) {
+    .nav-item span:not(.material-symbols-rounded) {
         display: none;
     }
 
@@ -1342,7 +1529,7 @@ body.dark-mode .sidebar {
         padding: 0.5rem;
     }
 
-    .nav-item .material-icons-round {
+    .nav-item .material-symbols-rounded {
         font-size: 1.35rem;
     }
 

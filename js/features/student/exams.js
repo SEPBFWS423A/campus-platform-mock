@@ -51,7 +51,7 @@ function renderExamCards() {
     if (filtered.length === 0) {
         examsGrid.innerHTML = `
             <div class="empty-state" style="grid-column: 1 / -1; text-align: center; padding: 3rem 1rem;">
-                <span class="material-icons-round" style="font-size: 3rem; color: var(--text-secondary); margin-bottom: 0.5rem; display: block;" aria-hidden="true">search_off</span>
+                <span class="material-symbols-rounded" style="font-size: 3rem; color: var(--text-secondary); margin-bottom: 0.5rem; display: block;" aria-hidden="true">search_off</span>
                 <p style="color: var(--text-secondary);">Keine Prüfungstermine in dieser Kategorie.</p>
             </div>
         `;
@@ -75,7 +75,7 @@ function renderExamCards() {
                     <div class="exam-details-list">
                         ${exam.details.map(d => `
                             <div class="exam-detail-item">
-                                <span class="material-icons-round" aria-hidden="true">${d.icon}</span>
+                                <span class="material-symbols-rounded" aria-hidden="true">${d.icon}</span>
                                 <span>${escapeHTML(d.text)}</span>
                             </div>
                         `).join('')}
@@ -84,10 +84,10 @@ function renderExamCards() {
             </div>
             <div class="exam-footer">
                 <div class="exam-status ${exam.footerColorClass}" style="${exam.footerStyle}">
-                    <span class="material-icons-round" aria-hidden="true">${exam.footerIcon}</span>
+                    <span class="material-symbols-rounded" aria-hidden="true">${exam.footerIcon}</span>
                     ${exam.footerStatus}
                 </div>
-                <a href="#" class="action-link">${exam.actionText} <span class="material-icons-round" aria-hidden="true">${exam.actionIcon}</span></a>
+                <a href="#" class="action-link">${exam.actionText} <span class="material-symbols-rounded" aria-hidden="true">${exam.actionIcon}</span></a>
             </div>
         </div>
     `).join('');

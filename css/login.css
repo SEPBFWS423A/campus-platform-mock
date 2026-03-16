@@ -279,7 +279,7 @@
     display: none;
 }
 
-.login-error .material-icons-round {
+.login-error .material-symbols-rounded {
     font-size: 1.2rem;
     flex-shrink: 0;
 }
@@ -320,7 +320,7 @@
     background: linear-gradient(135deg, rgba(37, 99, 235, 0.04), transparent);
 }
 
-.credentials-header .material-icons-round {
+.credentials-header .material-symbols-rounded {
     font-size: 1.3rem;
     color: var(--primary-color);
 }
@@ -358,7 +358,7 @@
     color: var(--text-tertiary);
 }
 
-.credentials-group-label .material-icons-round {
+.credentials-group-label .material-symbols-rounded {
     font-size: 0.95rem;
 }
 
@@ -406,8 +406,8 @@
     font-family: 'SF Mono', 'Cascadia Code', 'Fira Code', monospace;
 }
 
-.credentials-user .material-icons-round,
-.credentials-pass .material-icons-round {
+.credentials-user .material-symbols-rounded,
+.credentials-pass .material-symbols-rounded {
     font-size: 0.85rem;
     color: var(--text-tertiary);
 }

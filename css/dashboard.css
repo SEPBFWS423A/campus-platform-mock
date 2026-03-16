@@ -25,7 +25,7 @@
     border: 1px solid var(--border-color);
 }
 
-.current-date .material-icons-round {
+.current-date .material-symbols-rounded {
     font-size: 1.1rem;
     color: var(--primary-color);
 }
@@ -390,10 +390,9 @@
     font-weight: 500;
 }
 
-.btn-action span.material-icons-round {
+.btn-action span.material-symbols-rounded {
     font-size: 1.5rem;
     color: var(--primary-color);
-    transition: transform 0.25s ease;
 }
 
 .btn-action:hover {
@@ -402,7 +401,7 @@
     box-shadow: var(--shadow-sm);
 }
 
-.btn-action:hover span.material-icons-round {
+.btn-action:hover span.material-symbols-rounded {
     color: var(--primary-hover);
 }
 
@@ -442,7 +441,7 @@ body.dark-mode .btn-action:hover {
     gap: 0.5rem;
 }
 
-.admin-overview-heading .material-icons-round {
+.admin-overview-heading .material-symbols-rounded {
     font-size: 1.1rem;
 }
 

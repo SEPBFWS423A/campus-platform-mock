@@ -6,7 +6,7 @@ export function renderDownloads(data) {
 
     const uploadZoneHTML = `
         <div class="upload-zone">
-            <span class="material-icons-round upload-icon">cloud_upload</span>
+            <span class="material-symbols-rounded upload-icon">cloud_upload</span>
             <h3>Datei hochladen</h3>
             <p>Drag & Drop oder klicken</p>
         </div>
@@ -80,14 +80,14 @@ export function renderDownloads(data) {
         return `
             <section class="file-section" data-category="${escapeHTML(catName)}">
                 <header class="file-section-header">
-                    <h3><span class="material-icons-round" aria-hidden="true">${categoryIcons[catName] || 'folder'}</span> ${escapeHTML(catName)}</h3>
-                    <button class="btn-icon-sm" aria-label="Weitere Optionen"><span class="material-icons-round" aria-hidden="true">more_horiz</span></button>
+                    <h3><span class="material-symbols-rounded" aria-hidden="true">${categoryIcons[catName] || 'folder'}</span> ${escapeHTML(catName)}</h3>
+                    <button class="btn-icon-sm" aria-label="Weitere Optionen"><span class="material-symbols-rounded" aria-hidden="true">more_horiz</span></button>
                 </header>
                 <div class="file-list-group" role="list">
                     ${files.map(file => `
                         <div class="file-list-item" role="listitem">
                             <div class="file-type-icon-sm ${file.type}">
-                                <span class="material-icons-round" aria-hidden="true">${file.icon}</span>
+                                <span class="material-symbols-rounded" aria-hidden="true">${file.icon}</span>
                             </div>
                             <div class="file-info-row">
                                 <div class="file-main-info">
@@ -99,8 +99,8 @@ export function renderDownloads(data) {
                                     </div>
                                 </div>
                                 <div class="file-actions-row">
-                                    <button class="btn-icon-sm" title="Vorschau" aria-label="Vorschau von ${escapeHTML(file.name)}"><span class="material-icons-round" aria-hidden="true">visibility</span></button>
-                                    <button class="btn-icon-sm" title="Download" aria-label="Download ${escapeHTML(file.name)}"><span class="material-icons-round" aria-hidden="true">download</span></button>
+                                    <button class="btn-icon-sm" title="Vorschau" aria-label="Vorschau von ${escapeHTML(file.name)}"><span class="material-symbols-rounded" aria-hidden="true">visibility</span></button>
+                                    <button class="btn-icon-sm" title="Download" aria-label="Download ${escapeHTML(file.name)}"><span class="material-symbols-rounded" aria-hidden="true">download</span></button>
                                 </div>
                             </div>
                         </div>

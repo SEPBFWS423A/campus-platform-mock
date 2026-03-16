@@ -14,7 +14,7 @@
     min-width: 250px;
 }
 
-.search-wrapper .material-icons-round {
+.search-wrapper .material-symbols-rounded {
     position: absolute;
     left: 12px;
     color: var(--text-secondary);
@@ -85,7 +85,7 @@
     font-size: 1.15rem;
 }
 
-.submission-type-icon .material-icons-round {
+.submission-type-icon .material-symbols-rounded {
     font-size: 1.2rem;
 }
 
@@ -247,7 +247,7 @@
     white-space: nowrap;
 }
 
-.due-date-badge .material-icons-round {
+.due-date-badge .material-symbols-rounded {
     font-size: 1rem;
 }
 
@@ -327,7 +327,7 @@
     gap: 0.3rem;
 }
 
-.btn-action-glow .material-icons-round {
+.btn-action-glow .material-symbols-rounded {
     font-size: 1rem;
 }
 

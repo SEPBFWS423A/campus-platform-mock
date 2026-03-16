@@ -22,11 +22,11 @@ export function renderRoomSchedule(data) {
                 </select>
                 <div class="room-schedule-nav">
                     <button class="btn btn-outline btn-sm" id="schedule-prev-week">
-                        <span class="material-icons-round">chevron_left</span> Vorige Woche
+                        <span class="material-symbols-rounded">chevron_left</span> Vorige Woche
                     </button>
                     <span id="schedule-week-label" class="room-schedule-week-label"></span>
                     <button class="btn btn-outline btn-sm" id="schedule-next-week">
-                        Nächste Woche <span class="material-icons-round">chevron_right</span>
+                        Nächste Woche <span class="material-symbols-rounded">chevron_right</span>
                     </button>
                 </div>
             </div>
@@ -108,7 +108,7 @@ function renderWeeklyCalendar(room) {
     if (!room) {
         container.innerHTML = `
             <div class="management-empty">
-                <span class="material-icons-round">event_busy</span>
+                <span class="material-symbols-rounded">event_busy</span>
                 <p>Kein Raum ausgewählt.</p>
             </div>`;
         return;

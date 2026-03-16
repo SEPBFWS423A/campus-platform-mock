@@ -27,7 +27,7 @@ export function renderRoomList(data) {
                     <input type="number" id="new-room-exam-seats" class="form-control" min="0" step="1" placeholder="0" required>
                 </div>
                 <button type="submit" class="btn btn-sm btn-primary">
-                    <span class="material-icons-round">add</span> Anlegen
+                    <span class="material-symbols-rounded">add</span> Anlegen
                 </button>
             </form>
             <div id="room-create-error" class="management-alert error room-hidden"></div>
@@ -39,7 +39,7 @@ export function renderRoomList(data) {
             </div>
             ${rooms.length === 0
                 ? `<div class="management-empty">
-                        <span class="material-icons-round">meeting_room</span>
+                        <span class="material-symbols-rounded">meeting_room</span>
                         <p>Noch keine Räume angelegt.</p>
                    </div>`
                 : `<div class="room-table-wrapper">
@@ -63,10 +63,10 @@ export function renderRoomList(data) {
                                     <td>
                                         <div class="actions-cell">
                                             <button class="btn-icon-only edit-room-btn" title="Bearbeiten" data-room-id="${room.id}">
-                                                <span class="material-icons-round">edit</span>
+                                                <span class="material-symbols-rounded">edit</span>
                                             </button>
                                             <button class="btn-icon-only danger delete-room-btn" title="Löschen" data-room-id="${room.id}">
-                                                <span class="material-icons-round">delete</span>
+                                                <span class="material-symbols-rounded">delete</span>
                                             </button>
                                         </div>
                                     </td>
@@ -160,7 +160,7 @@ function handleCreateRoom(data) {
 
 function showCreateError(errorDiv, message) {
     if (!errorDiv) return;
-    errorDiv.innerHTML = `<span class="material-icons-round room-error-icon">error</span> ${message}`;
+    errorDiv.innerHTML = `<span class="material-symbols-rounded room-error-icon">error</span> ${message}`;
     errorDiv.classList.remove('room-hidden');
 }
 

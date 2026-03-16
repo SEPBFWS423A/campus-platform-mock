@@ -45,6 +45,12 @@ function applyRoleVisibility() {
         const roles = item.getAttribute('data-roles').split(',');
         item.classList.toggle('hidden', !roles.includes(role));
     });
+
+    // Apply role-specific label overrides (e.g. data-label-student="Home")
+    const attr = `data-label-${role}`;
+    document.querySelectorAll(`[${attr}]`).forEach(el => {
+        el.textContent = el.getAttribute(attr);
+    });
 }
 
 function renderContentForRole(user, navigation) {
@@ -88,7 +94,7 @@ function initData(navigation) {
         if (mainContent) {
             mainContent.innerHTML = `
                 <div class="card empty-state-block error-state">
-                    <span class="material-icons-round">error_outline</span>
+                    <span class="material-symbols-rounded">error_outline</span>
                     <h2>Daten konnten nicht geladen werden</h2>
                     <p>Bitte versuchen Sie es später erneut.</p>
                 </div>

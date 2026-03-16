@@ -21,7 +21,7 @@ export function runAutoPlanning(data) {
     if (unscheduled.length === 0) {
         resultDiv.innerHTML = `
             <div class="management-alert" style="margin-top: 1rem; padding: 0.75rem 1rem; background: var(--surface-color); border-radius: 8px; color: var(--text-secondary);">
-                <span class="material-icons-round" style="vertical-align: middle; margin-right: 0.25rem;">info</span>
+                <span class="material-symbols-rounded" style="vertical-align: middle; margin-right: 0.25rem;">info</span>
                 Alle Veranstaltungen sind bereits geplant.
             </div>`;
         return;
@@ -83,14 +83,14 @@ export function runAutoPlanning(data) {
     if (assigned > 0) {
         messageHTML += `
             <div class="management-alert" style="margin-top: 1rem; padding: 0.75rem 1rem; background: var(--success-light, #e8f5e9); border-radius: 8px; color: var(--success-color, #2e7d32);">
-                <span class="material-icons-round" style="vertical-align: middle; margin-right: 0.25rem;">check_circle</span>
+                <span class="material-symbols-rounded" style="vertical-align: middle; margin-right: 0.25rem;">check_circle</span>
                 ${assigned} Veranstaltung${assigned !== 1 ? 'en' : ''} erfolgreich eingeplant.
             </div>`;
     }
     if (errors.length > 0) {
         messageHTML += `
             <div class="management-alert" style="margin-top: 0.5rem; padding: 0.75rem 1rem; background: var(--error-light, #fbe9e7); border-radius: 8px; color: var(--error-color, #c62828);">
-                <span class="material-icons-round" style="vertical-align: middle; margin-right: 0.25rem;">error</span>
+                <span class="material-symbols-rounded" style="vertical-align: middle; margin-right: 0.25rem;">error</span>
                 Kein freier Slot gefunden f\u00fcr: ${errors.map(n => escapeHTML(n)).join(', ')}
             </div>`;
     }

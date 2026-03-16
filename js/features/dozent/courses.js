@@ -48,7 +48,7 @@ function buildCourseCard(course, data) {
         <div class="card dozent-course-card">
             <div class="dozent-card-header">
                 <div class="dozent-card-icon">
-                    <span class="material-icons-round" aria-hidden="true">menu_book</span>
+                    <span class="material-symbols-rounded" aria-hidden="true">menu_book</span>
                 </div>
                 <div class="dozent-card-title">
                     <h3>${escapeHTML(course.name)}</h3>
@@ -57,15 +57,15 @@ function buildCourseCard(course, data) {
             </div>
             <div class="dozent-card-meta">
                 <div class="dozent-meta-row">
-                    <span class="material-icons-round" aria-hidden="true">schedule</span>
+                    <span class="material-symbols-rounded" aria-hidden="true">schedule</span>
                     <span>${scheduleInfo}</span>
                 </div>
                 <div class="dozent-meta-row">
-                    <span class="material-icons-round" aria-hidden="true">event_note</span>
+                    <span class="material-symbols-rounded" aria-hidden="true">event_note</span>
                     <span>${examInfo}</span>
                 </div>
                 <div class="dozent-meta-row">
-                    <span class="material-icons-round" aria-hidden="true">people</span>
+                    <span class="material-symbols-rounded" aria-hidden="true">people</span>
                     <span>${participants.length} Teilnehmer &bull; ${escapeHTML(course.semester)}</span>
                 </div>
             </div>
@@ -73,7 +73,7 @@ function buildCourseCard(course, data) {
                 <button class="btn btn-outline btn-sm dozent-participants-btn"
                         data-course-code="${escapeHTML(course.code)}"
                         type="button">
-                    <span class="material-icons-round" aria-hidden="true">group</span>
+                    <span class="material-symbols-rounded" aria-hidden="true">group</span>
                     Teilnehmer anzeigen
                 </button>
             </div>
@@ -123,7 +123,7 @@ function openParticipantModal(course, data) {
     if (participants.length === 0) {
         bodyHTML = `
             <div class="management-empty">
-                <span class="material-icons-round">people_outline</span>
+                <span class="material-symbols-rounded">people_outline</span>
                 <p>Keine Teilnehmer f\u00fcr diesen Kurs gefunden.</p>
             </div>`;
     } else {

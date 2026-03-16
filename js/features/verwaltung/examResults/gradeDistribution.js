@@ -63,7 +63,7 @@ function renderGradeDistributionChart(chartArea, data, seriesId, eventId) {
     if (results.length === 0) {
         chartArea.innerHTML = `
             <div class="management-empty">
-                <span class="material-icons-round">bar_chart</span>
+                <span class="material-symbols-rounded">bar_chart</span>
                 <p>Keine Ergebnisse für diese Klausur vorhanden.</p>
             </div>`;
         return;

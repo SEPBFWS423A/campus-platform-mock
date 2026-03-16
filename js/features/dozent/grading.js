@@ -75,7 +75,7 @@ function renderGradingTable(tableArea, alertArea, course, data) {
     if (participants.length === 0) {
         tableArea.innerHTML = `
             <div class="management-empty">
-                <span class="material-icons-round">people_outline</span>
+                <span class="material-symbols-rounded">people_outline</span>
                 <p>Keine Studierenden f\u00fcr diesen Kurs gefunden.</p>
             </div>`;
         return;
@@ -108,7 +108,7 @@ function renderGradingTable(tableArea, alertArea, course, data) {
 
     tableArea.innerHTML = `
         <div class="dozent-grading-course-info">
-            <span class="material-icons-round" aria-hidden="true">info</span>
+            <span class="material-symbols-rounded" aria-hidden="true">info</span>
             ${escapeHTML(course.name)} &bull; ${escapeHTML(course.exam?.type || 'Klausur')} &bull;
             Pr\u00fcfungstermin: ${course.exam ? escapeHTML(course.exam.date) : 'TBA'}
         </div>
@@ -128,7 +128,7 @@ function renderGradingTable(tableArea, alertArea, course, data) {
         <div class="dozent-grading-actions">
             <span class="dozent-grading-count">${participants.length} Studierende</span>
             <button class="btn btn-primary" id="dozent-save-grades-btn" type="button">
-                <span class="material-icons-round" aria-hidden="true">save</span>
+                <span class="material-symbols-rounded" aria-hidden="true">save</span>
                 Noten speichern
             </button>
         </div>`;
@@ -158,7 +158,7 @@ function saveGrades(tableArea, alertArea, course, data, matchedSeries) {
     if (filledCount === 0) {
         alertArea.innerHTML = `
             <div class="management-alert error">
-                <span class="material-icons-round">warning</span>
+                <span class="material-symbols-rounded">warning</span>
                 Bitte mindestens eine Note eingeben.
             </div>`;
         return;
@@ -184,7 +184,7 @@ function saveGrades(tableArea, alertArea, course, data, matchedSeries) {
     if (!saved) {
         alertArea.innerHTML = `
             <div class="management-alert error">
-                <span class="material-icons-round">warning</span>
+                <span class="material-symbols-rounded">warning</span>
                 Noten konnten nicht gespeichert werden (keine Veranstaltungsreihe zugeordnet).
             </div>`;
         return;
@@ -192,7 +192,7 @@ function saveGrades(tableArea, alertArea, course, data, matchedSeries) {
 
     alertArea.innerHTML = `
         <div class="management-alert success">
-            <span class="material-icons-round">check_circle</span>
+            <span class="material-symbols-rounded">check_circle</span>
             ${filledCount} Note(n) f\u00fcr ${escapeHTML(course.name)} erfolgreich gespeichert.
         </div>`;
 
