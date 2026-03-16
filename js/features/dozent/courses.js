@@ -2,8 +2,8 @@ import { escapeHTML } from '../../core/utils.js';
 import { initSectionTabs, renderCalendarForModules } from '../student/schedule.js';
 import { showModal, closeModal } from '../../core/modal.js';
 import { findParticipantsForCourse, buildEmptyState } from './dozentHelpers.js';
-
-const DAY_NAMES = ['Mo', 'Di', 'Mi', 'Do', 'Fr'];
+import { DAY_NAMES } from '../shared/constants.js';
+import { getDozentCourses, getActiveDozentCourses } from '../shared/dataHelpers.js';
 
 export function renderDozentCourses(data, user) {
     renderDozentOverview(data, user);
@@ -15,8 +15,8 @@ function renderDozentOverview(data, user) {
     const container = document.querySelector('.dozent-courses-grid');
     if (!container) return;
 
-    const myCourses = data.modules.filter(m => m.dozentId === user.id);
-    const activeCourses = myCourses.filter(m => m.status === 'active' || m.status === 'registered');
+    const myCourses = getDozentCourses(data, user.id);
+    const activeCourses = getActiveDozentCourses(data, user.id);
     const pastCourses = myCourses.filter(m => m.status === 'passed' || m.status === 'failed');
 
     if (myCourses.length === 0) {
@@ -169,9 +169,7 @@ function openParticipantModal(course, data) {
 }
 
 function renderDozentCalendar(data, user) {
-    const myCourses = data.modules.filter(
-        m => m.dozentId === user.id && (m.status === 'active' || m.status === 'registered')
-    );
+    const myCourses = getActiveDozentCourses(data, user.id);
     renderCalendarForModules(myCourses, '.dozent-calendar-grid', 'dozent-calendar-week-label');
 }
 

@@ -38,30 +38,6 @@ const mockData = {
             department: "Studierendensekretariat"
         },
         {
-            id: 4,
-            username: "testuser",
-            password: "password",
-            name: "Test Benutzer",
-            role: "student",
-            roleLabel: "Student (B.Sc.)",
-            matriculationNumber: "87654321",
-            email: "test.benutzer@university.edu",
-            courseOfStudy: "Informatik",
-            semester: 3
-        },
-        {
-            id: 5,
-            username: "otheruser",
-            password: "secret",
-            name: "Other User",
-            role: "student",
-            roleLabel: "Student (B.Sc.)",
-            matriculationNumber: "11223344",
-            email: "other.user@university.edu",
-            courseOfStudy: "Medieninformatik",
-            semester: 2
-        },
-        {
             id: 6,
             username: "rektor",
             password: "rektor123",

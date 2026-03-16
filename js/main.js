@@ -18,6 +18,9 @@ import { renderUserManagement } from './features/verwaltung/userManagement.js';
 import { renderRoomManagement } from './features/verwaltung/roomManagement/index.js';
 import { renderEventManagement } from './features/verwaltung/eventManagement/index.js';
 import { renderExamResultsManagement } from './features/verwaltung/examResults/index.js';
+import { initChatWidget } from './features/shared/chatWidget.js';
+import { initNotifications } from './features/shared/notifications.js';
+import { renderDozentSubmissions } from './features/dozent/dozentSubmissions.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     if (!checkAuth()) return;
@@ -65,6 +68,7 @@ function renderContentForRole(user, navigation) {
         renderDozentDashboard(mockData, user, navigation);
         renderDozentCourses(mockData, user);
         renderDozentGrading(mockData, user);
+        renderDozentSubmissions(mockData, user);
         renderDownloads(mockData);
     } else if (user.role === 'verwaltung') {
         renderVerwaltungDashboard(mockData, user, navigation);
@@ -111,6 +115,8 @@ function initData(navigation) {
     }
 
     updateUserInfo(user);
+    initNotifications(mockData);
+    initChatWidget(user.role);
 }
 
 function initViewAllScheduleLink(navigation) {

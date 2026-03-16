@@ -2,6 +2,8 @@ import { timeToMinutes } from '../../../core/utils.js';
 import { renderRoomList } from './roomList.js';
 import { renderRoomSchedule } from './roomSchedule.js';
 import { renderRoomUtilization } from './roomUtilization.js';
+import { initTabs } from '../../shared/tabSwitching.js';
+import { buildStatCard } from '../../shared/uiComponents.js';
 
 export const AVAILABLE_HOURS_PER_DAY = 9;
 
@@ -38,33 +40,9 @@ export function renderRoomManagement(data) {
 
     container.innerHTML = `
         <div class="grid-container stats-row room-stats-row">
-            <div class="card stat-card">
-                <div class="stat-icon primary-bg">
-                    <span class="material-symbols-rounded">meeting_room</span>
-                </div>
-                <div class="stat-info">
-                    <span class="stat-label">Räume gesamt</span>
-                    <span class="stat-value">${rooms.length}</span>
-                </div>
-            </div>
-            <div class="card stat-card">
-                <div class="stat-icon success-bg">
-                    <span class="material-symbols-rounded">event_seat</span>
-                </div>
-                <div class="stat-info">
-                    <span class="stat-label">Sitzplätze gesamt</span>
-                    <span class="stat-value">${totalSeats}</span>
-                </div>
-            </div>
-            <div class="card stat-card">
-                <div class="stat-icon warning-bg">
-                    <span class="material-symbols-rounded">speed</span>
-                </div>
-                <div class="stat-info">
-                    <span class="stat-label">Gesamtauslastung</span>
-                    <span class="stat-value">${overallUtil}%</span>
-                </div>
-            </div>
+            ${buildStatCard({ label: 'R\u00e4ume gesamt', value: rooms.length, icon: 'meeting_room', colorClass: 'primary-bg' })}
+            ${buildStatCard({ label: 'Sitzpl\u00e4tze gesamt', value: totalSeats, icon: 'event_seat', colorClass: 'success-bg' })}
+            ${buildStatCard({ label: 'Gesamtauslastung', value: `${overallUtil}%`, icon: 'speed', colorClass: 'warning-bg' })}
         </div>
 
         <div class="management-tabs">
@@ -84,28 +62,10 @@ export function renderRoomManagement(data) {
         <div id="room-utilization" class="management-tab-content"></div>
     `;
 
-    initRoomTabs(container);
+    initTabs(container, { tabSelector: '.management-tab', panelSelector: '.management-tab-content' });
     renderRoomList(data);
     renderRoomSchedule(data);
     renderRoomUtilization(data);
-}
-
-function initRoomTabs(container) {
-    const tabs = container.querySelectorAll('.management-tab');
-    tabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-            const targetId = tab.dataset.tab;
-
-            tabs.forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-
-            container.querySelectorAll('.management-tab-content').forEach(panel => {
-                panel.classList.remove('active');
-            });
-            const targetPanel = document.getElementById(targetId);
-            if (targetPanel) targetPanel.classList.add('active');
-        });
-    });
 }
 
 export function countWeekdays(start, end) {

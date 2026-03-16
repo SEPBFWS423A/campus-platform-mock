@@ -1,4 +1,4 @@
-import { escapeHTML } from '../../core/utils.js';
+import { escapeHTML, formatDateDE } from '../../core/utils.js';
 
 let submissionsData = [];
 let currentDate = null;
@@ -131,7 +131,7 @@ function renderList() {
                 <div class="submission-meta">
                     <div class="submitted-state">
                         <span class="material-symbols-rounded" style="font-size:1rem;color:var(--primary-color)">check_circle</span>
-                        <span class="submitted-text">${formatDate(sub.dateSubmitted)}</span>
+                        <span class="submitted-text">${formatDateDE(sub.dateSubmitted)}</span>
                     </div>
                 </div>
                 <div class="submission-actions">
@@ -222,11 +222,3 @@ function calculateDaysLeft(dateStr, baseDateStr = null) {
     return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 }
 
-function formatDate(dateStr) {
-    if (!dateStr) return '';
-    const parts = dateStr.split('-');
-    if (parts.length === 3) {
-        return `${parts[2]}.${parts[1]}.${parts[0]}`;
-    }
-    return dateStr;
-}

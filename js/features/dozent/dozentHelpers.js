@@ -1,4 +1,4 @@
-import { escapeHTML } from '../../core/utils.js';
+export { buildEmptyState } from '../shared/uiComponents.js';
 
 export function findMatchingEventSeries(course, data) {
     if (!data.eventSeries) return null;
@@ -41,12 +41,3 @@ export function findParticipantsForCourse(course, data) {
         .filter(Boolean);
 }
 
-export function buildEmptyState(icon, message) {
-    return `
-        <div class="card full-width">
-            <div class="management-empty">
-                <span class="material-symbols-rounded">${escapeHTML(icon)}</span>
-                <p>${escapeHTML(message)}</p>
-            </div>
-        </div>`;
-}

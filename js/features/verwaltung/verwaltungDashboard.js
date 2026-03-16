@@ -1,4 +1,5 @@
 import { escapeHTML, formatDateDE } from '../../core/utils.js';
+import { buildStatCard, bindActionButtons } from '../shared/uiComponents.js';
 
 export function renderVerwaltungDashboard(data, user, navigation) {
     const totalUsers = data.users.length;
@@ -25,48 +26,12 @@ export function renderVerwaltungDashboard(data, user, navigation) {
     const statsContainer = document.querySelector('.stats-row');
     if (statsContainer) {
         statsContainer.classList.add('stats-row-4');
-        statsContainer.innerHTML = `
-            <div class="card stat-card">
-                <div class="stat-icon primary-bg">
-                    <span class="material-symbols-rounded">people</span>
-                </div>
-                <div class="stat-info">
-                    <span class="stat-label">Benutzer gesamt</span>
-                    <span class="stat-value">${totalUsers}</span>
-                    <span class="stat-desc">${students.length} Stud. \u2022 ${dozenten.length} Doz. \u2022 ${verwaltungUsers.length} Verw.</span>
-                </div>
-            </div>
-            <div class="card stat-card">
-                <div class="stat-icon warning-bg">
-                    <span class="material-symbols-rounded">meeting_room</span>
-                </div>
-                <div class="stat-info">
-                    <span class="stat-label">R\u00e4ume</span>
-                    <span class="stat-value">${totalRooms}</span>
-                    <span class="stat-desc">${roomsWithBookings.length} belegt \u2022 ${totalRooms - roomsWithBookings.length} frei</span>
-                </div>
-            </div>
-            <div class="card stat-card">
-                <div class="stat-icon success-bg">
-                    <span class="material-symbols-rounded">event</span>
-                </div>
-                <div class="stat-info">
-                    <span class="stat-label">Veranstaltungsreihen</span>
-                    <span class="stat-value">${totalSeries}</span>
-                    <span class="stat-desc">${totalEvents} Events insgesamt</span>
-                </div>
-            </div>
-            <div class="card stat-card">
-                <div class="stat-icon secondary-bg">
-                    <span class="material-symbols-rounded">assessment</span>
-                </div>
-                <div class="stat-info">
-                    <span class="stat-label">Pr\u00fcfungsergebnisse</span>
-                    <span class="stat-value">${totalExamResults}</span>
-                    <span class="stat-desc">${examResultKeys} Pr\u00fcfungen bewertet</span>
-                </div>
-            </div>
-        `;
+        statsContainer.innerHTML = [
+            buildStatCard({ label: 'Benutzer gesamt', value: totalUsers, icon: 'people', colorClass: 'primary-bg', desc: `${students.length} Stud. \u2022 ${dozenten.length} Doz. \u2022 ${verwaltungUsers.length} Verw.` }),
+            buildStatCard({ label: 'R\u00e4ume', value: totalRooms, icon: 'meeting_room', colorClass: 'warning-bg', desc: `${roomsWithBookings.length} belegt \u2022 ${totalRooms - roomsWithBookings.length} frei` }),
+            buildStatCard({ label: 'Veranstaltungsreihen', value: totalSeries, icon: 'event', colorClass: 'success-bg', desc: `${totalEvents} Events insgesamt` }),
+            buildStatCard({ label: 'Pr\u00fcfungsergebnisse', value: totalExamResults, icon: 'assessment', colorClass: 'secondary-bg', desc: `${examResultKeys} Pr\u00fcfungen bewertet` })
+        ].join('');
     }
 
     const scheduleCardHeader = document.querySelector('.schedule-card .card-header h3');
@@ -176,47 +141,64 @@ export function renderVerwaltungDashboard(data, user, navigation) {
 
     const activityCardHeader = document.querySelector('.activity-card .card-header h3');
     if (activityCardHeader) {
-        activityCardHeader.textContent = 'Anstehende Pr\u00fcfungen';
+        activityCardHeader.textContent = 'Aktivit\u00e4ten-Feed';
     }
 
     const activityList = document.querySelector('.activity-list');
     if (activityList) {
+        const feedItems = [];
+
         const modulesWithExams = data.modules
             .filter(m => m.exam && m.exam.date && (m.exam.status === 'registered' || m.exam.status === 'upcoming' || m.exam.status === 'open'))
             .sort((a, b) => new Date(a.exam.date) - new Date(b.exam.date));
 
-        if (modulesWithExams.length > 0) {
-            activityList.innerHTML = modulesWithExams.map(m => {
-                const dateStr = formatDateDE(m.exam.date);
-                let iconColor = 'primary';
-                if (m.exam.status === 'upcoming') iconColor = 'warning';
-                else if (m.exam.status === 'open') iconColor = 'success';
+        modulesWithExams.forEach(m => {
+            let iconColor = 'primary';
+            if (m.exam.status === 'upcoming') iconColor = 'warning';
+            else if (m.exam.status === 'open') iconColor = 'success';
+            feedItems.push({
+                icon: 'event_note', color: iconColor,
+                text: `Pr\u00fcfung <strong>${escapeHTML(m.name)}</strong>`,
+                sub: `${formatDateDE(m.exam.date)} \u2022 ${escapeHTML(m.exam.room || 'Raum TBA')}`
+            });
+        });
 
-                return `
-                    <li>
-                        <div class="activity-icon ${iconColor}">
-                            <span class="material-symbols-rounded">event_note</span>
-                        </div>
-                        <div class="activity-content">
-                            <p class="activity-text"><strong>${escapeHTML(m.name)}</strong></p>
-                            <span class="activity-time">${escapeHTML(dateStr)} \u2022 ${escapeHTML(m.exam.room || 'Raum TBA')} \u2022 ${escapeHTML(m.exam.type || 'Klausur')}</span>
-                        </div>
-                    </li>
-                `;
-            }).join('');
-        } else {
-            activityList.innerHTML = `
+        const gradedCount = Object.values(data.examResults || {}).reduce((s, r) => s + r.length, 0);
+        if (gradedCount > 0) {
+            feedItems.push({
+                icon: 'assessment', color: 'secondary',
+                text: `<strong>${gradedCount}</strong> Pr\u00fcfungsergebnisse eingetragen`,
+                sub: `${Object.keys(data.examResults || {}).length} Pr\u00fcfungen bewertet`
+            });
+        }
+
+        if (totalBookings > 0) {
+            feedItems.push({
+                icon: 'meeting_room', color: 'warning',
+                text: `<strong>${totalBookings}</strong> aktive Raumbuchungen`,
+                sub: `${roomsWithBookings.length} von ${totalRooms} R\u00e4umen belegt`
+            });
+        }
+
+        activityList.innerHTML = feedItems.length > 0
+            ? feedItems.map(item => `
                 <li>
-                    <div class="activity-icon primary">
-                        <span class="material-symbols-rounded">check_circle</span>
+                    <div class="activity-icon ${item.color}">
+                        <span class="material-symbols-rounded">${item.icon}</span>
                     </div>
                     <div class="activity-content">
-                        <p class="activity-text">Keine anstehenden Pr\u00fcfungen</p>
-                        <span class="activity-time">Alle Pr\u00fcfungen abgeschlossen</span>
+                        <p class="activity-text">${item.text}</p>
+                        <span class="activity-time">${item.sub}</span>
                     </div>
-                </li>
-            `;
-        }
+                </li>`).join('')
+            : `<li>
+                <div class="activity-icon primary">
+                    <span class="material-symbols-rounded">check_circle</span>
+                </div>
+                <div class="activity-content">
+                    <p class="activity-text">Keine aktuellen Aktivit\u00e4ten</p>
+                </div>
+            </li>`;
     }
 
     const actionsCardTitle = document.querySelector('.actions-card h3');
@@ -247,15 +229,4 @@ export function renderVerwaltungDashboard(data, user, navigation) {
 
         bindActionButtons(actionButtons, navigation);
     }
-}
-
-function bindActionButtons(container, navigation) {
-    container.querySelectorAll('.btn-action[data-nav]').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const target = btn.getAttribute('data-nav');
-            if (target && navigation) {
-                navigation.setActiveTab(target);
-            }
-        });
-    });
 }

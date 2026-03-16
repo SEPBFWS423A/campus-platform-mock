@@ -2,9 +2,7 @@ import { escapeHTML } from '../../../core/utils.js';
 import { showConfirmDialog } from '../../../core/modal.js';
 import { openEditSeriesModal } from './editSeriesModal.js';
 import { runAutoPlanning } from './autoPlanning.js';
-
-const DAY_NAMES = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag'];
-const DAY_SHORT = ['Mo', 'Di', 'Mi', 'Do', 'Fr'];
+import { DAY_NAMES, DAY_SHORT } from '../../shared/constants.js';
 
 function getRoomName(rooms, roomId) {
     if (roomId == null) return '-';
@@ -207,4 +205,5 @@ export function renderEventManagement(data) {
     }
 }
 
-export { DAY_NAMES, DAY_SHORT, buildEventMeta, nextId };
+export { DAY_NAMES, DAY_SHORT } from '../../shared/constants.js';
+export { buildEventMeta, nextId };

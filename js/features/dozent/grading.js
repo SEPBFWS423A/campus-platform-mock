@@ -1,15 +1,14 @@
 import { escapeHTML } from '../../core/utils.js';
 import { findMatchingEventSeries, findParticipantsForCourse, buildEmptyState } from './dozentHelpers.js';
-
-const VALID_GRADES = ['1.0', '1.3', '1.7', '2.0', '2.3', '2.7', '3.0', '3.3', '3.7', '4.0', '5.0'];
+import { VALID_GRADES } from '../shared/constants.js';
+import { buildAlert } from '../shared/uiComponents.js';
+import { getActiveDozentCourses } from '../shared/dataHelpers.js';
 
 export function renderDozentGrading(data, user) {
     const container = document.querySelector('.dozent-grading-content');
     if (!container) return;
 
-    const activeCourses = data.modules.filter(
-        m => m.dozentId === user.id && (m.status === 'active' || m.status === 'registered')
-    );
+    const activeCourses = getActiveDozentCourses(data, user.id);
 
     if (activeCourses.length === 0) {
         container.innerHTML = buildEmptyState('grading', 'Keine aktiven Kurse f\u00fcr die Notenvergabe.');
@@ -156,11 +155,7 @@ function saveGrades(tableArea, alertArea, course, data, matchedSeries) {
     });
 
     if (filledCount === 0) {
-        alertArea.innerHTML = `
-            <div class="management-alert error">
-                <span class="material-symbols-rounded">warning</span>
-                Bitte mindestens eine Note eingeben.
-            </div>`;
+        alertArea.innerHTML = buildAlert('Bitte mindestens eine Note eingeben.', 'error', 'warning');
         return;
     }
 
@@ -182,19 +177,11 @@ function saveGrades(tableArea, alertArea, course, data, matchedSeries) {
     });
 
     if (!saved) {
-        alertArea.innerHTML = `
-            <div class="management-alert error">
-                <span class="material-symbols-rounded">warning</span>
-                Noten konnten nicht gespeichert werden (keine Veranstaltungsreihe zugeordnet).
-            </div>`;
+        alertArea.innerHTML = buildAlert('Noten konnten nicht gespeichert werden (keine Veranstaltungsreihe zugeordnet).', 'error', 'warning');
         return;
     }
 
-    alertArea.innerHTML = `
-        <div class="management-alert success">
-            <span class="material-symbols-rounded">check_circle</span>
-            ${filledCount} Note(n) f\u00fcr ${escapeHTML(course.name)} erfolgreich gespeichert.
-        </div>`;
+    alertArea.innerHTML = buildAlert(`${filledCount} Note(n) f\u00fcr ${escapeHTML(course.name)} erfolgreich gespeichert.`, 'success');
 
     setTimeout(() => {
         renderGradingTable(tableArea, alertArea, course, data);

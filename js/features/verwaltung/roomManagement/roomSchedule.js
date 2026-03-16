@@ -1,4 +1,5 @@
 import { timeToMinutes, escapeHTML } from '../../../core/utils.js';
+import { getWeekData } from '../../shared/scheduleUtils.js';
 
 let scheduleWeekOffset = 0;
 
@@ -63,38 +64,6 @@ export function renderRoomSchedule(data) {
     updateCalendar();
 }
 
-function getWeekData() {
-    const now = new Date();
-    const day = now.getDay();
-    const diff = (day === 0 ? -6 : 1) - day;
-    const monday = new Date(now);
-    monday.setDate(now.getDate() + diff + scheduleWeekOffset * 7);
-
-    const jan4 = new Date(monday.getFullYear(), 0, 4);
-    const dayOfYear = Math.floor((monday - new Date(monday.getFullYear(), 0, 1)) / 86400000);
-    const weekNumber = Math.ceil((dayOfYear + jan4.getDay()) / 7);
-
-    const dayNames = ['Mo', 'Di', 'Mi', 'Do', 'Fr'];
-    const days = [];
-    for (let i = 0; i < 5; i++) {
-        const d = new Date(monday);
-        d.setDate(monday.getDate() + i);
-        const dd = String(d.getDate()).padStart(2, '0');
-        const mm = String(d.getMonth() + 1).padStart(2, '0');
-        days.push(`${dayNames[i]} ${dd}.${mm}`);
-    }
-
-    const friday = new Date(monday);
-    friday.setDate(monday.getDate() + 4);
-    const monDD = String(monday.getDate()).padStart(2, '0');
-    const monMM = String(monday.getMonth() + 1).padStart(2, '0');
-    const friDD = String(friday.getDate()).padStart(2, '0');
-    const friMM = String(friday.getMonth() + 1).padStart(2, '0');
-
-    const label = `KW ${weekNumber} (${monDD}.${monMM} - ${friDD}.${friMM})`;
-    return { label, days, monday };
-}
-
 const CALENDAR_COLOR_COUNT = 7;
 
 function renderWeeklyCalendar(room) {
@@ -102,7 +71,7 @@ function renderWeeklyCalendar(room) {
     const weekLabel = document.getElementById('schedule-week-label');
     if (!container) return;
 
-    const weekData = getWeekData();
+    const weekData = getWeekData(new Date(), scheduleWeekOffset);
     if (weekLabel) weekLabel.textContent = weekData.label;
 
     if (!room) {

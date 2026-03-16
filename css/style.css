@@ -801,6 +801,35 @@ body.dark-mode .card:hover {
     background-color: var(--surface-color);
 }
 
+select.form-control {
+    width: 100%;
+    padding: 0.5rem 2rem 0.5rem 0.75rem;
+    border-radius: var(--radius-md);
+    border: 1.5px solid var(--border-color);
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 0.875rem;
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    cursor: pointer;
+}
+
+select.form-control:hover {
+    border-color: var(--text-tertiary);
+}
+
+select.form-control:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+    background-color: var(--surface-color);
+}
+
 .btn {
     padding: 0.7rem 1.5rem;
     border-radius: var(--radius-md);
@@ -1942,4 +1971,70 @@ address.contact-list a:hover {
 
 .settings-toggle.active .settings-toggle-knob {
     transform: translateX(20px);
+}
+
+/* ── Notification Bell ── */
+.notification-container {
+    position: relative;
+}
+
+.notification-badge {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 4px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    line-height: 18px;
+    text-align: center;
+    color: #fff;
+    background: var(--error-color);
+    border-radius: 999px;
+    pointer-events: none;
+}
+
+.notification-dropdown {
+    position: absolute;
+    top: calc(100% + 0.25rem);
+    right: 0;
+    margin-top: 0.5rem;
+    background-color: var(--surface-elevated);
+    border: 1px solid var(--border-color-subtle);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xl);
+    width: 320px;
+    z-index: 1000;
+    overflow: hidden;
+    animation: dropdownAppear 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.notification-dropdown[hidden] {
+    display: none;
+}
+
+.notification-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.notification-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border-color-subtle);
+    transition: background var(--transition-fast);
+}
+
+.notification-item:last-child {
+    border-bottom: none;
+}
+
+.notification-item:hover {
+    background: var(--primary-light);
 }
