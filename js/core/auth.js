@@ -1,3 +1,5 @@
+import { showModal, closeModal } from './modal.js';
+
 export function initAuth() {
     const profileBtn = document.getElementById('profile-btn');
     const userDropdown = document.getElementById('user-dropdown');
@@ -34,6 +36,135 @@ export function initAuth() {
     }
 
     renderUserSwitcher();
+    initDropdownActions();
+}
+
+function closeDropdown() {
+    const userDropdown = document.getElementById('user-dropdown');
+    const profileBtn = document.getElementById('profile-btn');
+    if (userDropdown) userDropdown.classList.remove('active');
+    if (profileBtn) profileBtn.setAttribute('aria-expanded', 'false');
+}
+
+function initDropdownActions() {
+    const profileMenuBtn = document.getElementById('profile-menu-btn');
+    const settingsMenuBtn = document.getElementById('settings-menu-btn');
+
+    if (profileMenuBtn) {
+        profileMenuBtn.addEventListener('click', () => {
+            closeDropdown();
+            openProfileModal();
+        });
+    }
+
+    if (settingsMenuBtn) {
+        settingsMenuBtn.addEventListener('click', () => {
+            closeDropdown();
+            openSettingsModal();
+        });
+    }
+}
+
+function openProfileModal() {
+    const user = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
+    if (!user) return;
+
+    const initials = user.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+    const mockEmails = {
+        student: `m.mustermann@campus-university.de`,
+        dozent: `prof.mustermann@campus-university.de`,
+        verwaltung: `verwaltung@campus-university.de`
+    };
+    const email = mockEmails[user.role] || `${user.id}@campus-university.de`;
+    const matNum = user.role === 'student' ? `Mat.-Nr.: ${3000000 + user.id * 7}` : '';
+
+    const bodyHTML = `
+        <div class="profile-modal-content">
+            <div class="profile-avatar-large">${initials}</div>
+            <div class="profile-info">
+                <h3 class="profile-name">${user.name}</h3>
+                <span class="profile-role-badge">${user.roleLabel}</span>
+                <div class="profile-details">
+                    <div class="profile-detail-row">
+                        <span class="material-symbols-rounded" aria-hidden="true">email</span>
+                        <span>${email}</span>
+                    </div>
+                    ${matNum ? `<div class="profile-detail-row">
+                        <span class="material-symbols-rounded" aria-hidden="true">badge</span>
+                        <span>${matNum}</span>
+                    </div>` : ''}
+                </div>
+            </div>
+        </div>
+    `;
+
+    const footerHTML = `
+        <button class="btn btn-outline" type="button" id="profile-modal-close">Schließen</button>
+    `;
+
+    showModal('Mein Profil', bodyHTML, footerHTML);
+    document.getElementById('profile-modal-close')?.addEventListener('click', closeModal);
+}
+
+function openSettingsModal() {
+    const isDark = document.body.classList.contains('dark-mode');
+
+    const bodyHTML = `
+        <div class="settings-modal-content">
+            <div class="settings-section">
+                <h4 class="settings-section-title">Darstellung</h4>
+                <div class="settings-row">
+                    <div class="settings-row-info">
+                        <span class="material-symbols-rounded settings-row-icon" aria-hidden="true">dark_mode</span>
+                        <div>
+                            <div class="settings-row-label">Dunkles Design</div>
+                            <div class="settings-row-desc">Dark Mode ein- oder ausschalten</div>
+                        </div>
+                    </div>
+                    <button class="settings-toggle ${isDark ? 'active' : ''}" id="settings-dark-toggle"
+                            aria-pressed="${isDark}" aria-label="Dark Mode umschalten">
+                        <span class="settings-toggle-knob"></span>
+                    </button>
+                </div>
+            </div>
+            <div class="settings-divider"></div>
+            <div class="settings-section">
+                <h4 class="settings-section-title">Sicherheit</h4>
+                <button class="settings-row settings-row-action" id="settings-change-pw" type="button">
+                    <div class="settings-row-info">
+                        <span class="material-symbols-rounded settings-row-icon" aria-hidden="true">lock_reset</span>
+                        <div>
+                            <div class="settings-row-label">Passwort ändern</div>
+                            <div class="settings-row-desc">Zugangsdaten aktualisieren</div>
+                        </div>
+                    </div>
+                    <span class="material-symbols-rounded settings-row-arrow" aria-hidden="true">chevron_right</span>
+                </button>
+            </div>
+        </div>
+    `;
+
+    const footerHTML = `
+        <button class="btn btn-outline" type="button" id="settings-modal-close">Schließen</button>
+    `;
+
+    showModal('Einstellungen', bodyHTML, footerHTML);
+    document.getElementById('settings-modal-close')?.addEventListener('click', closeModal);
+
+    const darkToggle = document.getElementById('settings-dark-toggle');
+    if (darkToggle) {
+        darkToggle.addEventListener('click', () => {
+            document.getElementById('theme-toggle')?.click();
+            const nowDark = document.body.classList.contains('dark-mode');
+            darkToggle.classList.toggle('active', nowDark);
+            darkToggle.setAttribute('aria-pressed', String(nowDark));
+        });
+    }
+
+    document.getElementById('settings-change-pw')?.addEventListener('click', () => {
+        closeModal();
+        document.dispatchEvent(new CustomEvent('open-change-password'));
+    });
 }
 
 function renderUserSwitcher() {

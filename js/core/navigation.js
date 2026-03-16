@@ -57,6 +57,14 @@ export function initNavigation() {
     if (closeSidebarBtn) closeSidebarBtn.addEventListener('click', toggleSidebar);
     if (overlay) overlay.addEventListener('click', toggleSidebar);
 
+    const brandLink = document.getElementById('brand-home-link');
+    if (brandLink) {
+        brandLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            setActiveTab('dashboard');
+        });
+    }
+
     const sidebarLinks = sidebar ? sidebar.querySelectorAll('.nav-item') : [];
     sidebarLinks.forEach(item => {
         item.addEventListener('click', (e) => {

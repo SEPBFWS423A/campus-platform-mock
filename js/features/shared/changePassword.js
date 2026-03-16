@@ -2,29 +2,7 @@ import { showModal, closeModal } from '../../core/modal.js';
 import { escapeHTML } from '../../core/utils.js';
 
 export function initChangePassword() {
-    const dropdown = document.getElementById('user-dropdown');
-    if (!dropdown) return;
-
-    const dividers = dropdown.querySelectorAll('.dropdown-divider');
-    const lastDivider = dividers[dividers.length - 1];
-    if (!lastDivider) return;
-
-    const changePwBtn = document.createElement('button');
-    changePwBtn.className = 'dropdown-item';
-    changePwBtn.setAttribute('role', 'menuitem');
-    changePwBtn.innerHTML = `
-        <span class="material-symbols-rounded" aria-hidden="true">lock_reset</span>
-        Passwort ändern
-    `;
-
-    lastDivider.parentNode.insertBefore(changePwBtn, lastDivider);
-
-    changePwBtn.addEventListener('click', () => {
-        openChangePasswordModal();
-        dropdown.classList.remove('active');
-        const profileBtn = document.getElementById('profile-btn');
-        if (profileBtn) profileBtn.setAttribute('aria-expanded', 'false');
-    });
+    document.addEventListener('open-change-password', openChangePasswordModal);
 }
 
 function openChangePasswordModal() {

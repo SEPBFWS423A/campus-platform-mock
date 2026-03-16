@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CampusPlatform - Dashboard</title>
+    <title>CampusPlatform - Home</title>
     <meta name="description" content="CampusPlatform – Ihr digitales Campus-Portal für Vorlesungen, Noten, Prüfungen und mehr.">
     <meta name="theme-color" content="#2563EB">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
@@ -24,14 +24,14 @@
     <a href="#main-content" class="skip-link">Zum Hauptinhalt springen</a>
     <div id="app">
         <nav id="main-nav" class="navbar" aria-label="Hauptnavigation">
-            <div class="nav-brand">
+            <a href="#" id="brand-home-link" class="nav-brand" style="text-decoration:none;">
                 <span class="material-symbols-rounded">school</span>
                 <span>CampusPlatform</span>
-            </div>
+            </a>
             <div class="nav-links" role="tablist" aria-label="Seitennavigation">
                 <a href="#" class="nav-item active" data-target="dashboard" data-roles="student,dozent,verwaltung" role="tab" aria-selected="true" aria-controls="dashboard">
-                    <span class="material-symbols-rounded" aria-hidden="true">dashboard</span>
-                    <span data-label-student="Home">Dashboard</span>
+                    <span class="material-symbols-rounded" aria-hidden="true">home</span>
+                    <span>Home</span>
                 </a>
                 <a href="#" class="nav-item" data-target="schedule" data-roles="student" role="tab" aria-selected="false" aria-controls="schedule">
                     <span class="material-symbols-rounded" aria-hidden="true">calendar_today</span>
@@ -91,11 +91,11 @@
                             <span class="dropdown-user-name">Max Mustermann</span>
                             <span class="dropdown-user-role">Student (B.Sc.)</span>
                         </div>
-                        <button class="dropdown-item" role="menuitem">
+                        <button class="dropdown-item" id="profile-menu-btn" role="menuitem">
                             <span class="material-symbols-rounded" aria-hidden="true">person</span>
                             Profil
                         </button>
-                        <button class="dropdown-item" role="menuitem">
+                        <button class="dropdown-item" id="settings-menu-btn" role="menuitem">
                             <span class="material-symbols-rounded" aria-hidden="true">settings</span>
                             Einstellungen
                         </button>
@@ -120,7 +120,7 @@
             <section id="dashboard" class="content-section active" role="tabpanel" aria-labelledby="tab-dashboard">
                 <header class="section-header">
                     <div class="header-content">
-                        <h1>Dashboard</h1>
+                        <h1>Home</h1>
                         <p>Willkommen zurück, Max Mustermann!</p>
                     </div>
                     <div class="current-date">
@@ -498,8 +498,8 @@
             </div>
             <nav class="sidebar-links" aria-label="Mobile Navigation">
                 <a href="#" class="nav-item active" data-target="dashboard" data-roles="student,dozent,verwaltung">
-                    <span class="material-symbols-rounded" aria-hidden="true">dashboard</span>
-                    <span>Dashboard</span>
+                    <span class="material-symbols-rounded" aria-hidden="true">home</span>
+                    <span>Home</span>
                 </a>
                 <a href="#" class="nav-item" data-target="schedule" data-roles="student">
                     <span class="material-symbols-rounded" aria-hidden="true">calendar_today</span>

@@ -101,7 +101,7 @@
 
 .semester-header h3::before {
     content: 'expand_more';
-    font-family: 'Material Icons Round';
+    font-family: 'Material Symbols Rounded';
     font-size: 1.25rem;
     transition: transform 0.3s;
 }

@@ -60,31 +60,34 @@
 
 
 .stat-icon {
-    width: 3.25rem;
-    height: 3.25rem;
+    width: 3rem;
+    height: 3rem;
     border-radius: var(--radius-lg);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
-    font-size: 1.4rem;
+    font-size: 1.35rem;
     flex-shrink: 0;
 }
 
 .primary-bg {
-    background: var(--primary-color);
+    background: rgba(37, 99, 235, 0.1);
+    color: var(--primary-color);
 }
 
 .success-bg {
-    background: var(--success-color);
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--success-color);
 }
 
 .warning-bg {
-    background: var(--warning-color);
+    background: rgba(245, 158, 11, 0.1);
+    color: var(--warning-color);
 }
 
 .secondary-bg {
-    background: var(--gray-color);
+    background: rgba(107, 114, 128, 0.1);
+    color: var(--gray-color);
 }
 
 .stat-info {
@@ -603,7 +606,7 @@ body.dark-mode .btn-action:hover {
     .stat-icon {
         width: 2.5rem;
         height: 2.5rem;
-        font-size: 1.2rem;
+        font-size: 1.15rem;
         border-radius: 0.75rem;
     }
 

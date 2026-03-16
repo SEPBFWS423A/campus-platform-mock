@@ -253,7 +253,7 @@ body.dark-mode .calendar-event {
 
 .event-loc::before {
     content: 'location_on';
-    font-family: 'Material Icons Round';
+    font-family: 'Material Symbols Rounded';
     font-size: 0.8rem;
 }
 
