@@ -1,7 +1,12 @@
 const mockData = {
     config: {
-        currentDate: "2026-03-04",
-        currentTime: "14:00"
+        get currentDate() {
+            return new Date().toISOString().slice(0, 10);
+        },
+        get currentTime() {
+            const now = new Date();
+            return `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+        }
     },
 
     users: [
