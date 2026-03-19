@@ -1682,3 +1682,195 @@ body.dark-mode .room-utilization-legend {
         font-size: 2rem;
     }
 }
+
+/* ── Dozent Prüfungsverwaltung ───────────────────────────────────────────── */
+
+.pruefung-cards-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+/* Card header: title/meta left, status select right */
+.pruefung-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.pruefung-card-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    flex-wrap: wrap;
+}
+
+.pruefung-card-meta {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-top: 0.25rem;
+}
+
+.pruefung-status-select {
+    max-width: 155px;
+    flex-shrink: 0;
+}
+
+/* Status pipeline */
+.pruefung-pipeline {
+    display: flex;
+    align-items: center;
+    margin: 0 -1.5rem;
+    padding: 0.7rem 1.5rem;
+    border-top: 1px solid var(--border-color-subtle);
+    border-bottom: 1px solid var(--border-color-subtle);
+    overflow-x: auto;
+}
+
+.pipeline-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    flex-shrink: 0;
+}
+
+.pipeline-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--border-color);
+    border: 2px solid var(--border-color);
+    transition: background var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.pipeline-step.done .pipeline-dot {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.pipeline-step.current .pipeline-dot {
+    background: var(--surface-color);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+.pipeline-label {
+    font-size: 0.68rem;
+    color: var(--text-tertiary);
+    white-space: nowrap;
+}
+
+.pipeline-step.done .pipeline-label,
+.pipeline-step.current .pipeline-label {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.pipeline-line {
+    flex: 1;
+    min-width: 2rem;
+    height: 2px;
+    background: var(--border-color);
+    transition: background var(--transition-fast);
+}
+
+.pipeline-line.done {
+    background: var(--primary-color);
+}
+
+/* Inline card tabs — extend to card edges */
+.pruefung-card-tabs {
+    margin: 0.25rem -1.5rem 0;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    margin-bottom: 0;
+}
+
+/* File info row in Dokument panel */
+.pruefung-file-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background: var(--bg-color);
+    border-radius: var(--radius-md);
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.75rem;
+}
+
+.pruefung-file-row .material-symbols-rounded {
+    font-size: 1.1rem;
+    color: var(--primary-color);
+    flex-shrink: 0;
+}
+
+.pruefung-file-date {
+    margin-left: auto;
+    font-size: 0.75rem;
+    color: var(--text-tertiary);
+}
+
+/* Grading mode selector (Manuell / Punkte / CSV) */
+.grading-mode-bar {
+    display: flex;
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.grading-mode-btn {
+    padding: 0.3rem 0.9rem;
+    border-radius: 999px;
+    border: 1.5px solid var(--border-color);
+    background: none;
+    cursor: pointer;
+    font-size: 0.82rem;
+    font-family: inherit;
+    color: var(--text-secondary);
+    transition: color var(--transition-fast), background var(--transition-fast), border-color var(--transition-fast);
+}
+
+.grading-mode-btn.active {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: #fff;
+    font-weight: 600;
+}
+
+/* Grading sub-panels */
+.note-mode-panel {
+    display: none;
+}
+
+.note-mode-panel.active {
+    display: block;
+}
+
+/* Points preview cell color (reuses dozent grade classes defined below) */
+.note-pts-preview {
+    font-weight: 600;
+    transition: color var(--transition-fast);
+}
+
+/* Footer security hint */
+.footer-security {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+    margin-top: 0.25rem;
+}
+
+.footer-security .material-symbols-rounded {
+    font-size: 0.9rem;
+}

@@ -50,13 +50,9 @@
                     <span class="material-symbols-rounded" aria-hidden="true">menu_book</span>
                     <span>Meine Kurse</span>
                 </a>
-                <a href="#" class="nav-item hidden" data-target="dozent-grading" data-roles="dozent" role="tab" aria-selected="false" aria-controls="dozent-grading">
-                    <span class="material-symbols-rounded" aria-hidden="true">grading</span>
-                    <span>Notenvergabe</span>
-                </a>
-                <a href="#" class="nav-item hidden" data-target="dozent-submissions" data-roles="dozent" role="tab" aria-selected="false" aria-controls="dozent-submissions">
-                    <span class="material-symbols-rounded" aria-hidden="true">assignment</span>
-                    <span>Abgaben</span>
+                <a href="#" class="nav-item hidden" data-target="dozent-exams" data-roles="dozent" role="tab" aria-selected="false" aria-controls="dozent-exams">
+                    <span class="material-symbols-rounded" aria-hidden="true">quiz</span>
+                    <span>Prüfungen</span>
                 </a>
                 <a href="#" class="nav-item hidden" data-target="admin-users" data-roles="verwaltung" role="tab" aria-selected="false" aria-controls="admin-users">
                     <span class="material-symbols-rounded" aria-hidden="true">manage_accounts</span>
@@ -353,26 +349,14 @@
                 </div>
             </section>
 
-            <section id="dozent-grading" class="content-section" role="tabpanel" aria-labelledby="tab-dozent-grading">
+            <section id="dozent-exams" class="content-section" role="tabpanel" aria-labelledby="tab-dozent-exams">
                 <header class="section-header">
                     <div class="header-content">
-                        <h1>Notenvergabe</h1>
-                        <p>Noten für Ihre Kurse eintragen</p>
+                        <h1>Prüfungen</h1>
+                        <p>Klausuren, Abgaben und Noten verwalten</p>
                     </div>
                 </header>
-                <div class="dozent-grading-content">
-                </div>
-            </section>
-
-            <section id="dozent-submissions" class="content-section" role="tabpanel" aria-labelledby="tab-dozent-submissions">
-                <header class="section-header">
-                    <div class="header-content">
-                        <h1>Studentische Abgaben</h1>
-                        <p>Eingereichte Arbeiten Ihrer Studierenden</p>
-                    </div>
-                </header>
-                <div class="dozent-submissions-content">
-                </div>
+                <div class="dozent-exams-content"></div>
             </section>
 
             <section id="admin-users" class="content-section" role="tabpanel" aria-labelledby="tab-admin-users">
@@ -506,12 +490,51 @@
                             </li>
                         </ul>
                     </div>
+                    <div class="card">
+                        <h3><span class="material-symbols-rounded heading-icon" aria-hidden="true">security</span>Datenschutz &amp; Sicherheit</h3>
+                        <ul class="link-list">
+                            <li>
+                                <span class="material-symbols-rounded" aria-hidden="true">lock</span>
+                                <span>Alle Daten werden verschlüsselt übertragen (TLS 1.3)</span>
+                            </li>
+                            <li>
+                                <span class="material-symbols-rounded" aria-hidden="true">verified_user</span>
+                                <span>Zugriffskontrolle nach Berechtigungsrolle (RBAC)</span>
+                            </li>
+                            <li>
+                                <span class="material-symbols-rounded" aria-hidden="true">policy</span>
+                                <a href="#">Datenschutzerklärung (DSGVO)</a>
+                            </li>
+                            <li>
+                                <span class="material-symbols-rounded" aria-hidden="true">gavel</span>
+                                <a href="#">Impressum &amp; Nutzungsbedingungen</a>
+                            </li>
+                        </ul>
+                        <div class="privacy-badge-row" style="margin-top:1rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
+                            <span class="type-badge lehrveranstaltung" style="font-size:0.75rem;">
+                                <span class="material-symbols-rounded" style="font-size:1rem;">lock</span>
+                                TLS 1.3 Verschlüsselt
+                            </span>
+                            <span class="type-badge lehrveranstaltung" style="font-size:0.75rem;">
+                                <span class="material-symbols-rounded" style="font-size:1rem;">shield</span>
+                                DSGVO-konform
+                            </span>
+                            <span class="type-badge lehrveranstaltung" style="font-size:0.75rem;">
+                                <span class="material-symbols-rounded" style="font-size:1rem;">manage_accounts</span>
+                                RBAC-Berechtigungen
+                            </span>
+                        </div>
+                    </div>
                 </div>
             </section>
         </main>
 
         <footer class="app-footer" role="contentinfo">
             <p>&copy; 2026 CampusPlatform. Alle Rechte vorbehalten.</p>
+            <p class="footer-security">
+                <span class="material-symbols-rounded" aria-hidden="true">lock</span>
+                Verschlüsselte Verbindung &bull; DSGVO-konform &bull; RBAC-Berechtigungen
+            </p>
         </footer>
 
         <div id="mobile-sidebar" class="sidebar" role="dialog" aria-modal="true" aria-label="Navigationsmenü">
@@ -545,13 +568,9 @@
                     <span class="material-symbols-rounded" aria-hidden="true">menu_book</span>
                     <span>Meine Kurse</span>
                 </a>
-                <a href="#" class="nav-item hidden" data-target="dozent-grading" data-roles="dozent">
-                    <span class="material-symbols-rounded" aria-hidden="true">grading</span>
-                    <span>Notenvergabe</span>
-                </a>
-                <a href="#" class="nav-item hidden" data-target="dozent-submissions" data-roles="dozent">
-                    <span class="material-symbols-rounded" aria-hidden="true">assignment</span>
-                    <span>Abgaben</span>
+                <a href="#" class="nav-item hidden" data-target="dozent-exams" data-roles="dozent">
+                    <span class="material-symbols-rounded" aria-hidden="true">quiz</span>
+                    <span>Prüfungen</span>
                 </a>
                 <a href="#" class="nav-item hidden" data-target="admin-users" data-roles="verwaltung">
                     <span class="material-symbols-rounded" aria-hidden="true">manage_accounts</span>

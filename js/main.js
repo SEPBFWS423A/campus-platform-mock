@@ -12,7 +12,6 @@ import { renderDownloads } from './features/shared/downloads.js';
 import { renderSubmissions } from './features/student/submissions.js';
 import { renderDozentDashboard } from './features/dozent/dozentDashboard.js';
 import { renderDozentCourses } from './features/dozent/courses.js';
-import { renderDozentGrading } from './features/dozent/grading.js';
 import { renderVerwaltungDashboard } from './features/verwaltung/verwaltungDashboard.js';
 import { renderUserManagement } from './features/verwaltung/userManagement.js';
 import { renderRoomManagement } from './features/verwaltung/roomManagement/index.js';
@@ -20,7 +19,7 @@ import { renderEventManagement } from './features/verwaltung/eventManagement/ind
 import { renderExamResultsManagement } from './features/verwaltung/examResults/index.js';
 import { initChatWidget } from './features/shared/chatWidget.js';
 import { initNotifications } from './features/shared/notifications.js';
-import { renderDozentSubmissions } from './features/dozent/dozentSubmissions.js';
+import { renderDozentPruefungen } from './features/dozent/pruefungen.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     if (!checkAuth()) return;
@@ -67,8 +66,7 @@ function renderContentForRole(user, navigation) {
     } else if (user.role === 'dozent') {
         renderDozentDashboard(mockData, user, navigation);
         renderDozentCourses(mockData, user);
-        renderDozentGrading(mockData, user);
-        renderDozentSubmissions(mockData, user);
+        renderDozentPruefungen(mockData, user);
         renderDownloads(mockData);
     } else if (user.role === 'verwaltung') {
         renderVerwaltungDashboard(mockData, user, navigation);

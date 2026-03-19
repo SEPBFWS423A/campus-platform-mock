@@ -384,7 +384,91 @@ const mockData = {
             { studentId: 5, grade: "3.3" },
             { studentId: 7, grade: "1.7" }
         ]
-    }
+    },
+
+    // Prüfungsdokumente je Modul (Dozenten-Verwaltung)
+    // Status: offen | bereitgestellt | geschrieben | abgeschlossen
+    pruefungsDocs: {
+        "WIN-401": {
+            status: "bereitgestellt",
+            examFileName: "Klausur_ITPM_WiSe2526.pdf",
+            uploadedAt: "2026-03-10",
+            notes: "90 Min, keine Hilfsmittel erlaubt"
+        },
+        "WIN-403": {
+            status: "offen",
+            examFileName: null,
+            uploadedAt: null,
+            notes: ""
+        },
+        "INF-405": {
+            status: "geschrieben",
+            examFileName: "Klausur_KI_WiSe2526.pdf",
+            uploadedAt: "2026-03-08",
+            notes: "Klausur am 18.03.2026 geschrieben"
+        }
+    },
+
+    // Studienarbeiten / eingereichte Arbeiten (für Dozenten-Download)
+    studienarbeiten: [
+        {
+            id: 1,
+            studentId: 1,
+            studentName: "Max Mustermann",
+            matNr: "12345678",
+            title: "Bachelor Thesis: AI in Healthcare",
+            type: "Bachelorarbeit",
+            moduleCode: "INF-405",
+            dozentId: 8,
+            submittedAt: "2026-02-18",
+            status: "eingereicht",
+            fileName: "BachelorThesis_Mustermann_AI.pdf",
+            size: "2.8 MB"
+        },
+        {
+            id: 2,
+            studentId: 7,
+            studentName: "Lisa Mueller",
+            matNr: "260563",
+            title: "Entwicklung einer Web-Applikation",
+            type: "Praxisarbeit",
+            moduleCode: "WIN-401",
+            dozentId: 2,
+            submittedAt: "2026-02-28",
+            status: "eingereicht",
+            fileName: "Praxisarbeit_Mueller_WebApp.zip",
+            size: "4.1 MB"
+        },
+        {
+            id: 3,
+            studentId: 1,
+            studentName: "Max Mustermann",
+            matNr: "12345678",
+            title: "Referat: IT-Governance Frameworks",
+            type: "Referat",
+            moduleCode: "WIN-403",
+            dozentId: 2,
+            submittedAt: "2026-03-05",
+            status: "eingereicht",
+            fileName: "Referat_Mustermann_ITGov.pdf",
+            size: "1.2 MB"
+        },
+        {
+            id: 4,
+            studentId: 7,
+            studentName: "Lisa Mueller",
+            matNr: "260563",
+            title: "Seminararbeit: DSGVO-Compliance",
+            type: "Seminararbeit",
+            moduleCode: "WIN-403",
+            dozentId: 2,
+            submittedAt: "2026-03-07",
+            status: "bewertet",
+            grade: "1.7",
+            fileName: "Seminar_Mueller_DSGVO.pdf",
+            size: "0.9 MB"
+        }
+    ]
 };
 
 /**

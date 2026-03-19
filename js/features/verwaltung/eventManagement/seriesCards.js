@@ -45,6 +45,35 @@ function nextId(items) {
     return Math.max(...items.map(i => i.id)) + 1;
 }
 
+const EVENT_TEMPLATES = [
+    {
+        id: 'vorlesung',
+        label: 'Vorlesungstemplate',
+        events: [
+            { name: 'Vorlesung', type: 'Lehrveranstaltung', duration: 90 },
+            { name: 'Übung', type: 'Lehrveranstaltung', duration: 45 },
+            { name: 'Klausur', type: 'Klausur', duration: 120 }
+        ]
+    },
+    {
+        id: 'seminar',
+        label: 'Seminartemplate',
+        events: [
+            { name: 'Seminar', type: 'Lehrveranstaltung', duration: 90 },
+            { name: 'Abschlusspräsentation', type: 'Lehrveranstaltung', duration: 60 }
+        ]
+    },
+    {
+        id: 'praxis',
+        label: 'Praxismodultemplate',
+        events: [
+            { name: 'Praxisveranstaltung', type: 'Lehrveranstaltung', duration: 120 },
+            { name: 'Betreuungsgespräch', type: 'Lehrveranstaltung', duration: 30 },
+            { name: 'Abgabe / Präsentation', type: 'Klausur', duration: 60 }
+        ]
+    }
+];
+
 export function renderEventManagement(data) {
     const container = document.querySelector('.admin-events-content');
     if (!container) return;
@@ -105,14 +134,30 @@ export function renderEventManagement(data) {
             <div class="card-header mgmt-card-header">
                 <h3>Neue Veranstaltungsreihe anlegen</h3>
             </div>
-            <div class="inline-create-form">
-                <div class="form-group">
+            <div class="inline-create-form" style="flex-wrap:wrap;gap:0.75rem;">
+                <div class="form-group" style="flex:2;min-width:180px;">
                     <label for="new-series-name">Name der Reihe</label>
                     <input type="text" id="new-series-name" placeholder="z.\u00a0B. Datenbanken II" />
                 </div>
-                <button class="btn btn-sm btn-primary" id="btn-create-series" type="button">
+                <div class="form-group" style="flex:1;min-width:160px;">
+                    <label for="new-series-template">Vorlage verwenden</label>
+                    <select id="new-series-template">
+                        <option value="">— Keine Vorlage —</option>
+                        ${EVENT_TEMPLATES.map(t =>
+                            `<option value="${t.id}">${escapeHTML(t.label)}</option>`
+                        ).join('')}
+                    </select>
+                </div>
+                <button class="btn btn-sm btn-primary" id="btn-create-series" type="button"
+                        style="align-self:flex-end;">
                     <span class="material-symbols-rounded">add</span> Anlegen
                 </button>
+            </div>
+            <div id="template-preview" style="margin-top:0.5rem;display:none;">
+                <p class="mgmt-desc-text" style="margin:0 0 0.25rem;">
+                    <strong>Vorlage enthält:</strong>
+                </p>
+                <div id="template-preview-items" style="display:flex;gap:0.5rem;flex-wrap:wrap;"></div>
             </div>
         </div>
 
@@ -146,15 +191,53 @@ export function renderEventManagement(data) {
 
     const btnCreate = container.querySelector('#btn-create-series');
     const inputName = container.querySelector('#new-series-name');
+    const templateSelect = container.querySelector('#new-series-template');
+    const templatePreview = container.querySelector('#template-preview');
+    const templatePreviewItems = container.querySelector('#template-preview-items');
+
+    if (templateSelect && templatePreview && templatePreviewItems) {
+        templateSelect.addEventListener('change', () => {
+            const tpl = EVENT_TEMPLATES.find(t => t.id === templateSelect.value);
+            if (tpl) {
+                templatePreviewItems.innerHTML = tpl.events.map(ev =>
+                    `<span class="type-badge ${ev.type === 'Klausur' ? 'klausur' : 'lehrveranstaltung'}">
+                        ${escapeHTML(ev.name)} (${ev.duration} min)
+                    </span>`
+                ).join('');
+                templatePreview.style.display = '';
+                // Pre-fill name if empty
+                if (inputName && !inputName.value.trim()) {
+                    inputName.value = tpl.label.replace('template', '').trim();
+                }
+            } else {
+                templatePreview.style.display = 'none';
+            }
+        });
+    }
+
     if (btnCreate && inputName) {
         btnCreate.addEventListener('click', () => {
             const name = inputName.value.trim();
             if (!name) return;
+
+            const selectedTemplate = templateSelect ? EVENT_TEMPLATES.find(t => t.id === templateSelect.value) : null;
+            const events = selectedTemplate
+                ? selectedTemplate.events.map((ev, i) => ({
+                    id: i + 1,
+                    name: ev.name,
+                    type: ev.type,
+                    duration: ev.duration,
+                    schedule: null,
+                    roomId: null,
+                    order: i + 1
+                }))
+                : [];
+
             const newSeries = {
                 id: nextId(data.eventSeries),
                 name,
                 studentIds: [],
-                events: []
+                events
             };
             data.eventSeries.push(newSeries);
             renderEventManagement(data);
