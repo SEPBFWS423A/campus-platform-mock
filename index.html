@@ -55,6 +55,10 @@
                     <span class="material-symbols-rounded" aria-hidden="true">quiz</span>
                     <span>Prüfungen</span>
                 </a>
+                <a href="#" class="nav-item hidden" data-target="dozent-absence" data-roles="dozent" role="tab" aria-selected="false" aria-controls="dozent-absence">
+                    <span class="material-symbols-rounded" aria-hidden="true">event_busy</span>
+                    <span>Abwesenheit</span>
+                </a>
                 <a href="#" class="nav-item hidden" data-target="admin-users" data-roles="verwaltung" role="tab" aria-selected="false" aria-controls="admin-users">
                     <span class="material-symbols-rounded" aria-hidden="true">manage_accounts</span>
                     <span>Benutzerverwaltung</span>
@@ -345,6 +349,16 @@
                     </div>
                 </header>
                 <div class="dozent-exams-content"></div>
+            </section>
+
+            <section id="dozent-absence" class="content-section" role="tabpanel" aria-labelledby="tab-dozent-absence">
+                <header class="section-header">
+                    <div class="header-content">
+                        <h1>Abwesenheit</h1>
+                        <p>Urlaub, Krankheit und Dienstreisen eintragen</p>
+                    </div>
+                </header>
+                <div class="dozent-absence-content"></div>
             </section>
 
             <section id="admin-users" class="content-section" role="tabpanel" aria-labelledby="tab-admin-users">

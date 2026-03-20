@@ -347,6 +347,8 @@ const mockData = {
         {
             id: 1,
             name: "Software Engineering",
+            dozentId: 8,
+            examForms: ["Klausur"],
             studentIds: [1, 7],
             events: [
                 { id: 1, name: "VL Grundlagen", type: "Lehrveranstaltung", duration: 90, schedule: { day: 0, start: "09:45", end: "11:15" }, roomId: 4, order: 1 },
@@ -356,6 +358,8 @@ const mockData = {
         {
             id: 2,
             name: "IT-Projektmanagement",
+            dozentId: 2,
+            examForms: ["Klausur"],
             studentIds: [1, 5, 7],
             events: [
                 { id: 1, name: "VL Projektmanagement", type: "Lehrveranstaltung", duration: 90, schedule: { day: 0, start: "13:45", end: "15:15" }, roomId: 4, order: 1 },
@@ -366,6 +370,8 @@ const mockData = {
         {
             id: 3,
             name: "Künstliche Intelligenz",
+            dozentId: 8,
+            examForms: ["Klausur"],
             studentIds: [1, 4, 7],
             events: [
                 { id: 1, name: "VL Neuronale Netze", type: "Lehrveranstaltung", duration: 90, schedule: { day: 2, start: "09:45", end: "13:00" }, roomId: 1, order: 1 },
@@ -376,12 +382,16 @@ const mockData = {
         {
             id: 4,
             name: "Software Testing & DevOps",
+            dozentId: null,
+            examForms: [],
             studentIds: [],
             events: []
         },
         {
             id: 5,
             name: "IT-Recht & Compliance",
+            dozentId: 2,
+            examForms: ["Referat", "Hausarbeit"],
             studentIds: [1, 4, 7],
             events: [
                 { id: 1, name: "VL IT-Recht", type: "Lehrveranstaltung", duration: 90, schedule: { day: 3, start: "09:45", end: "13:00" }, roomId: 8, order: 1 },
@@ -485,6 +495,27 @@ const mockData = {
             fileName: "Seminar_Mueller_DSGVO.pdf",
             size: "0.9 MB"
         }
+    ],
+
+    studiengruppen: [
+        { id: 1, name: "WIN-2024A", studentIds: [1, 7] },
+        { id: 2, name: "INF-2024B", studentIds: [] }
+    ],
+
+    vorlesungsfreieZeiten: [
+        { id: 1, name: "Weihnachtsferien", start: "2025-12-21", end: "2026-01-05" },
+        { id: 2, name: "Osterferien",      start: "2026-03-30", end: "2026-04-10" }
+    ],
+
+    abwesenheiten: [
+        { id: 1, dozentId: 2, start: "2026-04-14", end: "2026-04-18", type: "Urlaub",      note: "Jahresurlaub" },
+        { id: 2, dozentId: 8, start: "2026-03-23", end: "2026-03-27", type: "Dienstreise",  note: "Konferenz Berlin" }
+    ],
+
+    vorlesungTemplates: [
+        { id: 1, name: "Vorlesung mit Übung & Klausur", numEvents: 15, examForms: ["Klausur"] },
+        { id: 2, name: "Seminar",                       numEvents: 10, examForms: ["Referat", "Hausarbeit"] },
+        { id: 3, name: "Praxismodul",                   numEvents: 8,  examForms: ["Studienarbeit", "Präsentation"] }
     ]
 };
 

@@ -20,6 +20,7 @@ import { renderExamResultsManagement } from './features/verwaltung/examResults/i
 import { initChatWidget } from './features/shared/chatWidget.js';
 import { initNotifications } from './features/shared/notifications.js';
 import { renderDozentPruefungen } from './features/dozent/pruefungen.js';
+import { renderDozentAbwesenheit } from './features/dozent/abwesenheit.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     if (!checkAuth()) return;
@@ -67,6 +68,7 @@ function renderContentForRole(user, navigation) {
         renderDozentDashboard(mockData, user, navigation);
         renderDozentCourses(mockData, user);
         renderDozentPruefungen(mockData, user);
+        renderDozentAbwesenheit(mockData, user);
         renderDownloads(mockData);
     } else if (user.role === 'verwaltung') {
         renderVerwaltungDashboard(mockData, user, navigation);

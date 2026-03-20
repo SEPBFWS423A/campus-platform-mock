@@ -28,6 +28,53 @@ function buildEditSeriesBody(data, series) {
     const assignedStudents = allStudents.filter(s => series.studentIds.includes(s.id));
     const availableStudents = allStudents.filter(s => !series.studentIds.includes(s.id));
 
+    // ── Dozent-Selector ──────────────────────────────────────────────────────
+    const dozenten = data.users.filter(u => u.role === 'dozent');
+    const dozentOptionsHTML = dozenten.map(d =>
+        `<option value="${d.id}" ${series.dozentId === d.id ? 'selected' : ''}>${escapeHTML(d.name)}</option>`
+    ).join('');
+    const dozentSectionHTML = `
+        <div style="margin-bottom: 1.5rem;">
+            <h4 class="modal-section-heading">
+                <span class="material-symbols-rounded">person_book</span>
+                Lehrender (Dozent)
+            </h4>
+            <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;">
+                <select id="modal-dozent-select" class="form-input" style="flex:1;min-width:200px;">
+                    <option value="">-- Kein Dozent zugewiesen --</option>
+                    ${dozentOptionsHTML}
+                </select>
+                <button class="btn btn-sm btn-primary" id="modal-btn-save-dozent" type="button">
+                    <span class="material-symbols-rounded">save</span> Übernehmen
+                </button>
+            </div>
+        </div>
+    `;
+
+    // ── Prüfungsformen ───────────────────────────────────────────────────────
+    const ALL_EXAM_FORMS = ['Klausur', 'Referat', 'Hausarbeit', 'Präsentation', 'Studienarbeit', 'Projektarbeit'];
+    const currentForms = Array.isArray(series.examForms) ? series.examForms : [];
+    const examFormsHTML = `
+        <div style="margin-bottom: 1.5rem;">
+            <h4 class="modal-section-heading">
+                <span class="material-symbols-rounded">assignment</span>
+                Mögliche Prüfungsformen
+            </h4>
+            <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:0.5rem;">
+                ${ALL_EXAM_FORMS.map(f => `
+                    <label style="display:flex;align-items:center;gap:0.3rem;cursor:pointer;">
+                        <input type="checkbox" class="exam-form-cb" value="${escapeHTML(f)}"
+                            ${currentForms.includes(f) ? 'checked' : ''}>
+                        ${escapeHTML(f)}
+                    </label>`).join('')}
+            </div>
+            <button class="btn btn-sm btn-primary" id="modal-btn-save-examforms" type="button">
+                <span class="material-symbols-rounded">save</span> Übernehmen
+            </button>
+        </div>
+    `;
+
+    // ── Studierende (inkl. Studiengruppen) ───────────────────────────────────
     const chipsHTML = assignedStudents.length > 0
         ? assignedStudents.map(s => `
             <span class="student-chip" data-student-id="${s.id}">
@@ -42,6 +89,11 @@ function buildEditSeriesBody(data, series) {
         `<option value="${s.id}">${escapeHTML(s.name)} (${escapeHTML(s.matriculationNumber || '')})</option>`
     ).join('');
 
+    const studiengruppen = data.studiengruppen || [];
+    const gruppenOptionsHTML = studiengruppen
+        .filter(g => g.studentIds.some(id => !series.studentIds.includes(id)))
+        .map(g => `<option value="sg-${g.id}">${escapeHTML(g.name)}</option>`).join('');
+
     const studentSectionHTML = `
         <div style="margin-bottom: 1.5rem;">
             <h4 class="modal-section-heading">
@@ -51,17 +103,26 @@ function buildEditSeriesBody(data, series) {
             <div class="student-chips" id="modal-student-chips">
                 ${chipsHTML}
             </div>
-            ${availableStudents.length > 0 ? `
-                <div style="display: flex; gap: 0.5rem; margin-top: 0.75rem; align-items: center; flex-wrap: wrap;">
+            <div style="display: flex; gap: 0.5rem; margin-top: 0.75rem; align-items: center; flex-wrap: wrap;">
+                ${availableStudents.length > 0 ? `
                     <select id="modal-add-student-select" class="form-input" style="flex: 1; min-width: 180px;">
-                        <option value="">-- Studierenden ausw\u00e4hlen --</option>
+                        <option value="">-- Studierenden auswählen --</option>
                         ${studentOptionsHTML}
                     </select>
                     <button class="btn btn-sm btn-primary" id="modal-btn-add-student" type="button">
-                        <span class="material-symbols-rounded">person_add</span> Hinzuf\u00fcgen
+                        <span class="material-symbols-rounded">person_add</span> Hinzufügen
                     </button>
-                </div>
-            ` : ''}
+                ` : ''}
+                ${gruppenOptionsHTML ? `
+                    <select id="modal-add-gruppe-select" class="form-input" style="flex: 1; min-width: 180px;">
+                        <option value="">-- Studiengruppe hinzufügen --</option>
+                        ${gruppenOptionsHTML}
+                    </select>
+                    <button class="btn btn-sm btn-outline" id="modal-btn-add-gruppe" type="button">
+                        <span class="material-symbols-rounded">groups</span> Gruppe
+                    </button>
+                ` : ''}
+            </div>
         </div>
     `;
 
@@ -191,6 +252,8 @@ function buildEditSeriesBody(data, series) {
     `;
 
     return `
+        ${dozentSectionHTML}
+        ${examFormsHTML}
         ${studentSectionHTML}
         <div class="modal-section-divider">
             <h4 class="modal-section-heading">
@@ -208,6 +271,41 @@ function buildEditSeriesBody(data, series) {
 function attachEditSeriesListeners(data, series) {
     const overlay = document.getElementById('modal-overlay');
     if (!overlay) return;
+
+    // ── Dozent save ─────────────────────────────────────────────────────────
+    const btnSaveDozent = overlay.querySelector('#modal-btn-save-dozent');
+    if (btnSaveDozent) {
+        btnSaveDozent.addEventListener('click', () => {
+            const val = overlay.querySelector('#modal-dozent-select').value;
+            series.dozentId = val ? parseInt(val, 10) : null;
+            refreshEditModal(data, series);
+        });
+    }
+
+    // ── Prüfungsformen save ─────────────────────────────────────────────────
+    const btnSaveForms = overlay.querySelector('#modal-btn-save-examforms');
+    if (btnSaveForms) {
+        btnSaveForms.addEventListener('click', () => {
+            series.examForms = [...overlay.querySelectorAll('.exam-form-cb:checked')].map(cb => cb.value);
+            refreshEditModal(data, series);
+        });
+    }
+
+    // ── Studiengruppe batch-add ─────────────────────────────────────────────
+    const btnAddGruppe = overlay.querySelector('#modal-btn-add-gruppe');
+    if (btnAddGruppe) {
+        btnAddGruppe.addEventListener('click', () => {
+            const val = overlay.querySelector('#modal-add-gruppe-select').value;
+            if (!val || !val.startsWith('sg-')) return;
+            const gruppeId = parseInt(val.slice(3), 10);
+            const gruppe = (data.studiengruppen || []).find(g => g.id === gruppeId);
+            if (!gruppe) return;
+            gruppe.studentIds.forEach(sid => {
+                if (!series.studentIds.includes(sid)) series.studentIds.push(sid);
+            });
+            refreshEditModal(data, series);
+        });
+    }
 
     const btnAddStudent = overlay.querySelector('#modal-btn-add-student');
     const selectStudent = overlay.querySelector('#modal-add-student-select');

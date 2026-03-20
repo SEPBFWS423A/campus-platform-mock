@@ -3,6 +3,7 @@ import { showConfirmDialog } from '../../../core/modal.js';
 import { openEditSeriesModal } from './editSeriesModal.js';
 import { runAutoPlanning } from './autoPlanning.js';
 import { DAY_NAMES, DAY_SHORT } from '../../shared/constants.js';
+import { buildEmptyState } from '../../shared/uiComponents.js';
 
 function getRoomName(rooms, roomId) {
     if (roomId == null) return '-';
@@ -74,17 +75,27 @@ const EVENT_TEMPLATES = [
     }
 ];
 
-export function renderEventManagement(data) {
-    const container = document.querySelector('.admin-events-content');
+export function renderEventManagement(data, targetEl) {
+    const container = targetEl || document.querySelector('#admin-events-series-slot') || document.querySelector('.admin-events-content');
     if (!container) return;
 
     const seriesSorted = [...data.eventSeries].sort((a, b) =>
         a.name.localeCompare(b.name, 'de')
     );
 
+    // Global planning status
+    const totalEvents = data.eventSeries.reduce((s, sr) => s + sr.events.length, 0);
+    const totalUnplanned = data.eventSeries.reduce(
+        (s, sr) => s + sr.events.filter(e => !e.schedule || !e.roomId).length, 0
+    );
+
     const cardsHTML = seriesSorted.map(series => {
         const studentCount = series.studentIds ? series.studentIds.length : 0;
         const sortedEvents = [...series.events].sort((a, b) => a.order - b.order);
+        const unplanned = series.events.filter(e => !e.schedule || !e.roomId).length;
+        const planBadge = series.events.length === 0 ? '' : unplanned === 0
+            ? `<span class="series-planning-status complete"><span class="material-symbols-rounded">check_circle</span>Vollständig geplant</span>`
+            : `<span class="series-planning-status incomplete"><span class="material-symbols-rounded">schedule</span>${unplanned} nicht geplant</span>`;
 
         const eventsListHTML = sortedEvents.length > 0
             ? sortedEvents.map(ev => {
@@ -102,29 +113,39 @@ export function renderEventManagement(data) {
                         </div>
                     </div>`;
             }).join('')
-            : '<p style="color: var(--text-secondary); font-size: 0.875rem; margin: 0.5rem 0;">Keine Veranstaltungen vorhanden.</p>';
+            : '<p class="series-no-events">Keine Veranstaltungen vorhanden.</p>';
+
+        const dozent = series.dozentId ? data.users.find(u => u.id === series.dozentId) : null;
+        const examForms = Array.isArray(series.examForms) && series.examForms.length > 0 ? series.examForms : null;
 
         return `
-            <div class="series-card card" data-series-id="${series.id}">
-                <div class="series-card-header">
-                    <div>
-                        <div class="series-card-title">${escapeHTML(series.name)}</div>
-                        <div class="series-card-subtitle">
-                            <span class="material-symbols-rounded">group</span>
-                            ${studentCount} Studierende zugewiesen
+            <div class="series-card" data-series-id="${series.id}">
+                <div class="series-card-summary">
+                    <div class="series-card-info">
+                        <span class="series-card-title">${escapeHTML(series.name)}</span>
+                        <span class="series-card-meta-line">
+                            <span class="material-symbols-rounded">group</span>${studentCount} Stud.
+                            ${dozent ? `<span class="meta-sep">·</span><span class="material-symbols-rounded">person_book</span>${escapeHTML(dozent.name)}` : ''}
+                        </span>
+                    </div>
+                    ${planBadge}
+                    <span class="material-symbols-rounded series-card-chevron">expand_more</span>
+                </div>
+                <div class="series-card-body">
+                    <div class="series-card-body-inner">
+                        ${examForms ? `<div class="series-card-exam-forms">${examForms.map(f => `<span class="type-badge lehrveranstaltung">${escapeHTML(f)}</span>`).join('')}</div>` : ''}
+                        <div class="series-card-events">
+                            ${eventsListHTML}
+                        </div>
+                        <div class="series-card-footer-actions">
+                            <button class="btn btn-sm btn-outline btn-edit-series" data-series-id="${series.id}" type="button">
+                                <span class="material-symbols-rounded">edit</span> Bearbeiten
+                            </button>
+                            <button class="btn btn-sm btn-danger btn-delete-series" data-series-id="${series.id}" type="button">
+                                <span class="material-symbols-rounded">delete</span> L\u00f6schen
+                            </button>
                         </div>
                     </div>
-                    <div class="series-card-actions">
-                        <button class="btn btn-sm btn-outline btn-edit-series" data-series-id="${series.id}" type="button">
-                            <span class="material-symbols-rounded">edit</span> Bearbeiten
-                        </button>
-                        <button class="btn btn-sm btn-danger btn-delete-series" data-series-id="${series.id}" type="button">
-                            <span class="material-symbols-rounded">delete</span> L\u00f6schen
-                        </button>
-                    </div>
-                </div>
-                <div class="series-card-events">
-                    ${eventsListHTML}
                 </div>
             </div>`;
     }).join('');
@@ -134,12 +155,12 @@ export function renderEventManagement(data) {
             <div class="card-header mgmt-card-header">
                 <h3>Neue Veranstaltungsreihe anlegen</h3>
             </div>
-            <div class="inline-create-form" style="flex-wrap:wrap;gap:0.75rem;">
-                <div class="form-group" style="flex:2;min-width:180px;">
+            <div class="inline-create-form">
+                <div class="form-group form-group--lg">
                     <label for="new-series-name">Name der Reihe</label>
                     <input type="text" id="new-series-name" placeholder="z.\u00a0B. Datenbanken II" />
                 </div>
-                <div class="form-group" style="flex:1;min-width:160px;">
+                <div class="form-group form-group--md">
                     <label for="new-series-template">Vorlage verwenden</label>
                     <select id="new-series-template">
                         <option value="">— Keine Vorlage —</option>
@@ -148,44 +169,50 @@ export function renderEventManagement(data) {
                         ).join('')}
                     </select>
                 </div>
-                <button class="btn btn-sm btn-primary" id="btn-create-series" type="button"
-                        style="align-self:flex-end;">
+                <button class="btn btn-sm btn-primary" id="btn-create-series" type="button">
                     <span class="material-symbols-rounded">add</span> Anlegen
                 </button>
             </div>
-            <div id="template-preview" style="margin-top:0.5rem;display:none;">
-                <p class="mgmt-desc-text" style="margin:0 0 0.25rem;">
-                    <strong>Vorlage enthält:</strong>
-                </p>
-                <div id="template-preview-items" style="display:flex;gap:0.5rem;flex-wrap:wrap;"></div>
+            <div id="template-preview" class="template-preview">
+                <p class="template-preview-label">Vorlage enthält:</p>
+                <div id="template-preview-items" class="template-preview-items"></div>
             </div>
         </div>
 
         <div class="series-cards-grid">
-            ${cardsHTML || '<div class="management-empty"><span class="material-symbols-rounded">event_busy</span><p>Keine Veranstaltungsreihen vorhanden.</p></div>'}
+            ${cardsHTML || buildEmptyState('event_busy', 'Keine Veranstaltungsreihen vorhanden.')}
         </div>
 
-        <div class="card" style="margin-top: 2rem;">
-            <div class="card-header mgmt-card-header">
-                <h3>Automatische Raumplanung</h3>
+        <div class="card intelligent-plan-card">
+            <div class="card-header mgmt-card-header intelligent-plan-header">
+                <div class="intelligent-plan-title-group">
+                    <span class="material-symbols-rounded intelligent-plan-icon">auto_fix_high</span>
+                    <div>
+                        <h3>Intelligente Veranstaltungsplanung</h3>
+                        <p class="mgmt-desc-text mgmt-desc-text--flush">
+                            Plant alle offenen Lehrveranstaltungen und Pr\u00fcfungen automatisch ein und ordnet ihnen passende R\u00e4ume zu.
+                        </p>
+                    </div>
+                </div>
+                ${totalEvents === 0 ? '' : totalUnplanned === 0
+                    ? `<span class="plan-global-status complete"><span class="material-symbols-rounded">check_circle</span>Alle ${totalEvents} Veranstaltungen geplant</span>`
+                    : `<span class="plan-global-status pending"><span class="material-symbols-rounded">schedule</span>${totalUnplanned} von ${totalEvents} offen</span>`
+                }
             </div>
-            <p class="mgmt-desc-text">
-                Plant nicht zugewiesene Veranstaltungen automatisch in freie R\u00e4ume und Zeitslots (Mo\u2013Fr, 09:00\u201317:00) ein.
-            </p>
-            <div class="inline-create-form">
-                <div class="form-group">
-                    <label for="auto-plan-start">Startdatum</label>
-                    <input type="date" id="auto-plan-start" />
-                </div>
-                <div class="form-group">
-                    <label for="auto-plan-end">Enddatum</label>
-                    <input type="date" id="auto-plan-end" />
-                </div>
-                <button class="btn btn-sm btn-primary" id="btn-auto-plan" type="button">
+            <div class="intelligent-plan-options">
+                <label class="plan-option-label">
+                    <input type="checkbox" id="plan-opt-exam-days" checked>
+                    Pr\u00fcfungen bevorzugt Do/Fr einplanen
+                </label>
+                <label class="plan-option-label">
+                    <input type="checkbox" id="plan-opt-capacity" checked>
+                    Raumkapazit\u00e4t ber\u00fccksichtigen
+                </label>
+                <button class="btn btn-sm btn-primary" id="btn-auto-plan" type="button" ${totalUnplanned === 0 ? 'disabled' : ''}>
                     <span class="material-symbols-rounded">auto_fix_high</span> Planung starten
                 </button>
             </div>
-            <div id="auto-plan-result"></div>
+            <div id="auto-plan-result" class="auto-plan-result"></div>
         </div>
     `;
 
@@ -204,13 +231,13 @@ export function renderEventManagement(data) {
                         ${escapeHTML(ev.name)} (${ev.duration} min)
                     </span>`
                 ).join('');
-                templatePreview.style.display = '';
+                templatePreview.classList.add('visible');
                 // Pre-fill name if empty
                 if (inputName && !inputName.value.trim()) {
                     inputName.value = tpl.label.replace('template', '').trim();
                 }
             } else {
-                templatePreview.style.display = 'none';
+                templatePreview.classList.remove('visible');
             }
         });
     }
@@ -274,16 +301,28 @@ export function renderEventManagement(data) {
     });
 
     container.querySelectorAll('.btn-edit-series').forEach(btn => {
-        btn.addEventListener('click', () => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
             const seriesId = parseInt(btn.dataset.seriesId, 10);
             openEditSeriesModal(data, seriesId);
+        });
+    });
+
+    // Accordion: toggle card open/closed on summary click
+    container.querySelectorAll('.series-card-summary').forEach(summary => {
+        summary.addEventListener('click', () => {
+            summary.closest('.series-card').classList.toggle('open');
         });
     });
 
     const btnAutoPlan = container.querySelector('#btn-auto-plan');
     if (btnAutoPlan) {
         btnAutoPlan.addEventListener('click', () => {
-            runAutoPlanning(data);
+            const resultHTML = runAutoPlanning(data);
+            renderEventManagement(data);
+            // Re-inject result into freshly rendered result slot
+            const resultDiv = container.querySelector('#auto-plan-result');
+            if (resultDiv && resultHTML) resultDiv.innerHTML = resultHTML;
         });
     }
 }
