@@ -2,8 +2,8 @@ import { escapeHTML } from '../../core/utils.js';
 import { initSectionTabs, renderCalendarForModules } from '../student/schedule.js';
 import { showModal, closeModal } from '../../core/modal.js';
 import { findParticipantsForCourse, buildEmptyState } from './dozentHelpers.js';
-import { DAY_NAMES } from '../shared/constants.js';
 import { getDozentCourses, getActiveDozentCourses } from '../shared/dataHelpers.js';
+import { buildCourseCard, buildPastCoursesSection } from '../shared/courseCardHelpers.js';
 
 export function renderDozentCourses(data, user) {
     renderDozentOverview(data, user);
@@ -12,7 +12,8 @@ export function renderDozentCourses(data, user) {
 }
 
 function renderDozentOverview(data, user) {
-    const container = document.querySelector('.dozent-courses-grid');
+    const container = document.querySelector('#dozent-overview .dozent-courses-grid');
+    const pastContainer = document.querySelector('#dozent-overview .past-courses-container');
     if (!container) return;
 
     const myCourses = getDozentCourses(data, user.id);
@@ -24,10 +25,11 @@ function renderDozentOverview(data, user) {
         return;
     }
 
-    const courseCards = activeCourses.map(course => buildCourseCard(course, data)).join('');
-    const pastSection = pastCourses.length > 0 ? buildPastCoursesSection(pastCourses) : '';
+    container.innerHTML = activeCourses.map(course => buildDozentCourseCard(course, data)).join('');
 
-    container.innerHTML = courseCards + pastSection;
+    if (pastContainer) {
+        pastContainer.innerHTML = pastCourses.length > 0 ? buildPastCoursesSection(pastCourses) : '';
+    }
 
     activeCourses.forEach(course => {
         const btn = container.querySelector(`[data-course-code="${course.code}"]`);
@@ -39,81 +41,21 @@ function renderDozentOverview(data, user) {
     });
 }
 
-function buildCourseCard(course, data) {
-    const scheduleInfo = buildScheduleText(course);
-    const examInfo = buildExamText(course);
+function buildDozentCourseCard(course, data) {
     const participants = findParticipantsForCourse(course, data);
-
-    return `
-        <div class="card dozent-course-card">
-            <div class="dozent-card-header">
-                <div class="dozent-card-icon">
-                    <span class="material-symbols-rounded" aria-hidden="true">menu_book</span>
-                </div>
-                <div class="dozent-card-title">
-                    <h3>${escapeHTML(course.name)}</h3>
-                    <span class="dozent-card-subtitle">${escapeHTML(course.code)} &bull; ${escapeHTML(String(course.ects))} ECTS</span>
-                </div>
-            </div>
-            <div class="dozent-card-meta">
-                <div class="dozent-meta-row">
-                    <span class="material-symbols-rounded" aria-hidden="true">schedule</span>
-                    <span>${scheduleInfo}</span>
-                </div>
-                <div class="dozent-meta-row">
-                    <span class="material-symbols-rounded" aria-hidden="true">event_note</span>
-                    <span>${examInfo}</span>
-                </div>
-                <div class="dozent-meta-row">
-                    <span class="material-symbols-rounded" aria-hidden="true">people</span>
-                    <span>${participants.length} Teilnehmer &bull; ${escapeHTML(course.semester)}</span>
-                </div>
-            </div>
-            <div class="dozent-card-footer">
-                <button class="btn btn-outline btn-sm dozent-participants-btn"
-                        data-course-code="${escapeHTML(course.code)}"
-                        type="button">
-                    <span class="material-symbols-rounded" aria-hidden="true">group</span>
-                    Teilnehmer anzeigen
-                </button>
-            </div>
+    const extraMetaRows = `
+        <div class="dozent-meta-row">
+            <span class="material-symbols-rounded" aria-hidden="true">people</span>
+            <span>${participants.length} Teilnehmer &bull; ${escapeHTML(course.semester)}</span>
         </div>`;
-}
-
-function buildScheduleText(course) {
-    if (!course.schedule || course.schedule.length === 0) {
-        return 'Kein Stundenplan';
-    }
-    return course.schedule.map(s =>
-        `${DAY_NAMES[s.day]} ${escapeHTML(s.start)}-${escapeHTML(s.end)}, ${escapeHTML(s.room)}`
-    ).join('<br>');
-}
-
-function buildExamText(course) {
-    if (!course.exam) return 'Keine Pr\u00fcfung geplant';
-    const type = escapeHTML(course.exam.type || 'Klausur');
-    const date = escapeHTML(course.exam.date);
-    const room = course.exam.room ? ' &bull; ' + escapeHTML(course.exam.room) : '';
-    return `${type} am ${date}${room}`;
-}
-
-function buildPastCoursesSection(pastCourses) {
-    const cards = pastCourses.map(course => `
-        <div class="card dozent-past-card">
-            <h4 class="dozent-past-card-title">${escapeHTML(course.name)}</h4>
-            <span class="dozent-past-card-meta">
-                ${escapeHTML(course.code)} &bull; ${escapeHTML(course.semester)} &bull; ${escapeHTML(String(course.ects))} ECTS
-            </span>
-        </div>
-    `).join('');
-
-    return `
-        <div class="full-width dozent-past-section">
-            <h3 class="dozent-past-heading">Vergangene Kurse</h3>
-            <div class="grid-container">
-                ${cards}
-            </div>
-        </div>`;
+    const footer = `
+        <button class="btn btn-outline btn-sm dozent-participants-btn"
+                data-course-code="${escapeHTML(course.code)}"
+                type="button">
+            <span class="material-symbols-rounded" aria-hidden="true">group</span>
+            Teilnehmer anzeigen
+        </button>`;
+    return buildCourseCard(course, { extraMetaRows, footer });
 }
 
 function openParticipantModal(course, data) {

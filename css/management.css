@@ -1330,8 +1330,32 @@ body.dark-mode .room-utilization-legend {
     justify-content: center;
 }
 
+.courses-tab-layout {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.courses-tab-layout .dozent-courses-grid {
+    flex-shrink: 0;
+}
+
+.past-courses-container {
+    margin-top: auto;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+}
+
 .dozent-past-section {
-    margin-top: 1rem;
+    margin-top: 0;
+}
+
+.dozent-past-section .grid-container {
+    max-height: calc(2 * 96px + 1.5rem);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-color) transparent;
+    padding-right: 0.25rem;
 }
 
 .dozent-past-heading {
@@ -1860,17 +1884,3 @@ body.dark-mode .room-utilization-legend {
     transition: color var(--transition-fast);
 }
 
-/* Footer security hint */
-.footer-security {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.35rem;
-    font-size: 0.72rem;
-    color: var(--text-secondary);
-    margin-top: 0.25rem;
-}
-
-.footer-security .material-symbols-rounded {
-    font-size: 0.9rem;
-}

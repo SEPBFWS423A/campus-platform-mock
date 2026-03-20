@@ -3,7 +3,7 @@ import { escapeHTML } from '../../core/utils.js';
 const FAQ = [
     {
         keywords: ['stundenplan', 'vorlesung', 'kalender', 'schedule'],
-        answer: 'Deinen Stundenplan findest du unter <strong>Stundenplan</strong> in der Navigation. Dort siehst du sowohl eine Wochenübersicht als auch einen Kalender.',
+        answer: 'Deine Kurse findest du unter <strong>Meine Kurse</strong> in der Navigation. Dort siehst du sowohl eine Modulübersicht als auch einen Kalender.',
         roles: ['student']
     },
     {
@@ -81,7 +81,7 @@ let currentRole = null;
 let messages = [];
 
 function getQuickReplies() {
-    if (currentRole === 'student') return ['Stundenplan', 'Noten', 'Prüfungen', 'Abgaben'];
+    if (currentRole === 'student') return ['Meine Kurse', 'Noten', 'Prüfungen', 'Abgaben'];
     if (currentRole === 'dozent') return ['Meine Kurse', 'Benotung', 'Downloads'];
     if (currentRole === 'verwaltung') return ['Raumverwaltung', 'Benutzer', 'Veranstaltungen', 'Prüfungsamt'];
     return ['Hilfe'];

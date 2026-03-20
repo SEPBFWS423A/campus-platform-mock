@@ -2,7 +2,7 @@
 
 .chat-fab {
     position: fixed;
-    bottom: 1.5rem;
+    bottom: calc(var(--footer-height, 40px) + 1rem);
     right: 1.5rem;
     z-index: 1000;
     width: 56px;
@@ -37,7 +37,7 @@
 /* Chat panel */
 .chat-panel {
     position: fixed;
-    bottom: 5.5rem;
+    bottom: calc(var(--footer-height, 40px) + 56px + 1.5rem);
     right: 1.5rem;
     z-index: 999;
     width: 380px;

@@ -238,8 +238,25 @@ const mockData = {
             ],
             exam: {
                 status: "registered", date: "2026-03-25", time: "10:00 - 11:30",
-                room: "Hörsaal 4", type: "Klausur (90 min)"
+                room: "Hörsaal 4", type: "Referat"
             }
+        },
+        {
+            code: "INF-406", name: "Software Engineering", semester: "WiSe 25/26",
+            ects: 6, status: "active", attempt: 1, dozentId: 5,
+            lecturer: "Prof. Dr. Schneider",
+            schedule: [
+                { day: 1, start: "09:45", end: "13:00", room: "R 3.01", type: "Vorlesung", color: "teal" },
+                { day: 3, start: "13:45", end: "17:00", room: "PC-Labor 2", type: "Praktikum", color: "teal" }
+            ],
+            exam: {
+                status: "open", date: "2026-04-02", time: "10:00 - 12:00",
+                room: "Hörsaal 3", type: "Klausur (120 min)",
+                examiner: "Prof. Dr. Schneider"
+            },
+            files: [
+                { name: "SE_Vorlesung_UML_Grundlagen.pdf", type: "pdf", size: "4.1 MB", date: "05.02.2026" }
+            ]
         }
     ],
 
@@ -396,10 +413,10 @@ const mockData = {
             notes: "90 Min, keine Hilfsmittel erlaubt"
         },
         "WIN-403": {
-            status: "offen",
+            status: "eingereicht",
             examFileName: null,
             uploadedAt: null,
-            notes: ""
+            notes: "Seminararbeit und Referat bis Ende Vorlesungszeit"
         },
         "INF-405": {
             status: "geschrieben",

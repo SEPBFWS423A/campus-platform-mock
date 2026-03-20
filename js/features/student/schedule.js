@@ -1,6 +1,7 @@
 import { timeToMinutes, escapeHTML } from '../../core/utils.js';
 import { initTabs } from '../shared/tabSwitching.js';
 import { getWeekData } from '../shared/scheduleUtils.js';
+import { buildCourseCard, buildPastCoursesSection } from '../shared/courseCardHelpers.js';
 
 export function renderSchedule(data) {
     renderModuleOverview(data);
@@ -9,44 +10,30 @@ export function renderSchedule(data) {
 }
 
 function renderModuleOverview(data) {
-    const container = document.querySelector('#schedule-overview .module-overview-card');
+    const container = document.querySelector('#schedule-overview .dozent-courses-grid');
+    const pastContainer = document.querySelector('#schedule-overview .past-courses-container');
     if (!container) return;
 
-    const currentModules = data.modules.filter(m => m.status === 'active' || m.status === 'registered');
+    const activeModules = data.modules.filter(m => m.status === 'active' || m.status === 'registered');
+    const pastModules = data.modules.filter(m => m.status === 'passed' || m.status === 'failed');
 
-    let rows = '';
-    currentModules.forEach(m => {
-        const examType = m.exam?.type || 'Klausur';
-        const lecturer = m.lecturer || '-';
+    if (activeModules.length === 0 && pastModules.length === 0) {
+        container.innerHTML = '<p>Keine Kurse gefunden.</p>';
+        return;
+    }
 
-        rows += `
-            <tr>
-                <td>
-                    <div class="module-cell">
-                        <span class="module-code">${escapeHTML(m.code)}</span>
-                        <span class="module-name">${escapeHTML(m.name)}</span>
-                    </div>
-                </td>
-                <td>${escapeHTML(lecturer)}</td>
-                <td><span class="exam-type-tag">${escapeHTML(examType)}</span></td>
-                <td><span class="credits-pill">${m.ects} ECTS</span></td>
-            </tr>`;
-    });
+    container.innerHTML = activeModules.map(m => {
+        const extraMetaRows = `
+            <div class="dozent-meta-row">
+                <span class="material-symbols-rounded" aria-hidden="true">person</span>
+                <span>${escapeHTML(m.lecturer || '-')} &bull; ${escapeHTML(m.semester || '')}</span>
+            </div>`;
+        return buildCourseCard(m, { extraMetaRows });
+    }).join('');
 
-    container.innerHTML = `
-        <table class="module-overview-table">
-            <thead>
-                <tr>
-                    <th scope="col">Modul</th>
-                    <th scope="col">Dozent</th>
-                    <th scope="col">Pr\u00fcfungsform</th>
-                    <th scope="col">ECTS</th>
-                </tr>
-            </thead>
-            <tbody>
-                ${rows}
-            </tbody>
-        </table>`;
+    if (pastContainer) {
+        pastContainer.innerHTML = pastModules.length > 0 ? buildPastCoursesSection(pastModules) : '';
+    }
 }
 
 function renderCalendar(data) {

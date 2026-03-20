@@ -36,8 +36,8 @@
                     <span>Home</span>
                 </a>
                 <a href="#" class="nav-item" data-target="schedule" data-roles="student" role="tab" aria-selected="false" aria-controls="schedule">
-                    <span class="material-symbols-rounded" aria-hidden="true">calendar_today</span>
-                    <span>Stundenplan</span>
+                    <span class="material-symbols-rounded" aria-hidden="true">menu_book</span>
+                    <span>Meine Kurse</span>
                 </a>
                 <a href="#" class="nav-item" data-target="grades" data-roles="student" role="tab" aria-selected="false" aria-controls="grades">
                     <span class="material-symbols-rounded" aria-hidden="true">grade</span>
@@ -193,7 +193,7 @@
             <section id="schedule" class="content-section" role="tabpanel" aria-labelledby="tab-schedule">
                 <header class="section-header">
                     <div class="header-content">
-                        <h1>Vorlesungen</h1>
+                        <h1>Meine Kurse</h1>
                         <p>Wintersemester 2025/2026</p>
                     </div>
                 </header>
@@ -207,14 +207,12 @@
                         <span class="material-symbols-rounded" aria-hidden="true">calendar_today</span>
                         Kalender
                     </button>
-                    <button class="section-tab" data-tab="schedule-exams" role="tab" aria-selected="false">
-                        <span class="material-symbols-rounded" aria-hidden="true">event_note</span>
-                        Prüfungstermine
-                    </button>
                 </div>
 
                 <div id="schedule-overview" class="tab-content active">
-                    <div class="module-overview-card">
+                    <div class="courses-tab-layout">
+                        <div class="dozent-courses-grid grid-container"></div>
+                        <div class="past-courses-container"></div>
                     </div>
                 </div>
 
@@ -244,17 +242,6 @@
                     </div>
                 </div>
 
-                <div id="schedule-exams" class="tab-content">
-                    <div class="filter-bar exams-filter-bar" role="group" aria-label="Prüfungsfilter">
-                        <button class="filter-chip active" data-filter="all" aria-pressed="true">Alle</button>
-                        <button class="filter-chip" data-filter="registered" aria-pressed="false">Angemeldet</button>
-                        <button class="filter-chip" data-filter="upcoming" aria-pressed="false">In Kürze</button>
-                        <button class="filter-chip" data-filter="open" aria-pressed="false">Offen</button>
-                    </div>
-
-                    <div class="exams-grid" aria-live="polite">
-                    </div>
-                </div>
             </section>
 
             <section id="grades" class="content-section" role="tabpanel" aria-labelledby="tab-grades">
@@ -278,8 +265,6 @@
                         <h1>Abgaben</h1>
                         <p>Praxisarbeiten, Bachelorarbeiten und Präsentationen</p>
                     </div>
-                    <button class="btn btn-primary"><span class="material-symbols-rounded">add</span>
-                        Neue Abgabe</button>
                 </header>
 
                 <div class="submissions-controls">
@@ -319,7 +304,9 @@
                 </div>
 
                 <div id="dozent-overview" class="tab-content active">
-                    <div class="dozent-courses-grid grid-container">
+                    <div class="courses-tab-layout">
+                        <div class="dozent-courses-grid grid-container"></div>
+                        <div class="past-courses-container"></div>
                     </div>
                 </div>
 
@@ -531,11 +518,10 @@
         </main>
 
         <footer class="app-footer" role="contentinfo">
-            <p>&copy; 2026 CampusPlatform. Alle Rechte vorbehalten.</p>
-            <p class="footer-security">
-                <span class="material-symbols-rounded" aria-hidden="true">lock</span>
-                Verschlüsselte Verbindung &bull; DSGVO-konform &bull; RBAC-Berechtigungen
-            </p>
+            <span>&copy; 2026 CampusPlatform. Alle Rechte vorbehalten.</span>
+            <span class="footer-divider" aria-hidden="true">&bull;</span>
+            <span class="material-symbols-rounded footer-lock" aria-hidden="true">lock</span>
+            <span>Verschlüsselte Verbindung &bull; DSGVO-konform &bull; RBAC-Berechtigungen</span>
         </footer>
 
         <div id="mobile-sidebar" class="sidebar" role="dialog" aria-modal="true" aria-label="Navigationsmenü">
@@ -554,8 +540,8 @@
                     <span>Home</span>
                 </a>
                 <a href="#" class="nav-item" data-target="schedule" data-roles="student">
-                    <span class="material-symbols-rounded" aria-hidden="true">calendar_today</span>
-                    <span>Stundenplan</span>
+                    <span class="material-symbols-rounded" aria-hidden="true">menu_book</span>
+                    <span>Meine Kurse</span>
                 </a>
                 <a href="#" class="nav-item" data-target="grades" data-roles="student">
                     <span class="material-symbols-rounded" aria-hidden="true">grade</span>

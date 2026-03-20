@@ -1,5 +1,5 @@
 import { escapeHTML } from '../../core/utils.js';
-import { buildAlert } from '../shared/uiComponents.js';
+import { initTabs } from '../shared/tabSwitching.js';
 import { findMatchingEventSeries, findParticipantsForCourse } from './dozentHelpers.js';
 import { VALID_GRADES } from '../shared/constants.js';
 import {
@@ -7,28 +7,43 @@ import {
     gradeColorClass, pointsToGrade
 } from './gradingHelpers.js';
 
-// ── Status pipeline ────────────────────────────────────────────────────────────
-// Values are stored in pruefungsDocs.status; labels are type-aware.
+// ── Exam type categories ────────────────────────────────────────────────────────
+
+const KATEGORIEN = [
+    { id: 'klausur',    label: 'Klausuren',    icon: 'edit_note',  test: t => /klausur/i.test(t) },
+    { id: 'referat',    label: 'Referate',     icon: 'co_present', test: t => /referat|pr[äa]sentation|vortrag/i.test(t) },
+    { id: 'hausarbeit', label: 'Hausarbeiten', icon: 'article',    test: () => true },   // catch-all
+];
+
+function getKategorie(examType) {
+    for (const kat of KATEGORIEN) {
+        if (kat.test(examType || '')) return kat;
+    }
+    return KATEGORIEN[KATEGORIEN.length - 1];
+}
+
+// ── Status pipeline ─────────────────────────────────────────────────────────────
 
 const STATUS_VALUES = ['offen', 'eingereicht', 'geschrieben', 'abgeschlossen'];
-const STATUS_INDEX = Object.fromEntries(STATUS_VALUES.map((v, i) => [v, i]));
+const STATUS_INDEX  = Object.fromEntries(STATUS_VALUES.map((v, i) => [v, i]));
 
-// Klausur: describe preparation → delivery → correction → done
-const KLAUSUR_LABELS = ['Offen', 'Bereitgestellt', 'Geschrieben', 'Abgeschlossen'];
-// Projects/papers: topic open → submissions in → graded → done
-const PROJEKT_LABELS = ['Offen', 'Eingereicht', 'Bewertet', 'Abgeschlossen'];
-// Neutral labels used in the filter bar (not type-specific)
-const FILTER_LABELS = ['Offen', 'Eingereicht', 'Geschrieben', 'Abgeschlossen'];
+const KLAUSUR_LABELS     = ['Offen', 'Bereitgestellt', 'Geschrieben', 'Abgeschlossen'];
+const EINREICHUNG_LABELS = ['Offen', 'Eingereicht',    'Bewertet',    'Abgeschlossen'];
 
-function isProjectExam(examType) {
-    return /projekt|arbeit|referat|seminar|pr[äa]sentation/i.test(examType || '');
+function isKlausur(examType)     { return /klausur/i.test(examType || ''); }
+function getStatusLabels(examType) { return isKlausur(examType) ? KLAUSUR_LABELS : EINREICHUNG_LABELS; }
+
+function getIconForStatus(status) {
+    return {
+        offen: 'radio_button_unchecked',
+        eingereicht: 'upload_file',
+        bereitgestellt: 'file_present',
+        geschrieben: 'edit_note',
+        abgeschlossen: 'check_circle'
+    }[status] || 'info';
 }
 
-function getStatusLabels(examType) {
-    return isProjectExam(examType) ? PROJEKT_LABELS : KLAUSUR_LABELS;
-}
-
-// ── Main export ────────────────────────────────────────────────────────────────
+// ── Main export ─────────────────────────────────────────────────────────────────
 
 export function renderDozentPruefungen(data, user) {
     const content = document.querySelector('.dozent-exams-content');
@@ -47,82 +62,118 @@ export function renderDozentPruefungen(data, user) {
         return;
     }
 
-    content.innerHTML = buildFilterBar() +
-        `<div class="pruefung-cards-list">${modules.map(m => buildCompactCard(m, data)).join('')}</div>` +
+    // Group modules by exam type category (all KATEGORIEN are always shown)
+    const grouped = new Map(KATEGORIEN.map(kat => [kat.id, { kat, modules: [] }]));
+    for (const mod of modules) {
+        const kat = getKategorie(mod.exam?.type || '');
+        grouped.get(kat.id).modules.push(mod);
+    }
+
+    const allKats = [...grouped.values()];
+
+    content.innerHTML =
+        buildKategorienTabBar(allKats) +
+        allKats.map(({ kat, modules: km }, i) => buildKategoriePanel(kat, km, data, i === 0)).join('') +
         buildModal() +
         `<div class="pruefung-full-pool" style="display:none">${modules.map(m => buildCard(m, data)).join('')}</div>`;
 
     initInteractions(content, modules, data);
 }
 
-// ── Build HTML ─────────────────────────────────────────────────────────────────
+// ── Category tab bar ────────────────────────────────────────────────────────────
+
+function buildKategorienTabBar(activeKats) {
+    return `
+        <div class="section-tabs pruefung-kat-tabs" role="tablist" aria-label="Prüfungsformen">
+            ${activeKats.map(({ kat, modules }, i) => `
+                <button class="section-tab${i === 0 ? ' active' : ''}" role="tab"
+                        data-tab="kat-${kat.id}" aria-selected="${i === 0 ? 'true' : 'false'}">
+                    <span class="material-symbols-rounded">${kat.icon}</span>
+                    ${kat.label}
+                    ${modules.length > 0 ? `<span class="badge" style="margin-left:0.3rem;vertical-align:middle;">${modules.length}</span>` : ''}
+                </button>`).join('')}
+        </div>`;
+}
+
+// ── Category panel ──────────────────────────────────────────────────────────────
+
+function buildKategoriePanel(kat, katMods, data, isFirst) {
+    const body = katMods.length > 0
+        ? `${buildFilterBar()}
+           <div class="pruefung-cards-list">
+               ${katMods.map(m => buildCompactCard(m, data)).join('')}
+           </div>`
+        : `<div class="management-empty">
+               <span class="material-symbols-rounded">${kat.icon}</span>
+               <p>Keine ${kat.label} in diesem Semester.</p>
+           </div>`;
+    return `
+        <div class="pruefung-kat-panel${isFirst ? ' active' : ''}" data-tab="kat-${kat.id}">
+            ${body}
+        </div>`;
+}
 
 function buildFilterBar() {
+    const DISPLAY = ['Alle', 'Offen', 'In Bearbeitung', 'Abgeschlossen'];
+    const VALUES  = ['all', 'offen', 'eingereicht', 'abgeschlossen'];
+    const ICONS   = ['apps', 'radio_button_unchecked', 'upload_file', 'check_circle'];
     return `
-        <div class="filter-bar-container" style="margin-bottom:2rem;">
+        <div class="filter-bar-container" style="margin-bottom:1.5rem;">
             <div class="filter-bar" role="group" aria-label="Prüfungsfilter">
-                <button class="filter-chip active" data-filter="all" aria-pressed="true">
-                    <span class="material-symbols-rounded">apps</span> Alle
-                </button>
-                ${STATUS_VALUES.map((v, i) =>
-        `<button class="filter-chip" data-filter="${v}" aria-pressed="false">
-                        <span class="material-symbols-rounded">${getIconForStatus(v)}</span>
-                        ${FILTER_LABELS[i]}
-                    </button>`
-    ).join('')}
+                ${VALUES.map((v, i) => `
+                    <button class="filter-chip${i === 0 ? ' active' : ''}"
+                            data-filter="${v}" aria-pressed="${i === 0 ? 'true' : 'false'}">
+                        <span class="material-symbols-rounded">${ICONS[i]}</span>
+                        ${DISPLAY[i]}
+                    </button>`).join('')}
             </div>
         </div>`;
 }
 
-function getIconForStatus(status) {
-    const icons = {
-        'offen': 'radio_button_unchecked',
-        'eingereicht': 'upload_file',
-        'bereitgestellt': 'file_present',
-        'geschrieben': 'edit_note',
-        'abgeschlossen': 'check_circle'
-    };
-    return icons[status] || 'info';
-}
+// ── Compact card ────────────────────────────────────────────────────────────────
 
 function buildCompactCard(mod, data) {
     const doc = (data.pruefungsDocs || {})[mod.code] || { status: 'offen' };
     const submissions = (data.studienarbeiten || []).filter(a => a.moduleCode === mod.code);
     const participants = findParticipantsForCourse(mod, data);
     const examType = mod.exam?.type || 'Prüfung';
-    const isProject = isProjectExam(examType);
     const labels = getStatusLabels(examType);
     const statusIdx = STATUS_INDEX[doc.status] ?? 0;
-    const typeBadgeClass = isProject ? 'lehrveranstaltung' : 'klausur';
+    const isKlausurType = isKlausur(examType);
     const id = escapeHTML(mod.code);
 
-    const metaParts = [escapeHTML(mod.code)];
+    const metaParts = [];
     if (mod.exam?.date) metaParts.push(escapeHTML(mod.exam.date));
     if (mod.exam?.time) metaParts.push(escapeHTML(mod.exam.time));
     if (mod.exam?.room) metaParts.push(escapeHTML(mod.exam.room));
 
+    const statsHtml = isKlausurType
+        ? `<span title="Anmeldungen"><span class="material-symbols-rounded">how_to_reg</span>${participants.length}</span>`
+        : `<span title="Eingereicht"><span class="material-symbols-rounded">assignment_turned_in</span>${submissions.length}/${participants.length}</span>`;
+
     return `
-        <div class="pruefung-compact-card" data-module="${id}" data-status="${escapeHTML(doc.status)}" role="button" tabindex="0" aria-label="${escapeHTML(mod.name)} öffnen">
+        <div class="pruefung-compact-card" data-module="${id}" data-status="${escapeHTML(doc.status)}"
+             role="button" tabindex="0" aria-label="${escapeHTML(mod.name)} öffnen">
             <div class="compact-card-main">
                 <div class="compact-card-title">
-                    <span class="type-badge ${typeBadgeClass}">${escapeHTML(examType)}</span>
                     <span class="compact-card-name">${escapeHTML(mod.name)}</span>
+                    <span class="compact-card-code">${escapeHTML(mod.code)}</span>
                 </div>
-                <div class="compact-card-meta">${metaParts.join(' &bull; ')}</div>
+                <div class="compact-card-meta">${metaParts.join(' &bull; ') || '—'}</div>
+                <div class="compact-card-semester">${escapeHTML(mod.semester || '')}</div>
             </div>
             <div class="compact-card-aside">
                 <div class="compact-status-pill status-${escapeHTML(doc.status)}">
                     <span class="material-symbols-rounded">${getIconForStatus(doc.status)}</span>
                     ${escapeHTML(labels[statusIdx])}
                 </div>
-                <div class="compact-card-stats">
-                    <span title="Anmeldungen"><span class="material-symbols-rounded">how_to_reg</span>${participants.length}</span>
-                    <span title="Einreichungen"><span class="material-symbols-rounded">assignment_turned_in</span>${submissions.length}</span>
-                </div>
+                <div class="compact-card-stats">${statsHtml}</div>
                 <span class="material-symbols-rounded compact-card-arrow">chevron_right</span>
             </div>
         </div>`;
 }
+
+// ── Modal shell ─────────────────────────────────────────────────────────────────
 
 function buildModal() {
     return `
@@ -138,6 +189,8 @@ function buildModal() {
         </div>`;
 }
 
+// ── Full card (modal content) ───────────────────────────────────────────────────
+
 function buildCard(mod, data) {
     const doc = (data.pruefungsDocs || {})[mod.code] ||
         { status: 'offen', examFileName: null, uploadedAt: null, notes: '' };
@@ -146,152 +199,127 @@ function buildCard(mod, data) {
     const matchedSeries = findMatchingEventSeries(mod, data);
     const existingGrades = collectExistingGrades(data, matchedSeries);
 
-    const statusIdx = STATUS_INDEX[doc.status] ?? 0;
     const examType = mod.exam?.type || 'Prüfung';
-    const isProject = isProjectExam(examType);
+    const statusIdx = STATUS_INDEX[doc.status] ?? 0;
     const labels = getStatusLabels(examType);
+    const isKlausurType = isKlausur(examType);
+    const id = escapeHTML(mod.code);
+
+    const stepIcons = isKlausurType
+        ? ['edit_document', 'file_present', 'edit_note', 'verified']
+        : ['edit_document', 'move_to_inbox', 'grading', 'verified'];
+
+    const pipelineHTML = STATUS_VALUES.map((v, i) => `
+        <div class="pipeline-step ${i < statusIdx ? 'done' : i === statusIdx ? 'current' : ''}" role="listitem">
+            <div class="pipeline-dot"><span class="material-symbols-rounded">${stepIcons[i]}</span></div>
+            <span class="pipeline-label">${labels[i]}</span>
+        </div>`).join('');
+
+    const linesHTML = STATUS_VALUES.slice(0, -1).map((_, i) => {
+        const left  = ((i / (STATUS_VALUES.length - 1)) * 100) + (100 / (STATUS_VALUES.length - 1) / 2);
+        const width = 100 / (STATUS_VALUES.length - 1);
+        return `<div class="pipeline-line ${i < statusIdx ? 'done' : ''}" style="left:${left}%;width:${width}%;" aria-hidden="true"></div>`;
+    }).join('');
 
     const statusOptions = STATUS_VALUES.map((v, i) =>
         `<option value="${v}"${doc.status === v ? ' selected' : ''}>${labels[i]}</option>`
     ).join('');
 
-    const pipelineHTML = STATUS_VALUES.map((v, i) => {
-        const stepClass = i < statusIdx ? 'done' : i === statusIdx ? 'current' : '';
-        const lineClass = i < statusIdx ? 'done' : '';
-        const connector = i < STATUS_VALUES.length - 1
-            ? `<div class="pipeline-line ${lineClass}" style="left: calc(${(i * 100) / (STATUS_VALUES.length - 1)}% + 50% - 2rem); width: calc(${100 / (STATUS_VALUES.length - 1)}% - 4rem);" aria-hidden="true"></div>` : '';
-
-        const stepIcons = isProject
-            ? ['edit_document', 'move_to_inbox', 'grading', 'verified']
-            : ['edit_document', 'file_present', 'edit_note', 'verified'];
-
-        return `
-            <div class="pipeline-step ${stepClass}" role="listitem">
-                <div class="pipeline-dot">
-                    <span class="material-symbols-rounded">${stepIcons[i]}</span>
+    const headerHTML = `
+        <div class="pruefung-card-header">
+            <div class="pruefung-card-info">
+                <div class="pruefung-card-title">
+                    <span class="type-badge ${isKlausurType ? 'klausur' : 'lehrveranstaltung'}">${escapeHTML(examType)}</span>
+                    ${escapeHTML(mod.name)}
                 </div>
-                <span class="pipeline-label">${labels[i]}</span>
-            </div>`;
-    }).join('');
-
-    // Re-calculate the lines separately to be more precise
-    const linesHTML = STATUS_VALUES.slice(0, -1).map((_, i) => {
-        const lineClass = i < statusIdx ? 'done' : '';
-        const left = ((i / (STATUS_VALUES.length - 1)) * 100) + (100 / (STATUS_VALUES.length - 1) / 2);
-        const width = (100 / (STATUS_VALUES.length - 1));
-        return `<div class="pipeline-line ${lineClass}" style="left: ${left}%; width: ${width}%;" aria-hidden="true"></div>`;
-    }).join('');
-
-    const submBadge = submissions.length > 0
-        ? `<span class="badge" style="margin-left:0.3rem;vertical-align:middle;">${submissions.length}</span>`
-        : '';
-    const anmBadge = participants.length > 0
-        ? `<span class="badge" style="margin-left:0.3rem;vertical-align:middle;">${participants.length}</span>`
-        : '';
-
-    const id = escapeHTML(mod.code);
-    const typeBadgeClass = isProject ? 'lehrveranstaltung' : 'klausur';
-
-    return `
-        <div class="card pruefung-card" data-module="${id}" data-status="${escapeHTML(doc.status)}" data-exam-type="${escapeHTML(examType)}">
-
-            <div class="pruefung-card-header">
-                <div class="pruefung-card-info">
-                    <div class="pruefung-card-title">
-                        <span class="type-badge ${typeBadgeClass}">${escapeHTML(examType)}</span>
-                        ${escapeHTML(mod.name)}
-                    </div>
-                    <div class="pruefung-card-meta">
-                        ${escapeHTML(mod.code)}${mod.exam?.date ? ` &bull; ${escapeHTML(mod.exam.date)}` : ''
-        }${mod.exam?.time ? ` &bull; ${escapeHTML(mod.exam.time)}` : ''
-        }${mod.exam?.room ? ` &bull; ${escapeHTML(mod.exam.room)}` : ''
-        }
-                    </div>
+                <div class="pruefung-card-meta">
+                    ${escapeHTML(mod.code)}
+                    ${mod.exam?.date ? ` &bull; ${escapeHTML(mod.exam.date)}` : ''}
+                    ${mod.exam?.time ? ` &bull; ${escapeHTML(mod.exam.time)}` : ''}
+                    ${mod.exam?.room ? ` &bull; ${escapeHTML(mod.exam.room)}` : ''}
+                    &bull; ${escapeHTML(mod.semester || '')}
                 </div>
-                <select class="form-input pruefung-status-select" data-module="${id}" aria-label="Status">
-                    ${statusOptions}
-                </select>
             </div>
-
-            <div class="pruefung-pipeline" role="list" aria-label="Prüfungsprozess">
-                <div class="pipeline-lines-container" style="position: absolute; inset: 0; pointer-events: none;">
-                    ${linesHTML}
-                </div>
-                ${pipelineHTML}
-            </div>
-
-            <div class="section-tabs pruefung-card-tabs" role="tablist" aria-label="Bereiche">
-                <button class="section-tab active" data-tab="dok-${id}" role="tab" aria-selected="true">
-                    <span class="material-symbols-rounded" aria-hidden="true">upload_file</span>
-                    Dokument
-                </button>
-                <button class="section-tab" data-tab="anm-${id}" role="tab" aria-selected="false">
-                    <span class="material-symbols-rounded" aria-hidden="true">how_to_reg</span>
-                    Anmeldungen${anmBadge}
-                </button>
-                <button class="section-tab" data-tab="sub-${id}" role="tab" aria-selected="false">
-                    <span class="material-symbols-rounded" aria-hidden="true">assignment_turned_in</span>
-                    Einreichungen${submBadge}
-                </button>
-                <button class="section-tab" data-tab="note-${id}" role="tab" aria-selected="false">
-                    <span class="material-symbols-rounded" aria-hidden="true">grading</span>
-                    Noten
-                </button>
-            </div>
-
-            <div id="dok-${id}" class="tab-content active">
-                ${buildDokumentPanel(doc, id, mod)}
-            </div>
-            <div id="anm-${id}" class="tab-content">
-                ${buildAnmeldungenPanel(participants)}
-            </div>
-            <div id="sub-${id}" class="tab-content">
-                ${buildEinreichungenPanel(submissions)}
-            </div>
-            <div id="note-${id}" class="tab-content">
-                ${buildNotenPanel(mod, participants, existingGrades)}
-            </div>
-
-            <div class="pruefung-card-alert" aria-live="polite"></div>
+            <select class="form-input pruefung-status-select" data-module="${id}" aria-label="Status">
+                ${statusOptions}
+            </select>
+        </div>
+        <div class="pruefung-pipeline" role="list" aria-label="Prüfungsprozess">
+            <div class="pipeline-lines-container" style="position:absolute;inset:0;pointer-events:none;">${linesHTML}</div>
+            ${pipelineHTML}
         </div>`;
+
+    const anmBadge  = participants.length  ? `<span class="badge" style="margin-left:0.3rem;vertical-align:middle;">${participants.length}</span>`  : '';
+    const submBadge = submissions.length   ? `<span class="badge" style="margin-left:0.3rem;vertical-align:middle;">${submissions.length}</span>`   : '';
+
+    if (isKlausurType) {
+        return `
+            <div class="card pruefung-card" data-module="${id}" data-status="${escapeHTML(doc.status)}" data-exam-type="${escapeHTML(examType)}">
+                ${headerHTML}
+                <div class="section-tabs pruefung-card-tabs" role="tablist" aria-label="Bereiche">
+                    <button class="section-tab active" data-tab="dok-${id}" role="tab" aria-selected="true">
+                        <span class="material-symbols-rounded" aria-hidden="true">upload_file</span>
+                        Klausur-Dokument
+                    </button>
+                    <button class="section-tab" data-tab="anm-${id}" role="tab" aria-selected="false">
+                        <span class="material-symbols-rounded" aria-hidden="true">how_to_reg</span>
+                        Anmeldungen${anmBadge}
+                    </button>
+                    <button class="section-tab" data-tab="note-${id}" role="tab" aria-selected="false">
+                        <span class="material-symbols-rounded" aria-hidden="true">grading</span>
+                        Noten
+                    </button>
+                </div>
+                <div id="dok-${id}" class="tab-content active">${buildDokumentPanel(doc, id)}</div>
+                <div id="anm-${id}" class="tab-content">${buildAnmeldungenPanel(participants)}</div>
+                <div id="note-${id}" class="tab-content">${buildNotenPanel(mod, participants, existingGrades)}</div>
+                <div class="pruefung-card-alert" aria-live="polite"></div>
+            </div>`;
+    } else {
+        return `
+            <div class="card pruefung-card" data-module="${id}" data-status="${escapeHTML(doc.status)}" data-exam-type="${escapeHTML(examType)}">
+                ${headerHTML}
+                <div class="section-tabs pruefung-card-tabs" role="tablist" aria-label="Bereiche">
+                    <button class="section-tab active" data-tab="stud-${id}" role="tab" aria-selected="true">
+                        <span class="material-symbols-rounded" aria-hidden="true">group</span>
+                        Studierende & Einreichungen${submBadge}
+                    </button>
+                    <button class="section-tab" data-tab="note-${id}" role="tab" aria-selected="false">
+                        <span class="material-symbols-rounded" aria-hidden="true">grading</span>
+                        Noten
+                    </button>
+                </div>
+                <div id="stud-${id}" class="tab-content active">${buildStudierendePanel(participants, submissions)}</div>
+                <div id="note-${id}" class="tab-content">${buildNotenPanel(mod, participants, existingGrades)}</div>
+                <div class="pruefung-card-alert" aria-live="polite"></div>
+            </div>`;
+    }
 }
 
-function buildDokumentPanel(doc, id, mod) {
-    const examType = mod?.exam?.type || '';
-    const isProject = isProjectExam(examType);
+// ── Panel builders ──────────────────────────────────────────────────────────────
 
+function buildDokumentPanel(doc, id) {
     const fileRow = doc.examFileName ? `
         <div class="pruefung-file-row">
             <span class="material-symbols-rounded">description</span>
             <span>${escapeHTML(doc.examFileName)}</span>
-            ${doc.uploadedAt
-            ? `<span class="pruefung-file-date">Hochgeladen: ${escapeHTML(doc.uploadedAt)}</span>`
-            : ''}
+            ${doc.uploadedAt ? `<span class="pruefung-file-date">Hochgeladen: ${escapeHTML(doc.uploadedAt)}</span>` : ''}
         </div>` : '';
-
-    const uploadLabel = isProject
-        ? 'Aufgabenstellung / Themen hochladen (.pdf, .docx, .zip)'
-        : 'Klausur / Aufgabenstellung hochladen (.pdf, .docx, .zip)';
 
     const mlRow = doc.musterloesungFileName ? `
         <div class="pruefung-file-row pruefung-file-row--ml">
             <span class="material-symbols-rounded">task_alt</span>
             <span>${escapeHTML(doc.musterloesungFileName)}</span>
-            ${doc.musterloesungAt
-            ? `<span class="pruefung-file-date">Hochgeladen: ${escapeHTML(doc.musterloesungAt)}</span>`
-            : ''}
+            ${doc.musterloesungAt ? `<span class="pruefung-file-date">Hochgeladen: ${escapeHTML(doc.musterloesungAt)}</span>` : ''}
         </div>` : '';
 
     const publishedChecked = doc.notenVeroeffentlicht ? 'checked' : '';
-    const mlLabel = isProject
-        ? 'Bewertungsschema / Musterlösung hochladen (.pdf, .docx)'
-        : 'Musterlösung hochladen (.pdf, .docx)';
 
     return `
         ${fileRow}
         <div class="csv-upload-zone dok-upload-zone" data-module="${id}">
             <span class="material-symbols-rounded">upload_file</span>
-            <p>${doc.examFileName ? 'Datei ersetzen' : uploadLabel}</p>
+            <p>${doc.examFileName ? 'Datei ersetzen' : 'Klausur hochladen (.pdf, .docx, .zip)'}</p>
             <input type="file" accept=".pdf,.docx,.zip" class="mgmt-hidden dok-file-input">
         </div>
         <div class="form-group" style="margin-top:0.75rem;">
@@ -310,12 +338,12 @@ function buildDokumentPanel(doc, id, mod) {
 
         <p class="pruefung-section-label">
             <span class="material-symbols-rounded">task_alt</span>
-            ${isProject ? 'Bewertungsschema / Musterlösung' : 'Musterlösung'}
+            Musterlösung
         </p>
         ${mlRow}
         <div class="csv-upload-zone dok-ml-zone" style="margin-top:0.5rem;">
             <span class="material-symbols-rounded">upload_file</span>
-            <p>${doc.musterloesungFileName ? 'Datei ersetzen' : mlLabel}</p>
+            <p>${doc.musterloesungFileName ? 'Datei ersetzen' : 'Musterlösung hochladen (.pdf, .docx)'}</p>
             <input type="file" accept=".pdf,.docx" class="mgmt-hidden dok-ml-input">
         </div>
 
@@ -370,54 +398,52 @@ function buildAnmeldungenPanel(participants) {
         </table>`;
 }
 
-function buildEinreichungenPanel(submissions) {
-    if (submissions.length === 0) {
+function buildStudierendePanel(participants, submissions) {
+    if (participants.length === 0) {
         return `
             <div class="management-empty" style="padding:1.25rem 0;">
-                <span class="material-symbols-rounded">inbox</span>
-                <p>Noch keine Einreichungen vorhanden.</p>
+                <span class="material-symbols-rounded">person_search</span>
+                <p>Keine Studierenden für diesen Kurs gefunden.</p>
             </div>`;
     }
 
-    const rows = submissions.map(s => {
-        const statusClass = s.status === 'bewertet' ? 'passed' : 'info';
-        const statusLabel = s.status === 'bewertet' ? 'Bewertet' : 'Eingereicht';
-        const gradeCell = s.grade
-            ? `<span class="${gradeColorClass(parseFloat(s.grade))}">${escapeHTML(s.grade)}</span>`
-            : '—';
-        const hasFeedback = s.feedback && s.feedback.trim().length > 0;
+    // Build lookup: studentId → submissions[]
+    const subByStudent = new Map();
+    for (const s of submissions) {
+        if (!subByStudent.has(s.studentId)) subByStudent.set(s.studentId, []);
+        subByStudent.get(s.studentId).push(s);
+    }
 
-        return `
-            <tr>
-                <td>
-                    <div style="font-weight:500;">${escapeHTML(s.title)}</div>
-                    <span class="type-badge lehrveranstaltung" style="font-size:0.7rem;margin-top:0.2rem;">${escapeHTML(s.type)}</span>
-                </td>
-                <td>
-                    ${escapeHTML(s.studentName)}<br>
-                    <span style="font-size:0.75rem;color:var(--text-secondary);">${escapeHTML(s.matNr)}</span>
-                </td>
-                <td>${escapeHTML(s.submittedAt || '—')}</td>
-                <td><div class="status-indicator ${statusClass}"><span class="status-dot"></span>${statusLabel}</div></td>
-                <td>${gradeCell}</td>
-                <td>
-                    <div style="display:flex;gap:0.35rem;flex-wrap:wrap;align-items:center;">
-                        <button class="btn btn-sm btn-outline sub-download-btn" data-file="${escapeHTML(s.fileName)}">
-                            <span class="material-symbols-rounded">download</span>
-                            ${escapeHTML(s.size)}
-                        </button>
-                        <button class="btn btn-sm btn-outline sub-feedback-toggle${hasFeedback ? ' sub-feedback-toggle--has' : ''}" data-sub-id="${s.id}">
-                            <span class="material-symbols-rounded">comment</span>
-                            Feedback
-                        </button>
-                    </div>
-                </td>
-            </tr>
+    const submittedCount = participants.filter(p => subByStudent.has(p.id)).length;
+
+    const rows = participants.map((p, i) => {
+        const subs = subByStudent.get(p.id) || [];
+        const hasSubmitted = subs.length > 0;
+        const statusClass = hasSubmitted ? 'passed' : 'warning';
+        const statusLabel = hasSubmitted ? 'Eingereicht' : 'Ausstehend';
+
+        const docButtons = subs.map(s => `
+            <button class="btn btn-sm btn-outline sub-download-btn" data-file="${escapeHTML(s.fileName)}">
+                <span class="material-symbols-rounded">download</span>
+                ${escapeHTML(s.type)} (${escapeHTML(s.size)})
+            </button>`).join('');
+
+        const feedbackBtns = subs.map(s => {
+            const hasFeedback = s.feedback && s.feedback.trim().length > 0;
+            return `
+                <button class="btn btn-sm btn-outline sub-feedback-toggle${hasFeedback ? ' sub-feedback-toggle--has' : ''}"
+                        data-sub-id="${s.id}">
+                    <span class="material-symbols-rounded">comment</span>
+                    Feedback
+                </button>`;
+        }).join('');
+
+        const feedbackRows = subs.map(s => `
             <tr class="sub-feedback-row" data-sub-id="${s.id}" style="display:none;">
-                <td colspan="6">
+                <td colspan="5">
                     <div class="sub-feedback-area">
                         <label style="font-size:0.8rem;font-weight:600;color:var(--text-secondary);display:block;margin-bottom:0.4rem;">
-                            Feedback / Korrekturhinweise f\u00fcr ${escapeHTML(s.studentName)}
+                            Feedback für ${escapeHTML(p.name)}
                         </label>
                         <textarea class="form-input sub-feedback-input" rows="3"
                                   placeholder="St\u00e4rken, Schw\u00e4chen, Verbesserungsvorschl\u00e4ge\u2026">${escapeHTML(s.feedback || '')}</textarea>
@@ -429,26 +455,46 @@ function buildEinreichungenPanel(submissions) {
                         </div>
                     </div>
                 </td>
-            </tr>`;
+            </tr>`).join('');
+
+        return `
+            <tr>
+                <td style="color:var(--text-secondary);font-size:0.8rem;">${i + 1}</td>
+                <td>
+                    <div style="font-weight:500;">${escapeHTML(p.name)}</div>
+                    <span style="font-size:0.75rem;color:var(--text-secondary);">${escapeHTML(p.email || '—')}</span>
+                </td>
+                <td>${escapeHTML(p.matriculationNumber || '—')}</td>
+                <td><div class="status-indicator ${statusClass}"><span class="status-dot"></span>${statusLabel}</div></td>
+                <td>
+                    <div style="display:flex;gap:0.35rem;flex-wrap:wrap;align-items:center;">
+                        ${docButtons || '<span style="color:var(--text-secondary);font-size:0.8rem;">—</span>'}
+                        ${feedbackBtns}
+                    </div>
+                </td>
+            </tr>
+            ${feedbackRows}`;
     }).join('');
 
     return `
+        <div class="mgmt-actions-right" style="margin-bottom:0.75rem;">
+            <span class="dozent-grading-count">${submittedCount} von ${participants.length} eingereicht</span>
+        </div>
         <table class="management-table">
             <thead>
                 <tr>
-                    <th scope="col">Titel / Typ</th>
-                    <th scope="col">Studierende/r</th>
-                    <th scope="col">Eingereicht</th>
+                    <th scope="col" style="width:2rem;">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Matrikelnr.</th>
                     <th scope="col">Status</th>
-                    <th scope="col">Note</th>
-                    <th scope="col">Aktionen</th>
+                    <th scope="col">Dokument &amp; Feedback</th>
                 </tr>
             </thead>
             <tbody>${rows}</tbody>
         </table>`;
 }
 
-function buildNotenPanel(mod, participants, existingGrades) {
+function buildNotenPanel(_mod, participants, existingGrades) {
     if (participants.length === 0) {
         return `
             <div class="management-empty" style="padding:1.25rem 0;">
@@ -581,15 +627,15 @@ function buildStatistikPanel(existingGrades, participants) {
     const counts = Object.fromEntries(VALID_GRADES.map(g => [g, 0]));
     gradeValues.forEach(g => { if (counts[g] !== undefined) counts[g]++; });
 
-    const total = gradeValues.length;
+    const total  = gradeValues.length;
     const passed = gradeValues.filter(g => parseFloat(g) <= 4.0).length;
-    const sum = gradeValues.reduce((acc, g) => acc + parseFloat(g), 0);
-    const avg = (sum / total).toFixed(2);
+    const sum    = gradeValues.reduce((acc, g) => acc + parseFloat(g), 0);
+    const avg    = (sum / total).toFixed(2);
     const maxCount = Math.max(...Object.values(counts), 1);
 
     const bars = VALID_GRADES.map(g => {
-        const count = counts[g];
-        const barPct = Math.round((count / maxCount) * 100);
+        const count    = counts[g];
+        const barPct   = Math.round((count / maxCount) * 100);
         const sharePct = Math.round((count / total) * 100);
         const colorCls = gradeColorClass(parseFloat(g));
         return `
@@ -629,24 +675,34 @@ function buildStatistikPanel(existingGrades, participants) {
         <div class="stat-grade-bars">${bars}</div>`;
 }
 
-// ── Interactions ───────────────────────────────────────────────────────────────
+// ── Interactions ────────────────────────────────────────────────────────────────
 
 function initInteractions(content, modules, data) {
-    initFilterChips(content);
-    initModal(content, modules, data);
+    initTabs(content, {
+        tabSelector: '.pruefung-kat-tabs .section-tab',
+        panelSelector: '.pruefung-kat-panel',
+        useAria: true
+    });
+    content.querySelectorAll('.pruefung-kat-panel').forEach(panel => initFilterChips(panel));
+    initModal(content);
 
     modules.forEach(mod => {
         const card = content.querySelector(`.pruefung-full-pool .pruefung-card[data-module="${mod.code}"]`);
         if (!card) return;
 
         const matchedSeries = findMatchingEventSeries(mod, data);
-        const participants = findParticipantsForCourse(mod, data);
+        const participants  = findParticipantsForCourse(mod, data);
 
         initCardTabs(card);
         initStatusSelect(card, mod, data);
-        initDokumentPanel(card, mod, data);
-        initAnmeldungenPanel(card);
-        initEinreichungenPanel(card, data);
+
+        if (isKlausur(mod.exam?.type || '')) {
+            initDokumentPanel(card, mod, data);
+            initAnmeldungenPanel(card);
+        } else {
+            initStudierendePanel(card, data);
+        }
+
         card.querySelectorAll('.sub-download-btn').forEach(btn =>
             btn.addEventListener('click', () => showDownloadToast(btn.dataset.file))
         );
@@ -654,12 +710,36 @@ function initInteractions(content, modules, data) {
     });
 }
 
-function initModal(content, modules, data) {
-    const modal = content.querySelector('#pruefung-modal');
+
+function initFilterChips(panel) {
+    const chips = panel.querySelectorAll('.filter-chip');
+    const list  = panel.querySelector('.pruefung-cards-list');
+    if (!list) return;
+
+    chips.forEach(chip => {
+        chip.addEventListener('click', () => {
+            chips.forEach(c => { c.classList.remove('active'); c.setAttribute('aria-pressed', 'false'); });
+            chip.classList.add('active');
+            chip.setAttribute('aria-pressed', 'true');
+
+            const filter = chip.dataset.filter;
+            list.querySelectorAll('.pruefung-compact-card').forEach(card => {
+                const status = card.dataset.status;
+                // "In Bearbeitung" covers all intermediate states
+                const inProgress = status === 'eingereicht' || status === 'bereitgestellt' || status === 'geschrieben';
+                const show = filter === 'all' || status === filter || (filter === 'eingereicht' && inProgress);
+                card.style.display = show ? '' : 'none';
+            });
+        });
+    });
+}
+
+function initModal(content) {
+    const modal     = content.querySelector('#pruefung-modal');
     if (!modal) return;
     const modalBody = modal.querySelector('.pruefung-modal-body');
-    const closeBtn = modal.querySelector('.pruefung-modal-close');
-    const pool = content.querySelector('.pruefung-full-pool');
+    const closeBtn  = modal.querySelector('.pruefung-modal-close');
+    const pool      = content.querySelector('.pruefung-full-pool');
 
     function closeModal() {
         const card = modalBody.querySelector('.pruefung-card');
@@ -674,7 +754,7 @@ function initModal(content, modules, data) {
 
     content.querySelectorAll('.pruefung-compact-card').forEach(compactCard => {
         const open = () => {
-            const code = compactCard.dataset.module;
+            const code     = compactCard.dataset.module;
             const fullCard = pool.querySelector(`.pruefung-card[data-module="${code}"]`);
             if (!fullCard) return;
             modalBody.innerHTML = '';
@@ -683,24 +763,8 @@ function initModal(content, modules, data) {
             document.body.style.overflow = 'hidden';
         };
         compactCard.addEventListener('click', open);
-        compactCard.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
-    });
-}
-
-function initFilterChips(content) {
-    const chips = content.querySelectorAll('.filter-chip');
-    const list = content.querySelector('.pruefung-cards-list');
-
-    chips.forEach(chip => {
-        chip.addEventListener('click', () => {
-            chips.forEach(c => { c.classList.remove('active'); c.setAttribute('aria-pressed', 'false'); });
-            chip.classList.add('active');
-            chip.setAttribute('aria-pressed', 'true');
-
-            const filter = chip.dataset.filter;
-            list.querySelectorAll('.pruefung-compact-card').forEach(card => {
-                card.style.display = (filter === 'all' || card.dataset.status === filter) ? '' : 'none';
-            });
+        compactCard.addEventListener('keydown', e => {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); }
         });
     });
 }
@@ -712,7 +776,6 @@ function initCardTabs(card) {
             tabs.forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected', 'false'); });
             tab.classList.add('active');
             tab.setAttribute('aria-selected', 'true');
-
             card.querySelectorAll(':scope > .tab-content').forEach(p => p.classList.remove('active'));
             const target = document.getElementById(tab.dataset.tab);
             if (target) target.classList.add('active');
@@ -725,20 +788,19 @@ function initStatusSelect(card, mod, data) {
     if (!select) return;
 
     select.addEventListener('change', () => {
-        const status = select.value;
+        const status   = select.value;
         const examType = card.dataset.examType || '';
         card.dataset.status = status;
         updatePipeline(card, status, examType);
         if (!data.pruefungsDocs) data.pruefungsDocs = {};
         data.pruefungsDocs[mod.code] = { ...(data.pruefungsDocs[mod.code] || {}), status };
 
-        // Sync compact card pill and filter data
         const compactCard = document.querySelector(`.pruefung-compact-card[data-module="${mod.code}"]`);
         if (compactCard) {
             compactCard.dataset.status = status;
-            const labels = getStatusLabels(examType);
+            const labels    = getStatusLabels(examType);
             const statusIdx = STATUS_INDEX[status] ?? 0;
-            const pill = compactCard.querySelector('.compact-status-pill');
+            const pill      = compactCard.querySelector('.compact-status-pill');
             if (pill) {
                 pill.className = `compact-status-pill status-${status}`;
                 pill.innerHTML = `<span class="material-symbols-rounded">${getIconForStatus(status)}</span>${labels[statusIdx]}`;
@@ -748,7 +810,7 @@ function initStatusSelect(card, mod, data) {
 }
 
 function updatePipeline(card, status, examType) {
-    const idx = STATUS_INDEX[status] ?? 0;
+    const idx    = STATUS_INDEX[status] ?? 0;
     const labels = getStatusLabels(examType);
 
     card.querySelectorAll('.pipeline-step').forEach((step, i) => {
@@ -760,27 +822,22 @@ function updatePipeline(card, status, examType) {
     card.querySelectorAll('.pipeline-line').forEach((line, i) => {
         line.classList.toggle('done', i < idx);
     });
-
-    // Keep select option labels in sync with type-aware labels
     const select = card.querySelector('.pruefung-status-select');
     if (select) {
-        select.querySelectorAll('option').forEach((opt, i) => {
-            opt.textContent = labels[i];
-        });
+        select.querySelectorAll('option').forEach((opt, i) => { opt.textContent = labels[i]; });
     }
 }
 
 function initDokumentPanel(card, mod, data) {
-    const zone = card.querySelector('.dok-upload-zone');
-    const fileInput = card.querySelector('.dok-file-input');
-    const saveBtn = card.querySelector('.dok-save-btn');
-    const notesInput = card.querySelector('.dok-notes-input');
-    const mlZone = card.querySelector('.dok-ml-zone');
-    const mlInput = card.querySelector('.dok-ml-input');
+    const zone          = card.querySelector('.dok-upload-zone');
+    const fileInput     = card.querySelector('.dok-file-input');
+    const saveBtn       = card.querySelector('.dok-save-btn');
+    const notesInput    = card.querySelector('.dok-notes-input');
+    const mlZone        = card.querySelector('.dok-ml-zone');
+    const mlInput       = card.querySelector('.dok-ml-input');
     const publishToggle = card.querySelector('.dok-publish-toggle');
-    const alertEl = card.querySelector('.pruefung-card-alert');
+    const alertEl       = card.querySelector('.pruefung-card-alert');
 
-    // Exam document upload
     if (zone && fileInput) {
         zone.addEventListener('click', () => fileInput.click());
         zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
@@ -796,7 +853,6 @@ function initDokumentPanel(card, mod, data) {
         });
     }
 
-    // Notes save
     if (saveBtn) {
         saveBtn.addEventListener('click', () => {
             if (!data.pruefungsDocs) data.pruefungsDocs = {};
@@ -808,7 +864,6 @@ function initDokumentPanel(card, mod, data) {
         });
     }
 
-    // Musterlösung upload
     if (mlZone && mlInput) {
         mlZone.addEventListener('click', () => mlInput.click());
         mlZone.addEventListener('dragover', e => { e.preventDefault(); mlZone.classList.add('dragover'); });
@@ -824,7 +879,6 @@ function initDokumentPanel(card, mod, data) {
         });
     }
 
-    // Notenveröffentlichung toggle
     if (publishToggle) {
         publishToggle.addEventListener('change', () => {
             if (!data.pruefungsDocs) data.pruefungsDocs = {};
@@ -849,7 +903,6 @@ function applyDocUpload(zone, file, moduleCode, card, data) {
         uploadedAt: today
     };
 
-    // Update or insert the file info row (not the ML row)
     let fileRow = card.querySelector('.pruefung-file-row:not(.pruefung-file-row--ml)');
     const uploadZone = card.querySelector('.dok-upload-zone');
     if (!fileRow && uploadZone) {
@@ -863,11 +916,10 @@ function applyDocUpload(zone, file, moduleCode, card, data) {
             <span>${escapeHTML(file.name)}</span>
             <span class="pruefung-file-date">Hochgeladen: ${today}</span>`;
     }
-
     const p = zone.querySelector('p');
     if (p) p.textContent = 'Datei ersetzen';
 
-    // Auto-advance status: offen → eingereicht
+    // Auto-advance: offen → eingereicht (Bereitgestellt)
     const statusSelect = card.querySelector('.pruefung-status-select');
     if (statusSelect && statusSelect.value === 'offen') {
         statusSelect.value = 'eingereicht';
@@ -875,6 +927,7 @@ function applyDocUpload(zone, file, moduleCode, card, data) {
         updatePipeline(card, 'eingereicht', card.dataset.examType || '');
         data.pruefungsDocs[moduleCode].status = 'eingereicht';
     }
+    showCardAlert(card.querySelector('.pruefung-card-alert'), 'Klausur hochgeladen.', 'success');
 }
 
 function applyMlUpload(zone, file, moduleCode, card, data) {
@@ -899,7 +952,6 @@ function applyMlUpload(zone, file, moduleCode, card, data) {
 
     const p = zone.querySelector('p');
     if (p) p.textContent = 'Datei ersetzen';
-
     showCardAlert(card.querySelector('.pruefung-card-alert'), 'Musterlösung hochgeladen.', 'success');
 }
 
@@ -913,59 +965,46 @@ function initAnmeldungenPanel(card) {
     });
 }
 
-function initEinreichungenPanel(card, data) {
-    // Toggle feedback row
+function initStudierendePanel(card, data) {
     card.querySelectorAll('.sub-feedback-toggle').forEach(btn => {
         btn.addEventListener('click', () => {
             const subId = parseInt(btn.dataset.subId);
-            const row = card.querySelector(`.sub-feedback-row[data-sub-id="${subId}"]`);
+            const row   = card.querySelector(`.sub-feedback-row[data-sub-id="${subId}"]`);
             if (!row) return;
-            const isHidden = row.style.display !== 'table-row';
-            row.style.display = isHidden ? 'table-row' : 'none';
+            row.style.display = row.style.display !== 'table-row' ? 'table-row' : 'none';
         });
     });
 
-    // Cancel feedback
     card.querySelectorAll('.sub-feedback-cancel').forEach(btn => {
         btn.addEventListener('click', () => {
-            const subId = parseInt(btn.dataset.subId);
-            const row = card.querySelector(`.sub-feedback-row[data-sub-id="${subId}"]`);
+            const row = card.querySelector(`.sub-feedback-row[data-sub-id="${btn.dataset.subId}"]`);
             if (row) row.style.display = 'none';
         });
     });
 
-    // Save feedback
     card.querySelectorAll('.sub-feedback-save').forEach(btn => {
         btn.addEventListener('click', () => {
             const subId = parseInt(btn.dataset.subId);
-            const row = card.querySelector(`.sub-feedback-row[data-sub-id="${subId}"]`);
+            const row   = card.querySelector(`.sub-feedback-row[data-sub-id="${subId}"]`);
             const input = row?.querySelector('.sub-feedback-input');
-            const alertEl = card.querySelector('.pruefung-card-alert');
             if (!input || !data.studienarbeiten) return;
 
             const sub = data.studienarbeiten.find(s => s.id === subId);
-            if (sub) {
-                sub.feedback = input.value.trim();
-                sub.status = 'bewertet';
-            }
-
+            if (sub) { sub.feedback = input.value.trim(); sub.status = 'bewertet'; }
             if (row) row.style.display = 'none';
 
-            // Mark toggle button to indicate saved feedback
             const toggle = card.querySelector(`.sub-feedback-toggle[data-sub-id="${subId}"]`);
             if (toggle) toggle.classList.add('sub-feedback-toggle--has');
-
-            showCardAlert(alertEl, 'Feedback gespeichert.', 'success');
+            showCardAlert(card.querySelector('.pruefung-card-alert'), 'Feedback gespeichert.', 'success');
         });
     });
 }
 
 function initNotenPanel(card, mod, data, participants, matchedSeries) {
-    const alertEl = card.querySelector('.pruefung-card-alert');
-
-    // Mode switcher
-    const modeBtns = card.querySelectorAll('.grading-mode-btn');
+    const alertEl   = card.querySelector('.pruefung-card-alert');
+    const modeBtns  = card.querySelectorAll('.grading-mode-btn');
     const modePanels = card.querySelectorAll('.note-mode-panel');
+
     modeBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             modeBtns.forEach(b => b.classList.remove('active'));
@@ -973,8 +1012,6 @@ function initNotenPanel(card, mod, data, participants, matchedSeries) {
             btn.classList.add('active');
             const panel = card.querySelector(`.note-mode-panel[data-panel="${btn.dataset.mode}"]`);
             if (panel) panel.classList.add('active');
-
-            // Refresh statistics on every switch (grades may have been saved)
             if (btn.dataset.mode === 'statistik' && panel) {
                 const fresh = collectExistingGrades(data, matchedSeries);
                 panel.innerHTML = buildStatistikPanel(fresh, participants);
@@ -982,7 +1019,6 @@ function initNotenPanel(card, mod, data, participants, matchedSeries) {
         });
     });
 
-    // Manual save
     const manualSave = card.querySelector('.note-save-btn[data-mode="manual"]');
     if (manualSave) {
         manualSave.addEventListener('click', () => {
@@ -990,21 +1026,17 @@ function initNotenPanel(card, mod, data, participants, matchedSeries) {
             card.querySelectorAll('.note-grade-select').forEach(sel => {
                 if (sel.value) results.push({ studentId: parseInt(sel.dataset.studentId), grade: sel.value });
             });
-            if (!results.length) {
-                showCardAlert(alertEl, 'Bitte mindestens eine Note eingeben.', 'error');
-                return;
-            }
+            if (!results.length) { showCardAlert(alertEl, 'Bitte mindestens eine Note eingeben.', 'error'); return; }
             persistGrades(results, data, matchedSeries, mod);
             showCardAlert(alertEl, `${results.length} Note(n) gespeichert.`, 'success');
         });
     }
 
-    // Points auto-calculate on input
     card.querySelectorAll('.note-pts-input').forEach(inp => {
         inp.addEventListener('input', () => {
             const thresholds = getCustomThresholds(card);
-            const sid = parseInt(inp.dataset.studentId);
-            const preview = card.querySelector(`.note-pts-preview[data-student-id="${sid}"]`);
+            const sid        = parseInt(inp.dataset.studentId);
+            const preview    = card.querySelector(`.note-pts-preview[data-student-id="${sid}"]`);
             if (!preview) return;
             const val = parseFloat(inp.value);
             if (inp.value === '' || isNaN(val)) {
@@ -1013,13 +1045,12 @@ function initNotenPanel(card, mod, data, participants, matchedSeries) {
             } else {
                 const grade = pointsToGrade(val, thresholds);
                 preview.textContent = grade;
-                preview.className = `note-pts-preview ${gradeColorClass(parseFloat(grade))}`;
+                preview.className   = `note-pts-preview ${gradeColorClass(parseFloat(grade))}`;
                 preview.dataset.grade = grade;
             }
         });
     });
 
-    // Points save
     const pointsSave = card.querySelector('.note-save-btn[data-mode="points"]');
     if (pointsSave) {
         pointsSave.addEventListener('click', () => {
@@ -1027,18 +1058,14 @@ function initNotenPanel(card, mod, data, participants, matchedSeries) {
             card.querySelectorAll('.note-pts-preview[data-grade]').forEach(cell => {
                 results.push({ studentId: parseInt(cell.dataset.studentId), grade: cell.dataset.grade });
             });
-            if (!results.length) {
-                showCardAlert(alertEl, 'Bitte zuerst berechnen.', 'error');
-                return;
-            }
+            if (!results.length) { showCardAlert(alertEl, 'Bitte zuerst berechnen.', 'error'); return; }
             persistGrades(results, data, matchedSeries, mod);
             showCardAlert(alertEl, `${results.length} Note(n) \u00fcbernommen.`, 'success');
         });
     }
 
-    // CSV
-    const csvZone = card.querySelector('.note-csv-zone');
-    const csvInput = card.querySelector('.note-csv-input');
+    const csvZone    = card.querySelector('.note-csv-zone');
+    const csvInput   = card.querySelector('.note-csv-input');
     const csvPreview = card.querySelector('.note-csv-preview');
     if (csvZone && csvInput) {
         csvZone.addEventListener('click', () => csvInput.click());
@@ -1056,7 +1083,7 @@ function initNotenPanel(card, mod, data, participants, matchedSeries) {
     }
 }
 
-// ── Grade utilities ────────────────────────────────────────────────────────────
+// ── Grade utilities ─────────────────────────────────────────────────────────────
 
 function getCustomThresholds(card) {
     const thresholds = GRADE_THRESHOLDS.map(t => ({ ...t }));
@@ -1070,14 +1097,14 @@ function getCustomThresholds(card) {
 function handleCsv(file, alertEl, previewEl, mod, data, matchedSeries) {
     const reader = new FileReader();
     reader.onload = e => {
-        const lines = e.target.result.split(/\r?\n/).filter(l => l.trim());
+        const lines  = e.target.result.split(/\r?\n/).filter(l => l.trim());
         const parsed = lines.map(line => {
             const parts = line.split(';').map(p => p.trim());
             const matNr = parts[0] || '';
             const grade = parts[1] || '';
             if (!grade) return { matNr, grade, valid: false, error: 'Ung\u00fcltiges Format', userName: '—' };
             const u = data.users.find(u => u.matriculationNumber === matNr);
-            if (!u) return { matNr, grade, valid: false, error: 'Matrikelnr. unbekannt', userName: '—' };
+            if (!u)  return { matNr, grade, valid: false, error: 'Matrikelnr. unbekannt', userName: '—' };
             if (!VALID_GRADES.includes(grade)) return { matNr, grade, valid: false, error: 'Ung\u00fcltige Note', userName: u.name, userId: u.id };
             return { matNr, grade, valid: true, userName: u.name, userId: u.id, error: '' };
         });
@@ -1094,9 +1121,9 @@ function handleCsv(file, alertEl, previewEl, mod, data, matchedSeries) {
                         <td>${escapeHTML(p.userName)}</td>
                         <td>${escapeHTML(p.grade || '—')}</td>
                         <td>${p.valid
-                ? '<div class="status-indicator passed"><span class="status-dot"></span>OK</div>'
-                : `<div class="status-indicator failed"><span class="status-dot"></span>${escapeHTML(p.error)}</div>`
-            }</td>
+                    ? '<div class="status-indicator passed"><span class="status-dot"></span>OK</div>'
+                    : `<div class="status-indicator failed"><span class="status-dot"></span>${escapeHTML(p.error)}</div>`
+                }</td>
                     </tr>`).join('')}
                 </tbody>
             </table>
@@ -1121,19 +1148,25 @@ function handleCsv(file, alertEl, previewEl, mod, data, matchedSeries) {
     reader.readAsText(file);
 }
 
-// ── UI helpers ─────────────────────────────────────────────────────────────────
-
-function showCardAlert(el, message, type) {
-    if (!el) return;
-    el.innerHTML = buildAlert(message, type);
-    setTimeout(() => { el.innerHTML = ''; }, 3000);
-}
+// ── UI helpers ──────────────────────────────────────────────────────────────────
 
 function showDownloadToast(fileName) {
+    const existing = document.querySelector('.pruefung-toast');
+    if (existing) existing.remove();
+
     const toast = document.createElement('div');
-    toast.className = 'management-alert success';
-    toast.style.cssText = 'position:fixed;bottom:1.5rem;right:1.5rem;z-index:9999;max-width:380px;animation:none;';
-    toast.innerHTML = `<span class="material-symbols-rounded">download</span> Download gestartet: <strong>${escapeHTML(fileName)}</strong>`;
+    toast.className = 'pruefung-toast';
+    toast.innerHTML = `<span class="material-symbols-rounded">download</span> ${escapeHTML(fileName || 'Datei')} wird heruntergeladen\u2026`;
     document.body.appendChild(toast);
-    setTimeout(() => toast.remove(), 3000);
+    requestAnimationFrame(() => toast.classList.add('pruefung-toast--show'));
+    setTimeout(() => {
+        toast.classList.remove('pruefung-toast--show');
+        setTimeout(() => toast.remove(), 300);
+    }, 2500);
+}
+
+function showCardAlert(el, msg, type) {
+    if (!el) return;
+    el.innerHTML = `<div class="alert alert-${type}" style="margin-top:0.75rem;">${escapeHTML(msg)}</div>`;
+    setTimeout(() => { if (el) el.innerHTML = ''; }, 3500);
 }

@@ -1,5 +1,73 @@
 /* ── Refined Dozent Exams Styles ─────────────────────────────────────────── */
 
+/* ── Category (Prüfungsform) panels ─────────────────────────────────────────── */
+/* Tab bar styling reuses .section-tabs / .section-tab from style.css */
+
+.pruefung-kat-panel {
+    display: none;
+}
+
+.pruefung-kat-panel.active {
+    display: block;
+}
+
+/* ── Compact card additions ─────────────────────────────────────────────────── */
+
+.compact-card-code {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    background: var(--surface-secondary, rgba(0,0,0,0.05));
+    padding: 0.1rem 0.4rem;
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+}
+
+.compact-card-semester {
+    font-size: 0.75rem;
+    color: var(--text-tertiary, var(--text-secondary));
+    margin-top: 0.2rem;
+}
+
+/* ── Download toast ─────────────────────────────────────────────────────────── */
+
+.pruefung-toast {
+    position: fixed;
+    bottom: calc(var(--footer-height, 40px) + 4.5rem);
+    left: 50%;
+    transform: translateX(-50%) translateY(1rem);
+    background: var(--surface-color);
+    border: 1px solid var(--border-color-subtle);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    padding: 0.65rem 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--text-primary);
+    opacity: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 1100;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.pruefung-toast .material-symbols-rounded {
+    color: var(--primary-color);
+    font-size: 1.1rem;
+}
+
+.pruefung-toast--show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* Dark mode */
+body.dark-mode .compact-card-code {
+    background: rgba(255,255,255,0.08);
+}
+
 .pruefung-cards-list {
     display: flex;
     flex-direction: column;

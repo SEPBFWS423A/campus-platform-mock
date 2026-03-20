@@ -616,6 +616,7 @@ body.dark-mode .dropdown-menu {
     flex: 1;
     padding: 2rem 2rem;
     padding-top: calc(var(--navbar-height) + 2rem);
+    padding-bottom: calc(var(--footer-height, 40px) + 1.5rem);
     max-width: var(--content-max-width);
     margin: 0 auto;
     width: 100%;
@@ -1488,6 +1489,20 @@ select.form-control:focus {
     display: block;
 }
 
+#schedule.active,
+#dozent-courses.active {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - var(--navbar-height) - var(--footer-height, 40px) - 4rem);
+}
+
+#schedule.active .tab-content.active,
+#dozent-courses.active .tab-content.active {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+
 .sidebar {
     position: fixed;
     top: 0;
@@ -1659,13 +1674,32 @@ body.dark-mode .sidebar {
 }
 
 .app-footer {
-    text-align: center;
-    padding: 2rem 1.5rem;
-    color: var(--text-tertiary);
-    font-size: 0.8rem;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 90;
+    height: var(--footer-height, 40px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0 1.5rem;
+    background-color: var(--surface-color);
     border-top: 1px solid var(--border-color-subtle);
-    margin-top: 3rem;
+    color: var(--text-tertiary);
+    font-size: 0.75rem;
     letter-spacing: 0.01em;
+    flex-wrap: wrap;
+    overflow: hidden;
+}
+
+.footer-lock {
+    font-size: 0.85rem !important;
+}
+
+.footer-divider {
+    opacity: 0.5;
 }
 
 address.contact-list {
