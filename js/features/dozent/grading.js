@@ -4,21 +4,10 @@ import { VALID_GRADES } from '../shared/constants.js';
 import { buildAlert } from '../shared/uiComponents.js';
 import { getActiveDozentCourses } from '../shared/dataHelpers.js';
 import { initTabs } from '../shared/tabSwitching.js';
-
-// Points-to-grade thresholds (lower bound inclusive → grade)
-const DEFAULT_POINT_THRESHOLDS = [
-    { minPoints: 95, grade: '1.0' },
-    { minPoints: 90, grade: '1.3' },
-    { minPoints: 85, grade: '1.7' },
-    { minPoints: 80, grade: '2.0' },
-    { minPoints: 75, grade: '2.3' },
-    { minPoints: 70, grade: '2.7' },
-    { minPoints: 65, grade: '3.0' },
-    { minPoints: 60, grade: '3.3' },
-    { minPoints: 55, grade: '3.7' },
-    { minPoints: 50, grade: '4.0' },
-    { minPoints: 0,  grade: '5.0' }
-];
+import {
+    GRADE_THRESHOLDS, persistGrades, collectExistingGrades,
+    gradeColorClass, pointsToGrade
+} from './gradingHelpers.js';
 
 export function renderDozentGrading(data, user) {
     const container = document.querySelector('.dozent-grading-content');
@@ -142,7 +131,7 @@ function renderGradingTable(tableArea, alertArea, course, data) {
     const rows = participants.map(student => {
         const currentGrade = existingGrades[student.id] || '';
         const gradeDisplay = currentGrade || '-';
-        const gradeClass = currentGrade ? getGradeColorClass(parseFloat(currentGrade)) : '';
+        const gradeClass = currentGrade ? gradeColorClass(parseFloat(currentGrade)) : '';
 
         return `
             <tr>
@@ -231,13 +220,13 @@ function renderPointsTab(container, course, data) {
     const matchedSeries = findMatchingEventSeries(course, data);
     const existingGrades = collectExistingGrades(data, matchedSeries);
 
-    const thresholdRows = DEFAULT_POINT_THRESHOLDS.map((t, i) => {
-        const maxPts = i === 0 ? 100 : DEFAULT_POINT_THRESHOLDS[i - 1].minPoints - 1;
+    const thresholdRows = GRADE_THRESHOLDS.map((t, i) => {
+        const maxPts = i === 0 ? 100 : GRADE_THRESHOLDS[i - 1].min - 1;
         return `
             <tr>
                 <td>
                     <input type="number" class="form-input pts-threshold-input" style="width:80px;"
-                           data-idx="${i}" value="${t.minPoints}" min="0" max="100">
+                           data-idx="${i}" value="${t.min}" min="0" max="100">
                     &ndash; ${maxPts === 100 ? '100' : maxPts}
                 </td>
                 <td><strong>${t.grade}</strong></td>
@@ -302,19 +291,12 @@ function renderPointsTab(container, course, data) {
 function initPointsTabInteraction(area, course, data, matchedSeries, participants) {
     function getThresholds() {
         const inputs = area.querySelectorAll('.pts-threshold-input');
-        const thresholds = [...DEFAULT_POINT_THRESHOLDS];
+        const thresholds = GRADE_THRESHOLDS.map(t => ({ ...t }));
         inputs.forEach(inp => {
             const idx = parseInt(inp.dataset.idx);
-            thresholds[idx] = { ...thresholds[idx], minPoints: parseInt(inp.value) || 0 };
+            if (!isNaN(idx) && thresholds[idx]) thresholds[idx].min = parseInt(inp.value) || 0;
         });
-        return thresholds.sort((a, b) => b.minPoints - a.minPoints);
-    }
-
-    function pointsToGrade(points, thresholds) {
-        for (const t of thresholds) {
-            if (points >= t.minPoints) return t.grade;
-        }
-        return '5.0';
+        return thresholds.sort((a, b) => b.min - a.min);
     }
 
     const calcBtn = area.querySelector('#pts-calc-btn');
@@ -333,7 +315,7 @@ function initPointsTabInteraction(area, course, data, matchedSeries, participant
             } else {
                 const grade = pointsToGrade(pts, thresholds);
                 preview.textContent = grade;
-                preview.className = `pts-grade-preview ${getGradeColorClass(parseFloat(grade))}`;
+                preview.className = `pts-grade-preview ${gradeColorClass(parseFloat(grade))}`;
                 preview.dataset.grade = grade;
             }
         });
@@ -468,43 +450,5 @@ function handleCsvFile(file, alertEl, previewEl, course, data) {
 }
 
 // ─── SHARED HELPERS ───────────────────────────────────────────────────────────
-
-function persistGrades(results, data, matchedSeries, course) {
-    if (matchedSeries) {
-        const klausurEvent = (matchedSeries.events || []).find(ev => ev.type === 'Klausur');
-        const key = klausurEvent
-            ? matchedSeries.id + '-' + klausurEvent.id
-            : matchedSeries.id + '-0';
-        const existing = data.examResults[key] || [];
-        results.forEach(r => {
-            const idx = existing.findIndex(e => e.studentId === r.studentId);
-            if (idx >= 0) existing[idx].grade = r.grade;
-            else existing.push({ studentId: r.studentId, grade: r.grade });
-        });
-        data.examResults[key] = existing;
-    }
-
-    results.forEach(r => {
-        const moduleEntry = data.modules.find(m => m.code === course.code);
-        if (moduleEntry) moduleEntry.grade = parseFloat(r.grade);
-    });
-}
-
-function collectExistingGrades(data, matchedSeries) {
-    const grades = {};
-    if (!matchedSeries || !data.examResults) return grades;
-    const prefix = matchedSeries.id + '-';
-    Object.keys(data.examResults).forEach(key => {
-        if (key.startsWith(prefix)) {
-            data.examResults[key].forEach(r => { grades[r.studentId] = r.grade; });
-        }
-    });
-    return grades;
-}
-
-function getGradeColorClass(gradeNum) {
-    if (Number.isNaN(gradeNum)) return '';
-    if (gradeNum <= 2.0) return 'dozent-grade-good';
-    if (gradeNum <= 3.3) return 'dozent-grade-ok';
-    return 'dozent-grade-bad';
-}
+// persistGrades, collectExistingGrades, gradeColorClass, pointsToGrade
+// are imported from ./gradingHelpers.js above.
