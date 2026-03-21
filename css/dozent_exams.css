@@ -1,0 +1,648 @@
+/* ── Refined Dozent Exams Styles ─────────────────────────────────────────── */
+
+/* ── Category (Prüfungsform) panels ─────────────────────────────────────────── */
+/* Tab bar styling reuses .section-tabs / .section-tab from style.css */
+
+.pruefung-kat-panel {
+    display: none;
+}
+
+.pruefung-kat-panel.active {
+    display: block;
+}
+
+/* ── Compact card additions ─────────────────────────────────────────────────── */
+
+.compact-card-code {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    background: var(--surface-secondary, rgba(0,0,0,0.05));
+    padding: 0.1rem 0.4rem;
+    border-radius: var(--radius-sm);
+    white-space: nowrap;
+}
+
+.compact-card-semester {
+    font-size: 0.75rem;
+    color: var(--text-tertiary, var(--text-secondary));
+    margin-top: 0.2rem;
+}
+
+/* ── Download toast ─────────────────────────────────────────────────────────── */
+
+.pruefung-toast {
+    position: fixed;
+    bottom: calc(var(--footer-height, 40px) + 4.5rem);
+    left: 50%;
+    transform: translateX(-50%) translateY(1rem);
+    background: var(--surface-color);
+    border: 1px solid var(--border-color-subtle);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    padding: 0.65rem 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--text-primary);
+    opacity: 0;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 1100;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.pruefung-toast .material-symbols-rounded {
+    color: var(--primary-color);
+    font-size: 1.1rem;
+}
+
+.pruefung-toast--show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* Dark mode */
+body.dark-mode .compact-card-code {
+    background: rgba(255,255,255,0.08);
+}
+
+.pruefung-cards-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+/* ── Compact Cards ─────────────────────────────────────────────────────────── */
+
+.pruefung-compact-card {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color-subtle);
+    border-radius: var(--radius-lg);
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.pruefung-compact-card:hover {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+    background: rgba(37, 99, 235, 0.02);
+}
+
+.pruefung-compact-card:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+.compact-card-main {
+    flex: 1;
+    min-width: 0;
+}
+
+.compact-card-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.25rem;
+}
+
+.compact-card-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.compact-card-meta {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.compact-card-aside {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-shrink: 0;
+}
+
+.compact-status-pill {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.3rem 0.65rem;
+    border-radius: var(--radius-full);
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.compact-status-pill .material-symbols-rounded { font-size: 0.95rem; }
+
+.compact-status-pill.status-offen {
+    background: rgba(100, 116, 139, 0.1);
+    color: var(--text-secondary);
+}
+.compact-status-pill.status-eingereicht {
+    background: rgba(37, 99, 235, 0.1);
+    color: var(--primary-color);
+}
+.compact-status-pill.status-geschrieben {
+    background: rgba(245, 158, 11, 0.12);
+    color: #b45309;
+}
+.compact-status-pill.status-abgeschlossen {
+    background: rgba(34, 197, 94, 0.1);
+    color: #15803d;
+}
+
+.compact-card-stats {
+    display: flex;
+    gap: 0.6rem;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+}
+
+.compact-card-stats span {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    font-weight: 500;
+}
+
+.compact-card-stats .material-symbols-rounded { font-size: 1rem; }
+
+.compact-card-arrow {
+    font-size: 1.2rem;
+    color: var(--text-tertiary);
+    transition: transform 0.15s ease, color 0.15s ease;
+}
+
+.pruefung-compact-card:hover .compact-card-arrow {
+    transform: translateX(3px);
+    color: var(--primary-color);
+}
+
+/* ── Modal ─────────────────────────────────────────────────────────────────── */
+
+/* ── Pruefung Modal — Mobile-first: bottom-sheet on mobile, centered on desktop */
+
+.pruefung-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 1000;
+    display: flex;
+    /* Mobile: anchor to bottom */
+    align-items: flex-end;
+    justify-content: center;
+    padding: 0;
+    overflow-y: hidden;
+}
+
+.pruefung-modal-overlay[hidden] { display: none; }
+
+.pruefung-modal-dialog {
+    background: var(--surface-color);
+    /* Mobile: bottom-sheet — rounded top, slides up from below */
+    border-radius: var(--radius-3xl) var(--radius-3xl) 0 0;
+    box-shadow: var(--shadow-lg), 0 0 0 1px var(--border-color-subtle);
+    width: 100%;
+    max-width: 100%;
+    max-height: min(92dvh, 92vh);
+    overflow-y: auto;
+    animation: pruefungSheetIn 0.35s var(--ease-spring, cubic-bezier(0.16, 1, 0.3, 1));
+}
+
+/* Drag handle */
+.pruefung-modal-dialog::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 4px;
+    background: var(--border-color);
+    border-radius: var(--radius-full);
+    margin: 0.75rem auto 0;
+    flex-shrink: 0;
+}
+
+@keyframes pruefungSheetIn {
+    from { transform: translateY(100%); }
+    to   { transform: translateY(0); }
+}
+
+/* Desktop: restore centered scrollable overlay */
+@media (min-width: 769px) {
+    .pruefung-modal-overlay {
+        align-items: flex-start;
+        padding: 2rem 1rem;
+        overflow-y: auto;
+    }
+
+    .pruefung-modal-dialog {
+        max-width: 900px;
+        max-height: none;
+        overflow-y: visible;
+        border-radius: var(--radius-xl);
+        animation: modalSlideIn 0.2s ease-out;
+    }
+
+    .pruefung-modal-dialog::before {
+        display: none;
+    }
+}
+
+@keyframes modalSlideIn {
+    from { opacity: 0; transform: translateY(-12px) scale(0.98); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pruefung-modal-dialog {
+        animation: none;
+    }
+}
+
+.pruefung-modal-topbar {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border-color-subtle);
+    background: var(--surface-color);
+}
+
+.pruefung-modal-body .pruefung-card {
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+body.dark-mode .pruefung-compact-card {
+    background: var(--glass-bg);
+    border-color: var(--glass-border);
+}
+
+body.dark-mode .pruefung-modal-dialog {
+    background: var(--glass-bg);
+}
+
+.filter-bar-container {
+    background-color: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    padding: 0.75rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+}
+
+/* .filter-chip scoped variant is defined in style.css */
+.filter-bar-container .filter-bar {
+    gap: 0.5rem;
+    padding: 0;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.pruefung-card {
+    background-color: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    overflow: hidden;
+    transition: transform 0.25s var(--ease-spring), box-shadow 0.25s ease;
+    will-change: transform;
+    display: flex;
+    flex-direction: column;
+}
+
+.pruefung-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--glass-shadow), var(--shadow-md);
+}
+
+/* Glassmorphism Header for Card */
+.pruefung-card-header {
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to right, rgba(37, 99, 235, 0.05), transparent);
+    border-bottom: 1px solid var(--border-color-subtle);
+}
+
+.pruefung-card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.25rem;
+}
+
+.pruefung-card-meta {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.pruefung-status-select {
+    min-width: 160px;
+    background-color: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    color: var(--text-primary);
+    font-weight: 500;
+    cursor: pointer;
+}
+
+/* Modern Pipeline */
+.pruefung-pipeline {
+    padding: 2.5rem 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--surface-overlay);
+    border-bottom: 1px solid var(--glass-border);
+    position: relative;
+    overflow: hidden;
+}
+
+.pipeline-step {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    position: relative;
+    z-index: 2;
+    cursor: default;
+    transition: opacity 0.3s ease;
+}
+
+.pipeline-dot {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: var(--surface-color);
+    border: 2px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 0 0 4px var(--surface-color);
+}
+
+.pipeline-dot .material-symbols-rounded {
+    font-size: 1.15rem;
+    color: var(--text-tertiary);
+    transition: color 0.3s ease;
+}
+
+.pipeline-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--text-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    transition: color 0.3s ease;
+    text-align: center;
+}
+
+.pipeline-line {
+    position: absolute;
+    top: 50%;
+    height: 4px;
+    background-color: var(--border-color);
+    z-index: 1;
+    transition: all 0.4s ease;
+    transform: translateY(-50%) translateY(-10px);
+    opacity: 0.6;
+}
+
+.pipeline-line.done {
+    background-color: var(--primary-color);
+    opacity: 1;
+}
+
+/* Loop logic would need JS for dynamic lines, but let's style the classes */
+.pipeline-step.done .pipeline-dot {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.pipeline-step.done .pipeline-dot .material-symbols-rounded {
+    color: white;
+}
+
+.pipeline-step.current .pipeline-dot {
+    background-color: var(--surface-color);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 6px rgba(37, 99, 235, 0.1), 0 0 0 4px var(--surface-color), var(--shadow-sm);
+}
+
+.pipeline-step.current .pipeline-dot .material-symbols-rounded {
+    color: var(--primary-color);
+}
+
+.pipeline-step.done .pipeline-label {
+    color: var(--primary-color);
+}
+
+.pipeline-step.current .pipeline-label {
+    color: var(--text-primary);
+}
+
+.pipeline-line.done {
+    background-color: var(--primary-color);
+}
+
+/* Card Tabs Refinement */
+.pruefung-card-tabs {
+    padding: 0.5rem 1rem 0;
+    margin-bottom: 0;
+    background-color: var(--surface-color);
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.pruefung-card-tabs::-webkit-scrollbar {
+    display: none;
+}
+
+.pruefung-card-tabs .section-tab {
+    padding: 1rem 1.25rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s ease;
+    border-radius: 0;
+    background: none;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.pruefung-card-tabs .section-tab:hover {
+    color: var(--primary-color);
+    background-color: rgba(37, 99, 235, 0.03);
+}
+
+.pruefung-card-tabs .section-tab.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+}
+
+.pruefung-card-tabs .section-tab .material-symbols-rounded {
+    font-size: 1.15rem;
+}
+
+/* Content Area refinement */
+.pruefung-card .tab-content {
+    padding: 1.5rem 2.5rem;
+    min-height: 200px;
+    animation: fadeIn 0.3s ease-out;
+    background-color: var(--surface-color);
+}
+
+/* Status Indicator Improvements – scoped to pruefung context */
+.pruefung-card .status-indicator,
+.pruefung-modal-overlay .status-indicator {
+    padding: 0.35rem 0.75rem;
+    border-radius: var(--radius-full);
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.pruefung-card .status-indicator.passed,
+.pruefung-modal-overlay .status-indicator.passed {
+    background-color: rgba(34, 197, 94, 0.1);
+    color: #15803d;
+}
+
+.pruefung-card .status-indicator.info,
+.pruefung-modal-overlay .status-indicator.info {
+    background-color: rgba(37, 99, 235, 0.1);
+    color: var(--primary-color);
+}
+
+.pruefung-card .status-indicator.warning,
+.pruefung-modal-overlay .status-indicator.warning {
+    background-color: rgba(245, 158, 11, 0.1);
+    color: #b45309;
+}
+
+.dozent-grading-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color-subtle);
+}
+
+.dozent-grading-count {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+/* Sub-panels refinements */
+.dok-upload-zone {
+    border-radius: var(--radius-xl);
+    padding: 3rem 2rem;
+    transition: all 0.25s ease;
+}
+
+.dok-upload-zone:hover {
+    background-color: rgba(37, 99, 235, 0.05);
+}
+
+.pruefung-file-row {
+    background: var(--bg-color-subtle, rgba(0, 0, 0, 0.02));
+    border-left: 4px solid var(--primary-color);
+    padding: 1rem;
+    border-radius: var(--radius-md);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.pruefung-file-date {
+    margin-left: auto;
+    font-size: 0.75rem;
+    color: var(--text-tertiary);
+}
+
+/* Table refinements */
+.management-table {
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid var(--border-color-subtle);
+}
+
+.management-table th {
+    background-color: var(--bg-color-subtle, rgba(0, 0, 0, 0.02));
+    padding: 1rem;
+}
+
+.management-table td {
+    padding: 1rem;
+}
+
+/* Feedback area refinement – scoped to pruefung context */
+.pruefung-card .sub-feedback-area {
+    background: var(--surface-color);
+    padding: 1.5rem;
+    border-left: 4px solid var(--primary-color);
+    margin: 1rem;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+/* Dark mode specific adjustments for these refined styles */
+body.dark-mode .pruefung-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border-color: var(--glass-border);
+}
+
+body.dark-mode .pruefung-card-header {
+    background: linear-gradient(to right, rgba(37, 99, 235, 0.08), transparent);
+}
+
+body.dark-mode .pipeline-dot {
+    background-color: #1e293b;
+    border-color: #334155;
+    box-shadow: 0 0 0 4px #1e293b;
+}
+
+body.dark-mode .pipeline-line {
+    background-color: #334155;
+}
+
+body.dark-mode .pruefung-file-row {
+    background: rgba(255, 255, 255, 0.03);
+}

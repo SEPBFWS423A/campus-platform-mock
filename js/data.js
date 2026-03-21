@@ -238,8 +238,25 @@ const mockData = {
             ],
             exam: {
                 status: "registered", date: "2026-03-25", time: "10:00 - 11:30",
-                room: "Hörsaal 4", type: "Klausur (90 min)"
+                room: "Hörsaal 4", type: "Referat"
             }
+        },
+        {
+            code: "INF-406", name: "Software Engineering", semester: "WiSe 25/26",
+            ects: 6, status: "active", attempt: 1, dozentId: 5,
+            lecturer: "Prof. Dr. Schneider",
+            schedule: [
+                { day: 1, start: "09:45", end: "13:00", room: "R 3.01", type: "Vorlesung", color: "teal" },
+                { day: 3, start: "13:45", end: "17:00", room: "PC-Labor 2", type: "Praktikum", color: "teal" }
+            ],
+            exam: {
+                status: "open", date: "2026-04-02", time: "10:00 - 12:00",
+                room: "Hörsaal 3", type: "Klausur (120 min)",
+                examiner: "Prof. Dr. Schneider"
+            },
+            files: [
+                { name: "SE_Vorlesung_UML_Grundlagen.pdf", type: "pdf", size: "4.1 MB", date: "05.02.2026" }
+            ]
         }
     ],
 
@@ -330,6 +347,8 @@ const mockData = {
         {
             id: 1,
             name: "Software Engineering",
+            dozentId: 8,
+            examForms: ["Klausur"],
             studentIds: [1, 7],
             events: [
                 { id: 1, name: "VL Grundlagen", type: "Lehrveranstaltung", duration: 90, schedule: { day: 0, start: "09:45", end: "11:15" }, roomId: 4, order: 1 },
@@ -339,6 +358,8 @@ const mockData = {
         {
             id: 2,
             name: "IT-Projektmanagement",
+            dozentId: 2,
+            examForms: ["Klausur"],
             studentIds: [1, 5, 7],
             events: [
                 { id: 1, name: "VL Projektmanagement", type: "Lehrveranstaltung", duration: 90, schedule: { day: 0, start: "13:45", end: "15:15" }, roomId: 4, order: 1 },
@@ -349,6 +370,8 @@ const mockData = {
         {
             id: 3,
             name: "Künstliche Intelligenz",
+            dozentId: 8,
+            examForms: ["Klausur"],
             studentIds: [1, 4, 7],
             events: [
                 { id: 1, name: "VL Neuronale Netze", type: "Lehrveranstaltung", duration: 90, schedule: { day: 2, start: "09:45", end: "13:00" }, roomId: 1, order: 1 },
@@ -359,12 +382,16 @@ const mockData = {
         {
             id: 4,
             name: "Software Testing & DevOps",
+            dozentId: null,
+            examForms: [],
             studentIds: [],
             events: []
         },
         {
             id: 5,
             name: "IT-Recht & Compliance",
+            dozentId: 2,
+            examForms: ["Referat", "Hausarbeit"],
             studentIds: [1, 4, 7],
             events: [
                 { id: 1, name: "VL IT-Recht", type: "Lehrveranstaltung", duration: 90, schedule: { day: 3, start: "09:45", end: "13:00" }, roomId: 8, order: 1 },
@@ -384,7 +411,112 @@ const mockData = {
             { studentId: 5, grade: "3.3" },
             { studentId: 7, grade: "1.7" }
         ]
-    }
+    },
+
+    // Prüfungsdokumente je Modul (Dozenten-Verwaltung)
+    // Status: offen | bereitgestellt | geschrieben | abgeschlossen
+    pruefungsDocs: {
+        "WIN-401": {
+            status: "bereitgestellt",
+            examFileName: "Klausur_ITPM_WiSe2526.pdf",
+            uploadedAt: "2026-03-10",
+            notes: "90 Min, keine Hilfsmittel erlaubt"
+        },
+        "WIN-403": {
+            status: "eingereicht",
+            examFileName: null,
+            uploadedAt: null,
+            notes: "Seminararbeit und Referat bis Ende Vorlesungszeit"
+        },
+        "INF-405": {
+            status: "geschrieben",
+            examFileName: "Klausur_KI_WiSe2526.pdf",
+            uploadedAt: "2026-03-08",
+            notes: "Klausur am 18.03.2026 geschrieben"
+        }
+    },
+
+    // Studienarbeiten / eingereichte Arbeiten (für Dozenten-Download)
+    studienarbeiten: [
+        {
+            id: 1,
+            studentId: 1,
+            studentName: "Max Mustermann",
+            matNr: "12345678",
+            title: "Bachelor Thesis: AI in Healthcare",
+            type: "Bachelorarbeit",
+            moduleCode: "INF-405",
+            dozentId: 8,
+            submittedAt: "2026-02-18",
+            status: "eingereicht",
+            fileName: "BachelorThesis_Mustermann_AI.pdf",
+            size: "2.8 MB"
+        },
+        {
+            id: 2,
+            studentId: 7,
+            studentName: "Lisa Mueller",
+            matNr: "260563",
+            title: "Entwicklung einer Web-Applikation",
+            type: "Praxisarbeit",
+            moduleCode: "WIN-401",
+            dozentId: 2,
+            submittedAt: "2026-02-28",
+            status: "eingereicht",
+            fileName: "Praxisarbeit_Mueller_WebApp.zip",
+            size: "4.1 MB"
+        },
+        {
+            id: 3,
+            studentId: 1,
+            studentName: "Max Mustermann",
+            matNr: "12345678",
+            title: "Referat: IT-Governance Frameworks",
+            type: "Referat",
+            moduleCode: "WIN-403",
+            dozentId: 2,
+            submittedAt: "2026-03-05",
+            status: "eingereicht",
+            fileName: "Referat_Mustermann_ITGov.pdf",
+            size: "1.2 MB"
+        },
+        {
+            id: 4,
+            studentId: 7,
+            studentName: "Lisa Mueller",
+            matNr: "260563",
+            title: "Seminararbeit: DSGVO-Compliance",
+            type: "Seminararbeit",
+            moduleCode: "WIN-403",
+            dozentId: 2,
+            submittedAt: "2026-03-07",
+            status: "bewertet",
+            grade: "1.7",
+            fileName: "Seminar_Mueller_DSGVO.pdf",
+            size: "0.9 MB"
+        }
+    ],
+
+    studiengruppen: [
+        { id: 1, name: "WIN-2024A", studentIds: [1, 7] },
+        { id: 2, name: "INF-2024B", studentIds: [] }
+    ],
+
+    vorlesungsfreieZeiten: [
+        { id: 1, name: "Weihnachtsferien", start: "2025-12-21", end: "2026-01-05" },
+        { id: 2, name: "Osterferien",      start: "2026-03-30", end: "2026-04-10" }
+    ],
+
+    abwesenheiten: [
+        { id: 1, dozentId: 2, start: "2026-04-14", end: "2026-04-18", type: "Urlaub",      note: "Jahresurlaub" },
+        { id: 2, dozentId: 8, start: "2026-03-23", end: "2026-03-27", type: "Dienstreise",  note: "Konferenz Berlin" }
+    ],
+
+    vorlesungTemplates: [
+        { id: 1, name: "Vorlesung mit Übung & Klausur", numEvents: 15, examForms: ["Klausur"] },
+        { id: 2, name: "Seminar",                       numEvents: 10, examForms: ["Referat", "Hausarbeit"] },
+        { id: 3, name: "Praxismodul",                   numEvents: 8,  examForms: ["Studienarbeit", "Präsentation"] }
+    ]
 };
 
 /**

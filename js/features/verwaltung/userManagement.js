@@ -1,11 +1,14 @@
 import { escapeHTML } from '../../core/utils.js';
 import { showModal, closeModal, showConfirmDialog } from '../../core/modal.js';
+import { initTabs } from '../shared/tabSwitching.js';
 
 const ROLE_LABELS = {
     student: 'Student',
     dozent: 'Dozent',
     verwaltung: 'Mitarbeiter'
 };
+
+const ABWESENHEIT_TYPES = ['Urlaub', 'Krankmeldung', 'Dienstreise', 'Sonstiges'];
 
 export function renderUserManagement(data) {
     const container = document.querySelector('.admin-users-content');
@@ -15,10 +18,6 @@ export function renderUserManagement(data) {
     const totalCount = users.length;
     const staffCount = users.filter(u => u.role === 'verwaltung' || u.role === 'dozent').length;
     const studentCount = users.filter(u => u.role === 'student').length;
-
-    const sortedUsers = [...users].sort((a, b) =>
-        (a.username || '').localeCompare(b.username || '', 'de')
-    );
 
     container.innerHTML = `
         <div class="grid-container stats-row mgmt-stats-row">
@@ -51,6 +50,38 @@ export function renderUserManagement(data) {
             </div>
         </div>
 
+        <div class="management-tabs">
+            <button class="management-tab active" data-tab="user-list-panel">
+                <span class="material-symbols-rounded">manage_accounts</span> Benutzer
+            </button>
+            <button class="management-tab" data-tab="studiengruppen-panel">
+                <span class="material-symbols-rounded">groups</span> Studiengruppen
+            </button>
+        </div>
+
+        <div id="user-list-panel" class="management-tab-content active">
+            ${buildUserPanel(data)}
+        </div>
+
+        <div id="studiengruppen-panel" class="management-tab-content">
+            ${buildStudiengruppenPanel(data)}
+        </div>
+    `;
+
+    initTabs(container, { tabSelector: '.management-tab', panelSelector: '.management-tab-content' });
+
+    attachUserPanelListeners(container, data);
+    attachStudiengruppenListeners(container, data);
+}
+
+// ─── Benutzer-Panel ──────────────────────────────────────────────────────────
+
+function buildUserPanel(data) {
+    const sortedUsers = [...data.users].sort((a, b) =>
+        (a.username || '').localeCompare(b.username || '', 'de')
+    );
+
+    return `
         <div class="card mgmt-form-section">
             <div class="card-header mgmt-card-header">
                 <h3>Neuen Benutzer anlegen</h3>
@@ -131,7 +162,7 @@ export function renderUserManagement(data) {
                                         <button class="btn-icon-only" data-edit-user="${u.id}" title="Bearbeiten" type="button">
                                             <span class="material-symbols-rounded">edit</span>
                                         </button>
-                                        <button class="btn-icon-only danger" data-delete-user="${u.id}" title="Loeschen" type="button">
+                                        <button class="btn-icon-only danger" data-delete-user="${u.id}" title="Löschen" type="button">
                                             <span class="material-symbols-rounded">delete</span>
                                         </button>
                                     </div>
@@ -147,7 +178,9 @@ export function renderUserManagement(data) {
             </div>
         </div>
     `;
+}
 
+function attachUserPanelListeners(container, data) {
     const createForm = container.querySelector('#user-create-form');
     if (createForm) {
         createForm.addEventListener('submit', (e) => {
@@ -180,7 +213,6 @@ export function renderUserManagement(data) {
         const role = roleFilter.value;
         const rows = tableBody.querySelectorAll('tr');
         let visible = 0;
-
         rows.forEach(row => {
             const matchesRole = !role || row.dataset.role === role;
             const matchesSearch = !query || row.dataset.search.includes(query);
@@ -188,13 +220,195 @@ export function renderUserManagement(data) {
             row.style.display = show ? '' : 'none';
             if (show) visible++;
         });
-
         noResults.classList.toggle('mgmt-hidden', visible !== 0);
     }
 
     if (searchInput) searchInput.addEventListener('input', applyFilters);
     if (roleFilter) roleFilter.addEventListener('change', applyFilters);
 }
+
+// ─── Studiengruppen-Panel ────────────────────────────────────────────────────
+
+function buildStudiengruppenPanel(data) {
+    const gruppen = data.studiengruppen || [];
+    const allStudents = data.users.filter(u => u.role === 'student');
+
+    const cardsHTML = gruppen.map(g => {
+        const members = allStudents.filter(s => g.studentIds.includes(s.id));
+        return `
+            <div class="series-card card" data-gruppe-id="${g.id}">
+                <div class="series-card-header">
+                    <div>
+                        <div class="series-card-title">${escapeHTML(g.name)}</div>
+                        <div class="series-card-subtitle">
+                            <span class="material-symbols-rounded">school</span>
+                            ${members.length} Studierende
+                        </div>
+                    </div>
+                    <div class="series-card-actions">
+                        <button class="btn btn-sm btn-outline btn-edit-gruppe" data-gruppe-id="${g.id}" type="button">
+                            <span class="material-symbols-rounded">edit</span> Bearbeiten
+                        </button>
+                        <button class="btn btn-sm btn-danger btn-delete-gruppe" data-gruppe-id="${g.id}" type="button">
+                            <span class="material-symbols-rounded">delete</span> Löschen
+                        </button>
+                    </div>
+                </div>
+                <div class="series-card-members">
+                    ${members.length > 0
+                        ? members.map(s => `<span class="student-chip">${escapeHTML(s.name)}</span>`).join('')
+                        : '<span class="series-card-empty">Keine Mitglieder</span>'
+                    }
+                </div>
+            </div>`;
+    }).join('');
+
+    return `
+        <div class="card mgmt-form-section">
+            <div class="card-header mgmt-card-header">
+                <h3>Neue Studiengruppe anlegen</h3>
+            </div>
+            <div id="gruppe-create-alert"></div>
+            <div class="inline-create-form">
+                <div class="form-group" style="flex:2;min-width:180px;">
+                    <label for="create-gruppe-name">Name der Studiengruppe</label>
+                    <input type="text" id="create-gruppe-name" placeholder="z.B. WIN-2025A">
+                </div>
+                <button class="btn btn-sm btn-primary" id="btn-create-gruppe" type="button" style="align-self:flex-end;">
+                    <span class="material-symbols-rounded">add</span> Anlegen
+                </button>
+            </div>
+        </div>
+
+        <div class="series-cards-grid">
+            ${cardsHTML || '<div class="management-empty"><span class="material-symbols-rounded">groups</span><p>Keine Studiengruppen vorhanden.</p></div>'}
+        </div>
+    `;
+}
+
+function attachStudiengruppenListeners(container, data) {
+    const btnCreate = container.querySelector('#btn-create-gruppe');
+    const inputName = container.querySelector('#create-gruppe-name');
+
+    if (btnCreate && inputName) {
+        btnCreate.addEventListener('click', () => {
+            const name = inputName.value.trim();
+            if (!name) return;
+            const maxId = (data.studiengruppen || []).reduce((m, g) => Math.max(m, g.id), 0);
+            if (!data.studiengruppen) data.studiengruppen = [];
+            data.studiengruppen.push({ id: maxId + 1, name, studentIds: [] });
+            renderUserManagement(data);
+        });
+        inputName.addEventListener('keydown', e => { if (e.key === 'Enter') btnCreate.click(); });
+    }
+
+    container.querySelectorAll('.btn-delete-gruppe').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const id = parseInt(btn.dataset.gruppeId, 10);
+            const g = (data.studiengruppen || []).find(x => x.id === id);
+            if (!g) return;
+            showConfirmDialog(
+                'Studiengruppe löschen',
+                `Möchten Sie die Studiengruppe <strong>${escapeHTML(g.name)}</strong> wirklich löschen?`,
+                () => {
+                    data.studiengruppen = data.studiengruppen.filter(x => x.id !== id);
+                    renderUserManagement(data);
+                }
+            );
+        });
+    });
+
+    container.querySelectorAll('.btn-edit-gruppe').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const id = parseInt(btn.dataset.gruppeId, 10);
+            handleEditGruppe(data, id);
+        });
+    });
+}
+
+function handleEditGruppe(data, gruppeId) {
+    const gruppe = (data.studiengruppen || []).find(g => g.id === gruppeId);
+    if (!gruppe) return;
+
+    const allStudents = data.users.filter(u => u.role === 'student');
+    const members = allStudents.filter(s => gruppe.studentIds.includes(s.id));
+    const available = allStudents.filter(s => !gruppe.studentIds.includes(s.id));
+
+    const chipsHTML = members.length > 0
+        ? members.map(s => `
+            <span class="student-chip" data-student-id="${s.id}">
+                ${escapeHTML(s.name)}
+                <button class="btn-icon-only btn-remove-sg-member" data-student-id="${s.id}" type="button" title="Entfernen">
+                    <span class="material-symbols-rounded">close</span>
+                </button>
+            </span>`).join('')
+        : '<span style="color:var(--text-secondary);font-size:0.875rem;">Keine Mitglieder</span>';
+
+    const bodyHTML = `
+        <div style="margin-bottom: 1rem;">
+            <div class="form-group">
+                <label>Name der Studiengruppe</label>
+                <input type="text" id="edit-gruppe-name" class="form-input" value="${escapeHTML(gruppe.name)}">
+            </div>
+        </div>
+        <h4 class="modal-section-heading">
+            <span class="material-symbols-rounded">school</span> Mitglieder
+        </h4>
+        <div class="student-chips" id="sg-member-chips">${chipsHTML}</div>
+        ${available.length > 0 ? `
+            <div style="display:flex;gap:0.5rem;margin-top:0.75rem;align-items:center;flex-wrap:wrap;">
+                <select id="sg-add-student-select" class="form-input" style="flex:1;min-width:180px;">
+                    <option value="">-- Studierenden auswählen --</option>
+                    ${available.map(s => `<option value="${s.id}">${escapeHTML(s.name)}</option>`).join('')}
+                </select>
+                <button class="btn btn-sm btn-primary" id="sg-btn-add-student" type="button">
+                    <span class="material-symbols-rounded">person_add</span> Hinzufügen
+                </button>
+            </div>` : ''}
+    `;
+
+    const footerHTML = `
+        <button class="btn btn-outline modal-cancel-btn" type="button">Abbrechen</button>
+        <button class="btn btn-sm" id="sg-save-btn" type="button">
+            <span class="material-symbols-rounded">save</span> Speichern
+        </button>
+    `;
+
+    showModal(`Studiengruppe: ${escapeHTML(gruppe.name)}`, bodyHTML, footerHTML);
+
+    const overlay = document.getElementById('modal-overlay');
+
+    overlay.querySelector('.modal-cancel-btn')?.addEventListener('click', () => closeModal(), { once: true });
+
+    overlay.querySelector('#sg-save-btn')?.addEventListener('click', () => {
+        const newName = document.getElementById('edit-gruppe-name').value.trim();
+        if (newName) gruppe.name = newName;
+        closeModal();
+        renderUserManagement(data);
+    }, { once: true });
+
+    overlay.querySelectorAll('.btn-remove-sg-member').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const sId = parseInt(btn.dataset.studentId, 10);
+            gruppe.studentIds = gruppe.studentIds.filter(id => id !== sId);
+            closeModal();
+            handleEditGruppe(data, gruppeId);
+        }, { once: true });
+    });
+
+    const addBtn = overlay.querySelector('#sg-btn-add-student');
+    if (addBtn) {
+        addBtn.addEventListener('click', () => {
+            const sId = parseInt(document.getElementById('sg-add-student-select').value, 10);
+            if (!sId) return;
+            if (!gruppe.studentIds.includes(sId)) gruppe.studentIds.push(sId);
+            closeModal();
+            handleEditGruppe(data, gruppeId);
+        });
+    }
+}
+
+// ─── Create User ─────────────────────────────────────────────────────────────
 
 function showCreateAlert(message, type) {
     const alertEl = document.getElementById('user-create-alert');
@@ -218,60 +432,32 @@ function handleCreateUser(data) {
     const email = document.getElementById('create-email').value.trim();
     const role = document.getElementById('create-role').value;
 
-    if (!username) {
-        showCreateAlert('Benutzername darf nicht leer sein.', 'error');
-        return;
+    if (!username) { showCreateAlert('Benutzername darf nicht leer sein.', 'error'); return; }
+    if (data.users.find(u => u.username.toLowerCase() === username.toLowerCase())) {
+        showCreateAlert('Dieser Benutzername ist bereits vergeben.', 'error'); return;
     }
-
-    const duplicate = data.users.find(u => u.username.toLowerCase() === username.toLowerCase());
-    if (duplicate) {
-        showCreateAlert('Dieser Benutzername ist bereits vergeben.', 'error');
-        return;
-    }
-
-    if (!password) {
-        showCreateAlert('Passwort darf nicht leer sein.', 'error');
-        return;
-    }
-
+    if (!password) { showCreateAlert('Passwort darf nicht leer sein.', 'error'); return; }
     if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        showCreateAlert('Bitte geben Sie eine gueltige E-Mail-Adresse ein.', 'error');
-        return;
+        showCreateAlert('Bitte geben Sie eine gültige E-Mail-Adresse ein.', 'error'); return;
     }
-
     if (role === 'student' && !name) {
-        showCreateAlert('Fuer Studierende muss ein Name angegeben werden.', 'error');
-        return;
+        showCreateAlert('Für Studierende muss ein Name angegeben werden.', 'error'); return;
     }
 
     const maxId = data.users.reduce((max, u) => Math.max(max, u.id), 0);
-    const newUser = {
-        id: maxId + 1,
-        username: username,
-        password: password,
-        name: name,
-        role: role,
-        roleLabel: ROLE_LABELS[role] || role,
-        email: email
-    };
-
-    data.users.push(newUser);
-
+    data.users.push({ id: maxId + 1, username, password, name, role, roleLabel: ROLE_LABELS[role] || role, email });
     showCreateAlert(`Benutzer "${username}" wurde erfolgreich angelegt.`, 'success');
-
     renderUserManagement(data);
 }
 
 function handleDeleteUser(data, userId) {
     const user = data.users.find(u => u.id === userId);
     if (!user) return;
-
     showConfirmDialog(
-        'Benutzer loeschen',
-        `Moechten Sie den Benutzer <strong>${escapeHTML(user.username)}</strong> (${escapeHTML(user.name || '-')}) wirklich loeschen? Diese Aktion kann nicht rueckgaengig gemacht werden.`,
+        'Benutzer löschen',
+        `Möchten Sie den Benutzer <strong>${escapeHTML(user.username)}</strong> (${escapeHTML(user.name || '-')}) wirklich löschen?`,
         () => {
             data.users = data.users.filter(u => u.id !== userId);
-
             if (typeof getCurrentUser === 'function') {
                 const currentUser = getCurrentUser();
                 if (currentUser && currentUser.id === userId) {
@@ -280,11 +466,12 @@ function handleDeleteUser(data, userId) {
                     return;
                 }
             }
-
             renderUserManagement(data);
         }
     );
 }
+
+// ─── Edit User ───────────────────────────────────────────────────────────────
 
 function handleEditUser(data, userId) {
     const user = data.users.find(u => u.id === userId);
@@ -292,12 +479,8 @@ function handleEditUser(data, userId) {
 
     let eventSeriesSection = '';
     if (user.role === 'student' && Array.isArray(data.eventSeries)) {
-        const assignedSeries = data.eventSeries.filter(
-            es => Array.isArray(es.studentIds) && es.studentIds.includes(userId)
-        );
-        const unassignedSeries = data.eventSeries.filter(
-            es => !Array.isArray(es.studentIds) || !es.studentIds.includes(userId)
-        );
+        const assignedSeries = data.eventSeries.filter(es => Array.isArray(es.studentIds) && es.studentIds.includes(userId));
+        const unassignedSeries = data.eventSeries.filter(es => !Array.isArray(es.studentIds) || !es.studentIds.includes(userId));
 
         eventSeriesSection = `
             <div class="form-group" style="margin-top: 1rem;">
@@ -315,14 +498,12 @@ function handleEditUser(data, userId) {
                 ${unassignedSeries.length > 0 ? `
                     <div style="display: flex; gap: 0.5rem; align-items: flex-end; margin-top: 0.5rem;">
                         <select id="edit-add-series" style="flex: 1;">
-                            <option value="">Veranstaltungsreihe hinzufuegen...</option>
-                            ${unassignedSeries.map(es => `
-                                <option value="${es.id}">${escapeHTML(es.name)}</option>
-                            `).join('')}
+                            <option value="">Veranstaltungsreihe hinzufügen...</option>
+                            ${unassignedSeries.map(es => `<option value="${es.id}">${escapeHTML(es.name)}</option>`).join('')}
                         </select>
                         <button type="button" id="edit-add-series-btn" class="btn btn-sm btn-outline">
                             <span class="material-symbols-rounded" style="font-size: 1rem;">add</span>
-                            Hinzufuegen
+                            Hinzufügen
                         </button>
                     </div>
                 ` : ''}
@@ -349,10 +530,12 @@ function handleEditUser(data, userId) {
                 </div>
             </div>
             <div class="form-group">
-                <label>Benutzerart</label>
-                <span class="type-badge ${escapeHTML(user.role)}" style="margin-top: 0.25rem;">
-                    ${escapeHTML(ROLE_LABELS[user.role] || user.role)}
-                </span>
+                <label for="edit-role">Benutzerart</label>
+                <select id="edit-role">
+                    <option value="verwaltung" ${user.role === 'verwaltung' ? 'selected' : ''}>Mitarbeiter</option>
+                    <option value="student"    ${user.role === 'student'    ? 'selected' : ''}>Student</option>
+                    <option value="dozent"     ${user.role === 'dozent'     ? 'selected' : ''}>Dozent</option>
+                </select>
             </div>
             ${eventSeriesSection}
         </form>
@@ -369,29 +552,26 @@ function handleEditUser(data, userId) {
     showModal('Benutzer bearbeiten', bodyHTML, footerHTML);
 
     const overlay = document.getElementById('modal-overlay');
-    const cancelBtn = overlay.querySelector('.modal-cancel-btn');
-    if (cancelBtn) {
-        cancelBtn.addEventListener('click', () => closeModal(), { once: true });
-    }
+    overlay.querySelector('.modal-cancel-btn')?.addEventListener('click', () => closeModal(), { once: true });
 
-    const saveBtn = document.getElementById('edit-user-save-btn');
-    if (saveBtn) {
-        saveBtn.addEventListener('click', () => {
-            const newName = document.getElementById('edit-name').value.trim();
-            const newEmail = document.getElementById('edit-email').value.trim();
+    document.getElementById('edit-user-save-btn')?.addEventListener('click', () => {
+        const newName = document.getElementById('edit-name').value.trim();
+        const newEmail = document.getElementById('edit-email').value.trim();
+        const newRole = document.getElementById('edit-role').value;
 
-            if (newEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newEmail)) {
-                showEditAlert('Bitte geben Sie eine gueltige E-Mail-Adresse ein.', 'error');
-                return;
-            }
+        if (newEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newEmail)) {
+            showEditAlert('Bitte geben Sie eine gültige E-Mail-Adresse ein.', 'error');
+            return;
+        }
 
-            user.name = newName;
-            user.email = newEmail;
+        user.name = newName;
+        user.email = newEmail;
+        user.role = newRole;
+        user.roleLabel = ROLE_LABELS[newRole] || newRole;
 
-            closeModal();
-            renderUserManagement(data);
-        }, { once: true });
-    }
+        closeModal();
+        renderUserManagement(data);
+    }, { once: true });
 
     if (user.role === 'student') {
         overlay.querySelectorAll('[data-remove-series]').forEach(btn => {
@@ -412,15 +592,10 @@ function handleEditUser(data, userId) {
                 const selectEl = document.getElementById('edit-add-series');
                 const seriesId = parseInt(selectEl.value);
                 if (!seriesId) return;
-
                 const series = data.eventSeries.find(es => es.id === seriesId);
                 if (series) {
-                    if (!Array.isArray(series.studentIds)) {
-                        series.studentIds = [];
-                    }
-                    if (!series.studentIds.includes(userId)) {
-                        series.studentIds.push(userId);
-                    }
+                    if (!Array.isArray(series.studentIds)) series.studentIds = [];
+                    if (!series.studentIds.includes(userId)) series.studentIds.push(userId);
                 }
                 closeModal();
                 handleEditUser(data, userId);
@@ -440,3 +615,6 @@ function showEditAlert(message, type) {
         </div>
     `;
 }
+
+// keep for potential external use
+export { ABWESENHEIT_TYPES };

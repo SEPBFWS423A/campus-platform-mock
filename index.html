@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="css/downloads.css">
     <link rel="stylesheet" href="css/submissions.css">
     <link rel="stylesheet" href="css/management.css">
+    <link rel="stylesheet" href="css/dozent_exams.css">
     <link rel="stylesheet" href="css/chat.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
@@ -35,8 +36,8 @@
                     <span>Home</span>
                 </a>
                 <a href="#" class="nav-item" data-target="schedule" data-roles="student" role="tab" aria-selected="false" aria-controls="schedule">
-                    <span class="material-symbols-rounded" aria-hidden="true">calendar_today</span>
-                    <span>Stundenplan</span>
+                    <span class="material-symbols-rounded" aria-hidden="true">menu_book</span>
+                    <span>Meine Kurse</span>
                 </a>
                 <a href="#" class="nav-item" data-target="grades" data-roles="student" role="tab" aria-selected="false" aria-controls="grades">
                     <span class="material-symbols-rounded" aria-hidden="true">grade</span>
@@ -50,13 +51,13 @@
                     <span class="material-symbols-rounded" aria-hidden="true">menu_book</span>
                     <span>Meine Kurse</span>
                 </a>
-                <a href="#" class="nav-item hidden" data-target="dozent-grading" data-roles="dozent" role="tab" aria-selected="false" aria-controls="dozent-grading">
-                    <span class="material-symbols-rounded" aria-hidden="true">grading</span>
-                    <span>Notenvergabe</span>
+                <a href="#" class="nav-item hidden" data-target="dozent-exams" data-roles="dozent" role="tab" aria-selected="false" aria-controls="dozent-exams">
+                    <span class="material-symbols-rounded" aria-hidden="true">quiz</span>
+                    <span>Prüfungen</span>
                 </a>
-                <a href="#" class="nav-item hidden" data-target="dozent-submissions" data-roles="dozent" role="tab" aria-selected="false" aria-controls="dozent-submissions">
-                    <span class="material-symbols-rounded" aria-hidden="true">assignment</span>
-                    <span>Abgaben</span>
+                <a href="#" class="nav-item hidden" data-target="dozent-absence" data-roles="dozent" role="tab" aria-selected="false" aria-controls="dozent-absence">
+                    <span class="material-symbols-rounded" aria-hidden="true">event_busy</span>
+                    <span>Abwesenheit</span>
                 </a>
                 <a href="#" class="nav-item hidden" data-target="admin-users" data-roles="verwaltung" role="tab" aria-selected="false" aria-controls="admin-users">
                     <span class="material-symbols-rounded" aria-hidden="true">manage_accounts</span>
@@ -150,7 +151,7 @@
                 </div>
 
                 <div class="dashboard-grid">
-                    <div class="card schedule-card">
+                    <div class="card card-glass schedule-card">
                         <div class="card-header">
                             <h3>Heutiger Stundenplan</h3>
                             <button id="view-all-schedule" class="icon-btn text-btn">Alle ansehen</button>
@@ -160,7 +161,7 @@
                     </div>
 
                     <div class="right-col-stack">
-                        <div class="card activity-card">
+                        <div class="card card-glass activity-card">
                             <div class="card-header">
                                 <h3>Neuigkeiten</h3>
                             </div>
@@ -168,7 +169,7 @@
                                 </ul>
                         </div>
 
-                        <div class="card actions-card">
+                        <div class="card card-elevated actions-card">
                             <h3>Schnellzugriff</h3>
                             <div class="action-buttons">
                                 <button class="btn-action">
@@ -196,7 +197,7 @@
             <section id="schedule" class="content-section" role="tabpanel" aria-labelledby="tab-schedule">
                 <header class="section-header">
                     <div class="header-content">
-                        <h1>Vorlesungen</h1>
+                        <h1>Meine Kurse</h1>
                         <p>Wintersemester 2025/2026</p>
                     </div>
                 </header>
@@ -210,14 +211,12 @@
                         <span class="material-symbols-rounded" aria-hidden="true">calendar_today</span>
                         Kalender
                     </button>
-                    <button class="section-tab" data-tab="schedule-exams" role="tab" aria-selected="false">
-                        <span class="material-symbols-rounded" aria-hidden="true">event_note</span>
-                        Prüfungstermine
-                    </button>
                 </div>
 
                 <div id="schedule-overview" class="tab-content active">
-                    <div class="module-overview-card">
+                    <div class="courses-tab-layout">
+                        <div class="dozent-courses-grid grid-container"></div>
+                        <div class="past-courses-container"></div>
                     </div>
                 </div>
 
@@ -228,7 +227,7 @@
                         <button class="icon-btn"><span class="material-symbols-rounded">chevron_right</span></button>
                         <button class="btn-outline-pill today-btn">Heute</button>
                     </div>
-                    <div class="card calendar-wrapper">
+                    <div class="card card-elevated calendar-wrapper">
                         <div class="calendar-grid-detailed">
                                 <div class="time-column">
                                 <div class="time-slot-header"></div>
@@ -247,17 +246,6 @@
                     </div>
                 </div>
 
-                <div id="schedule-exams" class="tab-content">
-                    <div class="filter-bar exams-filter-bar" role="group" aria-label="Prüfungsfilter">
-                        <button class="filter-chip active" data-filter="all" aria-pressed="true">Alle</button>
-                        <button class="filter-chip" data-filter="registered" aria-pressed="false">Angemeldet</button>
-                        <button class="filter-chip" data-filter="upcoming" aria-pressed="false">In Kürze</button>
-                        <button class="filter-chip" data-filter="open" aria-pressed="false">Offen</button>
-                    </div>
-
-                    <div class="exams-grid" aria-live="polite">
-                    </div>
-                </div>
             </section>
 
             <section id="grades" class="content-section" role="tabpanel" aria-labelledby="tab-grades">
@@ -281,8 +269,6 @@
                         <h1>Abgaben</h1>
                         <p>Praxisarbeiten, Bachelorarbeiten und Präsentationen</p>
                     </div>
-                    <button class="btn btn-primary"><span class="material-symbols-rounded">add</span>
-                        Neue Abgabe</button>
                 </header>
 
                 <div class="submissions-controls">
@@ -322,7 +308,9 @@
                 </div>
 
                 <div id="dozent-overview" class="tab-content active">
-                    <div class="dozent-courses-grid grid-container">
+                    <div class="courses-tab-layout">
+                        <div class="dozent-courses-grid grid-container"></div>
+                        <div class="past-courses-container"></div>
                     </div>
                 </div>
 
@@ -333,7 +321,7 @@
                         <button class="icon-btn"><span class="material-symbols-rounded">chevron_right</span></button>
                         <button class="btn-outline-pill today-btn">Heute</button>
                     </div>
-                    <div class="card calendar-wrapper">
+                    <div class="card card-elevated calendar-wrapper">
                         <div class="dozent-calendar-grid calendar-grid-detailed">
                                 <div class="time-column">
                                 <div class="time-slot-header"></div>
@@ -353,26 +341,24 @@
                 </div>
             </section>
 
-            <section id="dozent-grading" class="content-section" role="tabpanel" aria-labelledby="tab-dozent-grading">
+            <section id="dozent-exams" class="content-section" role="tabpanel" aria-labelledby="tab-dozent-exams">
                 <header class="section-header">
                     <div class="header-content">
-                        <h1>Notenvergabe</h1>
-                        <p>Noten für Ihre Kurse eintragen</p>
+                        <h1>Prüfungen</h1>
+                        <p>Klausuren, Abgaben und Noten verwalten</p>
                     </div>
                 </header>
-                <div class="dozent-grading-content">
-                </div>
+                <div class="dozent-exams-content"></div>
             </section>
 
-            <section id="dozent-submissions" class="content-section" role="tabpanel" aria-labelledby="tab-dozent-submissions">
+            <section id="dozent-absence" class="content-section" role="tabpanel" aria-labelledby="tab-dozent-absence">
                 <header class="section-header">
                     <div class="header-content">
-                        <h1>Studentische Abgaben</h1>
-                        <p>Eingereichte Arbeiten Ihrer Studierenden</p>
+                        <h1>Abwesenheit</h1>
+                        <p>Urlaub, Krankheit und Dienstreisen eintragen</p>
                     </div>
                 </header>
-                <div class="dozent-submissions-content">
-                </div>
+                <div class="dozent-absence-content"></div>
             </section>
 
             <section id="admin-users" class="content-section" role="tabpanel" aria-labelledby="tab-admin-users">
@@ -471,7 +457,7 @@
                     </div>
                 </header>
                 <div class="grid-container">
-                    <div class="card">
+                    <div class="card card-elevated">
                         <h3><span class="material-symbols-rounded heading-icon" aria-hidden="true">support_agent</span>Kontakt Studierendensekretariat</h3>
                         <address class="contact-list">
                             <ul>
@@ -482,14 +468,14 @@
                             </ul>
                         </address>
                     </div>
-                    <div class="card">
+                    <div class="card card-elevated">
                         <h3><span class="material-symbols-rounded heading-icon" aria-hidden="true">map</span>Campus Plan</h3>
                         <div class="placeholder-map" role="img" aria-label="Campus-Karte">
                             <span class="material-symbols-rounded" aria-hidden="true">map</span>
                             <p>Karte wird geladen...</p>
                         </div>
                     </div>
-                    <div class="card">
+                    <div class="card card-elevated">
                         <h3><span class="material-symbols-rounded heading-icon" aria-hidden="true">link</span>Wichtige Links</h3>
                         <ul class="link-list">
                             <li>
@@ -506,12 +492,50 @@
                             </li>
                         </ul>
                     </div>
+                    <div class="card card-elevated">
+                        <h3><span class="material-symbols-rounded heading-icon" aria-hidden="true">security</span>Datenschutz &amp; Sicherheit</h3>
+                        <ul class="link-list">
+                            <li>
+                                <span class="material-symbols-rounded" aria-hidden="true">lock</span>
+                                <span>Alle Daten werden verschlüsselt übertragen (TLS 1.3)</span>
+                            </li>
+                            <li>
+                                <span class="material-symbols-rounded" aria-hidden="true">verified_user</span>
+                                <span>Zugriffskontrolle nach Berechtigungsrolle (RBAC)</span>
+                            </li>
+                            <li>
+                                <span class="material-symbols-rounded" aria-hidden="true">policy</span>
+                                <a href="#">Datenschutzerklärung (DSGVO)</a>
+                            </li>
+                            <li>
+                                <span class="material-symbols-rounded" aria-hidden="true">gavel</span>
+                                <a href="#">Impressum &amp; Nutzungsbedingungen</a>
+                            </li>
+                        </ul>
+                        <div class="privacy-badge-row" style="margin-top:1rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
+                            <span class="type-badge lehrveranstaltung" style="font-size:0.75rem;">
+                                <span class="material-symbols-rounded" style="font-size:1rem;">lock</span>
+                                TLS 1.3 Verschlüsselt
+                            </span>
+                            <span class="type-badge lehrveranstaltung" style="font-size:0.75rem;">
+                                <span class="material-symbols-rounded" style="font-size:1rem;">shield</span>
+                                DSGVO-konform
+                            </span>
+                            <span class="type-badge lehrveranstaltung" style="font-size:0.75rem;">
+                                <span class="material-symbols-rounded" style="font-size:1rem;">manage_accounts</span>
+                                RBAC-Berechtigungen
+                            </span>
+                        </div>
+                    </div>
                 </div>
             </section>
         </main>
 
         <footer class="app-footer" role="contentinfo">
-            <p>&copy; 2026 CampusPlatform. Alle Rechte vorbehalten.</p>
+            <span>&copy; 2026 CampusPlatform. Alle Rechte vorbehalten.</span>
+            <span class="footer-divider" aria-hidden="true">&bull;</span>
+            <span class="material-symbols-rounded footer-lock" aria-hidden="true">lock</span>
+            <span>Verschlüsselte Verbindung &bull; DSGVO-konform &bull; RBAC-Berechtigungen</span>
         </footer>
 
         <div id="mobile-sidebar" class="sidebar" role="dialog" aria-modal="true" aria-label="Navigationsmenü">
@@ -530,8 +554,8 @@
                     <span>Home</span>
                 </a>
                 <a href="#" class="nav-item" data-target="schedule" data-roles="student">
-                    <span class="material-symbols-rounded" aria-hidden="true">calendar_today</span>
-                    <span>Stundenplan</span>
+                    <span class="material-symbols-rounded" aria-hidden="true">menu_book</span>
+                    <span>Meine Kurse</span>
                 </a>
                 <a href="#" class="nav-item" data-target="grades" data-roles="student">
                     <span class="material-symbols-rounded" aria-hidden="true">grade</span>
@@ -545,13 +569,9 @@
                     <span class="material-symbols-rounded" aria-hidden="true">menu_book</span>
                     <span>Meine Kurse</span>
                 </a>
-                <a href="#" class="nav-item hidden" data-target="dozent-grading" data-roles="dozent">
-                    <span class="material-symbols-rounded" aria-hidden="true">grading</span>
-                    <span>Notenvergabe</span>
-                </a>
-                <a href="#" class="nav-item hidden" data-target="dozent-submissions" data-roles="dozent">
-                    <span class="material-symbols-rounded" aria-hidden="true">assignment</span>
-                    <span>Abgaben</span>
+                <a href="#" class="nav-item hidden" data-target="dozent-exams" data-roles="dozent">
+                    <span class="material-symbols-rounded" aria-hidden="true">quiz</span>
+                    <span>Prüfungen</span>
                 </a>
                 <a href="#" class="nav-item hidden" data-target="admin-users" data-roles="verwaltung">
                     <span class="material-symbols-rounded" aria-hidden="true">manage_accounts</span>

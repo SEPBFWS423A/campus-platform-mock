@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find \"e:\\\\Entwicklung\\\\Software Engineering Project\\\\campus-platform-mock\\\\js\\\\features\" -name \"*.js\" -type f -exec grep -h \"class=\"\"[^\"\"]*btn\" {})",
+      "Bash(cat EOF Extracting button style properties... EOF grep -E \"^\\\\.\\(btn|btn-|chat-|grading-\\)\" 'e:\\\\Entwicklung\\\\Software Engineering Project\\\\campus-platform-mock\\\\css\\\\style.css' 'e:\\\\Entwicklung\\\\Software Engineering Project\\\\campus-platform-mock\\\\css\\\\management.css' 'e:\\\\Entwicklung\\\\Software Engineering Project\\\\campus-platform-mock\\\\css\\\\dashboard.css' 'e:\\\\Entwicklung\\\\Software Engineering Project\\\\campus-platform-mock\\\\css\\\\downloads.css')"
+    ]
+  }
+}

@@ -2,10 +2,12 @@
     padding: 0;
     overflow: auto;
     -webkit-overflow-scrolling: touch;
-    background-color: var(--surface-color);
-    border: 1px solid var(--border-color-subtle);
+    background-color: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
     border-radius: var(--radius-xl);
-    box-shadow: var(--shadow-sm);
+    box-shadow: var(--glass-shadow);
     max-height: 70vh;
     height: 600px;
     position: relative;
@@ -31,29 +33,25 @@
     display: grid;
     grid-template-columns: 50px repeat(5, minmax(150px, 1fr));
     min-width: 800px;
-    background-color: var(--surface-color);
+    background-color: var(--surface-overlay);
 }
 
 .time-column {
     position: sticky;
     left: 0;
     z-index: 30;
-    border-right: 1px solid var(--border-color);
-    background-color: var(--surface-color);
+    border-right: 1px solid var(--glass-border);
+    background-color: var(--surface-overlay);
     box-shadow: 2px 0 4px rgba(0, 0, 0, 0.05);
 }
 
 .time-slot-header {
     height: 60px;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--glass-border);
     position: sticky;
     top: 0;
-
     z-index: 40;
-    /* Corner must be on top of everything */
-    background-color: var(--surface-color);
-    /* Fix for corner transparency if any */
-    background-image: linear-gradient(var(--surface-color), var(--surface-color));
+    background-color: var(--surface-overlay);
 }
 
 .time-slot {
@@ -68,7 +66,7 @@
 
 .time-slot span {
     transform: translateY(-50%);
-    background-color: var(--surface-color);
+    background-color: var(--surface-overlay);
     padding: 0 4px;
     height: fit-content;
 }
@@ -90,8 +88,8 @@
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    border-bottom: 1px solid var(--border-color);
-    background-color: var(--surface-color);
+    border-bottom: 1px solid var(--glass-border);
+    background-color: var(--surface-overlay);
     position: sticky;
     top: 0;
     z-index: 20;
@@ -110,8 +108,7 @@
 
 .day-header.current-day {
     color: var(--primary-color);
-    background-color: var(--surface-color);
-    /* Maintain opacity for sticky */
+    background-color: var(--surface-overlay);
     border-bottom: 2px solid var(--primary-color);
 }
 
@@ -195,27 +192,6 @@ body.dark-mode .calendar-event.orange {
 body.dark-mode .calendar-event.purple {
     background-color: rgba(139, 92, 246, 0.12);
     color: #c4b5fd;
-}
-
-body.dark-mode .calendar-grid-detailed {
-    background-color: transparent;
-}
-
-body.dark-mode .time-column {
-    background-color: rgba(8, 14, 30, 0.8);
-}
-
-body.dark-mode .time-slot-header {
-    background-color: rgba(8, 14, 30, 0.8);
-    background-image: none;
-}
-
-body.dark-mode .day-header {
-    background-color: rgba(8, 14, 30, 0.8);
-}
-
-body.dark-mode .time-slot span {
-    background-color: transparent;
 }
 
 body.dark-mode .calendar-event {

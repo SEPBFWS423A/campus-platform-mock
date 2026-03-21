@@ -6,20 +6,24 @@
 }
 
 .exam-card-enhanced {
-    background-color: var(--surface-color);
+    background-color: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
     border-radius: var(--radius-xl);
-    border: 1px solid var(--border-color-subtle);
-    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s, border-color 0.25s;
+    transition: transform 0.25s var(--ease-spring), box-shadow 0.25s ease, border-color 0.25s ease;
     position: relative;
+    will-change: transform;
 }
 
 .exam-card-enhanced:hover {
-    box-shadow: var(--shadow-md);
-    border-color: var(--border-color);
+    transform: translateY(-3px);
+    box-shadow: var(--glass-shadow), var(--shadow-md);
+    border-color: rgba(59, 130, 246, 0.25);
 }
 
 .exam-card-enhanced::before {
@@ -57,14 +61,15 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: var(--bg-color);
+    /* Nested in glass card — use solid overlay, no stacked blur */
+    background-color: var(--surface-overlay);
     border-radius: var(--radius-lg);
     padding: 0.75rem;
     min-width: 80px;
     height: fit-content;
     text-align: center;
-    border: 1px solid var(--border-color-subtle);
-    transition: background-color 0.2s;
+    border: 1px solid var(--glass-border);
+    transition: background-color 0.2s ease;
 }
 
 .exam-card-enhanced:hover .exam-date-box {
@@ -107,12 +112,12 @@
     font-size: 0.65rem;
     padding: 3px 8px;
     border-radius: 999px;
-    background-color: var(--bg-color);
+    background-color: var(--surface-overlay);
     color: var(--text-secondary);
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    border: 1px solid var(--border-color-subtle);
+    border: 1px solid var(--glass-border);
 }
 
 .exam-title {
@@ -145,8 +150,8 @@
 
 .exam-footer {
     padding: 0.85rem 1.5rem;
-    background-color: var(--bg-color);
-    border-top: 1px solid var(--border-color-subtle);
+    background-color: var(--surface-overlay);
+    border-top: 1px solid var(--glass-border);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -183,65 +188,21 @@
     color: var(--primary-color);
 }
 
+/* .filter-bar and .filter-chip are defined in style.css */
 .filter-bar {
-    display: flex;
-    gap: 0.75rem;
-    margin-bottom: 1.5rem;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    padding-bottom: 0.5rem;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+    margin-bottom: var(--space-6);
 }
 
-.filter-bar::-webkit-scrollbar {
-    display: none;
-}
 
-.filter-chip {
-    padding: 0.45rem 1.1rem;
-    border-radius: 999px;
-    background-color: var(--surface-color);
-    border: 1.5px solid var(--border-color);
-    color: var(--text-secondary);
-    font-size: 0.875rem;
-    font-weight: 500;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    font-family: inherit;
-}
+@media (prefers-reduced-motion: reduce) {
+    .exam-card-enhanced {
+        transition: none;
+        will-change: auto;
+    }
 
-.filter-chip.active {
-    background-color: var(--primary-color);
-    color: white;
-    border-color: var(--primary-color);
-    font-weight: 600;
-}
-
-.filter-chip:hover:not(.active) {
-    background-color: var(--primary-light);
-    color: var(--primary-color);
-    border-color: rgba(59, 130, 246, 0.3);
-}
-
-body.dark-mode .exam-card-enhanced:hover {
-    border-color: rgba(100, 130, 200, 0.2);
-}
-
-body.dark-mode .exam-date-box {
-    background-color: rgba(8, 14, 30, 0.5);
-    border-color: var(--glass-border);
-}
-
-body.dark-mode .exam-footer {
-    background-color: rgba(8, 14, 30, 0.4);
-    border-top-color: var(--glass-border);
-}
-
-body.dark-mode .filter-chip {
-    background-color: rgba(15, 23, 42, 0.5);
-    border-color: var(--glass-border);
+    .exam-card-enhanced:hover {
+        transform: none;
+    }
 }
 
 @media (max-width: 1024px) {
@@ -335,5 +296,179 @@ body.dark-mode .filter-chip {
 
     .exam-details-list {
         font-size: 0.8rem;
+    }
+}
+
+/* ── Pruefungen extended styles ───────────────────────────────────────────── */
+
+/* Divider between sections inside the Dokument tab */
+.pruefung-divider {
+    border: none;
+    border-top: 1px solid var(--border-color-subtle);
+    margin: 1rem 0;
+}
+
+/* Section heading inside panels (Musterlösung, etc.) */
+.pruefung-section-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin: 0 0 0.5rem;
+}
+
+.pruefung-section-label .material-symbols-rounded {
+    font-size: 1rem;
+}
+
+/* Musterlösung file row variant */
+.pruefung-file-row--ml {
+    border-color: var(--success-color, #22c55e);
+    background: rgba(34, 197, 94, 0.06);
+}
+
+.pruefung-file-row--ml .material-symbols-rounded {
+    color: var(--success-color, #22c55e);
+}
+
+/* Notenveröffentlichung toggle row */
+.pruefung-publish-row {
+    margin-top: 0.75rem;
+}
+
+.pruefung-toggle-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    user-select: none;
+}
+
+.pruefung-toggle-label input[type="checkbox"] {
+    accent-color: var(--primary-color);
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+/* Feedback area inside submission table rows */
+.sub-feedback-area {
+    padding: 0.75rem;
+    background: var(--bg-color);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color-subtle);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* Feedback toggle button highlight when feedback exists */
+.sub-feedback-toggle--has {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+/* ── Grade statistics panel ───────────────────────────────────────────────── */
+
+.pruefung-stats-summary {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.25rem;
+    padding: 0.85rem 1rem;
+    background: var(--bg-color);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color-subtle);
+}
+
+.pruefung-stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.pruefung-stat-item > .material-symbols-rounded {
+    font-size: 1.5rem;
+    color: var(--text-secondary);
+}
+
+.pruefung-stat-value {
+    display: block;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.2;
+}
+
+.pruefung-stat-desc {
+    display: block;
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+    margin-top: 0.1rem;
+}
+
+/* Grade distribution bar chart */
+.stat-grade-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.stat-grade-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.stat-grade-label {
+    width: 2.3rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.stat-grade-bar-wrap {
+    flex: 1;
+    background: var(--bg-color);
+    border-radius: 999px;
+    height: 10px;
+    border: 1px solid var(--border-color-subtle);
+    overflow: hidden;
+}
+
+.stat-grade-bar {
+    height: 100%;
+    border-radius: 999px;
+    background-color: var(--border-color);
+    transition: width 0.5s ease;
+    min-width: 0;
+}
+
+.stat-grade-bar.dozent-grade-good { background-color: var(--success-color, #22c55e); }
+.stat-grade-bar.dozent-grade-ok   { background-color: var(--warning-color, #f59e0b); }
+.stat-grade-bar.dozent-grade-bad  { background-color: var(--error-color,   #ef4444); }
+
+.stat-grade-count {
+    width: 5.5rem;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    flex-shrink: 0;
+}
+
+/* Responsive: stack stat items on small screens */
+@media (max-width: 600px) {
+    .pruefung-stats-summary {
+        gap: 1rem;
+    }
+
+    .pruefung-stat-value {
+        font-size: 1rem;
     }
 }
