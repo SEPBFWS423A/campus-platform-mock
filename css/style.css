@@ -31,6 +31,7 @@
     --radius-lg: 0.5rem;
     --radius-xl: 0.625rem;
     --radius-2xl: 0.75rem;
+    --radius-full: 999px;
     --transition-speed: 0.3s;
     --transition-fast: 0.15s;
     --font-family: 'Inter', sans-serif;
@@ -442,6 +443,17 @@ body.dark-mode .navbar {
     from {
         opacity: 0;
         transform: translateY(-2px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
     }
     to {
         opacity: 1;
@@ -1183,96 +1195,6 @@ select.form-control:focus {
 .grade-good {
     color: var(--success-color);
     font-weight: 700;
-}
-
-.exam-card {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 1.5rem;
-}
-
-.exam-date {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: var(--bg-color);
-    padding: 0.75rem;
-    border-radius: var(--radius-md);
-    min-width: 70px;
-}
-
-.exam-date .day {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--primary-color);
-}
-
-.exam-date .month {
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    color: var(--text-secondary);
-}
-
-.exam-details h3 {
-    font-size: 1.1rem;
-    margin-bottom: 0.5rem;
-}
-
-.exam-details p {
-    font-size: 0.875rem;
-    color: var(--text-secondary);
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-}
-
-.exam-details p span {
-    font-size: 1rem;
-}
-
-.file-list {
-    list-style: none;
-}
-
-.file-list li {
-    display: flex;
-    align-items: center;
-    padding: 1rem 1.5rem;
-    border-bottom: 1px solid var(--border-color);
-    gap: 1rem;
-}
-
-.file-list li:last-child {
-    border-bottom: none;
-}
-
-.file-icon {
-    width: 2.5rem;
-    height: 2.5rem;
-    background-color: var(--primary-light);
-    color: var(--primary-color);
-    border-radius: var(--radius-md);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.file-info {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.file-info .name {
-    font-weight: 500;
-    color: var(--text-primary);
-}
-
-.file-info .meta {
-    font-size: 0.75rem;
-    color: var(--text-secondary);
-    margin-top: 0.25rem;
 }
 
 .contact-list {

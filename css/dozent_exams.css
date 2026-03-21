@@ -254,14 +254,14 @@ body.dark-mode .pruefung-modal-dialog {
     box-shadow: var(--shadow-sm);
 }
 
-.filter-bar {
+.filter-bar-container .filter-bar {
     display: flex;
     gap: 0.5rem;
     padding: 0;
     margin-bottom: 0 !important;
 }
 
-.filter-chip {
+.filter-bar-container .filter-chip {
     padding: 0.5rem 1rem;
     border-radius: var(--radius-md);
     border: 1px solid transparent;
@@ -275,23 +275,23 @@ body.dark-mode .pruefung-modal-dialog {
     transition: all 0.2s ease;
 }
 
-.filter-chip .material-symbols-rounded {
+.filter-bar-container .filter-chip .material-symbols-rounded {
     font-size: 1.15rem;
     opacity: 0.7;
 }
 
-.filter-chip:hover {
+.filter-bar-container .filter-chip:hover {
     background: var(--bg-color-subtle, rgba(0, 0, 0, 0.03));
     color: var(--text-primary);
 }
 
-.filter-chip.active {
+.filter-bar-container .filter-chip.active {
     background: var(--primary-light);
     color: var(--primary-color);
     border-color: rgba(37, 99, 235, 0.1);
 }
 
-.filter-chip.active .material-symbols-rounded {
+.filter-bar-container .filter-chip.active .material-symbols-rounded {
     opacity: 1;
 }
 
@@ -498,8 +498,9 @@ body.dark-mode .pruefung-modal-dialog {
     background-color: var(--surface-color);
 }
 
-/* Status Indicator Improvements */
-.status-indicator {
+/* Status Indicator Improvements – scoped to pruefung context */
+.pruefung-card .status-indicator,
+.pruefung-modal-overlay .status-indicator {
     padding: 0.35rem 0.75rem;
     border-radius: var(--radius-full);
     font-size: 0.75rem;
@@ -509,17 +510,20 @@ body.dark-mode .pruefung-modal-dialog {
     gap: 0.5rem;
 }
 
-.status-indicator.passed {
+.pruefung-card .status-indicator.passed,
+.pruefung-modal-overlay .status-indicator.passed {
     background-color: rgba(34, 197, 94, 0.1);
     color: #15803d;
 }
 
-.status-indicator.info {
+.pruefung-card .status-indicator.info,
+.pruefung-modal-overlay .status-indicator.info {
     background-color: rgba(37, 99, 235, 0.1);
     color: var(--primary-color);
 }
 
-.status-indicator.warning {
+.pruefung-card .status-indicator.warning,
+.pruefung-modal-overlay .status-indicator.warning {
     background-color: rgba(245, 158, 11, 0.1);
     color: #b45309;
 }
@@ -538,18 +542,6 @@ body.dark-mode .pruefung-modal-dialog {
     font-size: 0.85rem;
     color: var(--text-secondary);
     font-weight: 500;
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(5px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
 }
 
 /* Sub-panels refinements */
@@ -596,8 +588,8 @@ body.dark-mode .pruefung-modal-dialog {
     padding: 1rem;
 }
 
-/* Feedback area refinement */
-.sub-feedback-area {
+/* Feedback area refinement – scoped to pruefung context */
+.pruefung-card .sub-feedback-area {
     background: var(--surface-color);
     padding: 1.5rem;
     border-left: 4px solid var(--primary-color);
@@ -620,14 +612,6 @@ body.dark-mode .pipeline-dot {
     background-color: #1e293b;
     border-color: #334155;
     box-shadow: 0 0 0 4px #1e293b;
-}
-
-body.dark-mode .pipeline-line {
-    background-color: #334155;
-}
-
-body.dark-mode .pruefung-file-row {
-    background: rgba(255, 255, 255, 0.03);
 }
 
 body.dark-mode .pipeline-line {

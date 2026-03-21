@@ -329,18 +329,6 @@
     color: white;
 }
 
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
 .dark-mode .file-type-icon-sm {
     box-shadow: none;
 }
