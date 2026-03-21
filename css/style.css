@@ -831,57 +831,96 @@ select.form-control:focus {
     background-color: var(--surface-color);
 }
 
+/* ── Button base ─────────────────────────────────────────────────────────── */
 .btn {
-    padding: 0.7rem 1.5rem;
-    border-radius: var(--radius-md);
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    border: none;
-    font-size: 0.9rem;
-    font-family: inherit;
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    letter-spacing: -0.01em;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.5rem 1rem;
+    border: 1.5px solid transparent;
+    border-radius: var(--radius-md);
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.4;
+    white-space: nowrap;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color var(--transition-fast), border-color var(--transition-fast),
+                color var(--transition-fast), box-shadow var(--transition-fast),
+                opacity var(--transition-fast);
+}
+
+.btn:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+.btn:disabled,
+.btn[disabled] {
+    opacity: 0.45;
+    cursor: not-allowed;
+    pointer-events: none;
 }
 
 .btn .material-symbols-rounded {
-    font-size: 1.15rem;
+    font-size: 1.05rem;
+    flex-shrink: 0;
 }
 
+/* ── Size modifiers ── */
+.btn-sm {
+    padding: 0.3rem 0.75rem;
+    font-size: 0.8rem;
+}
+
+.btn-sm .material-symbols-rounded {
+    font-size: 0.9rem;
+}
+
+.btn-lg {
+    padding: 0.65rem 1.4rem;
+    font-size: 1rem;
+}
+
+.btn-lg .material-symbols-rounded {
+    font-size: 1.2rem;
+}
+
+/* ── Layout modifiers ── */
+.btn-block {
+    width: 100%;
+    justify-content: center;
+}
+
+.btn-pill {
+    border-radius: 999px;
+}
+
+/* ── Color variants (only color/border — layout comes from .btn) ── */
 .btn-primary {
     background-color: var(--primary-color);
-    color: white;
+    border-color: var(--primary-color);
+    color: #fff;
+    font-weight: 600;
     box-shadow: 0 1px 2px rgba(59, 130, 246, 0.2), 0 4px 8px -2px rgba(59, 130, 246, 0.15);
 }
 
 .btn-primary:hover {
     background-color: var(--primary-hover);
-    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
+    border-color: var(--primary-hover);
+    box-shadow: 0 2px 4px rgba(59, 130, 246, 0.25);
 }
 
 .btn-primary:active {
     box-shadow: 0 1px 2px rgba(59, 130, 246, 0.15);
 }
 
-.btn-block {
-    width: 100%;
-}
-
 .btn-outline {
-    background: none;
+    background: transparent;
+    border-color: var(--border-color);
     color: var(--text-primary);
-    border: 1.5px solid var(--border-color);
-    padding: 0.5rem 1rem;
-    border-radius: var(--radius-md);
-    font-size: 0.875rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color var(--transition-fast), border-color var(--transition-fast);
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
 }
 
 .btn-outline:hover {
@@ -889,53 +928,29 @@ select.form-control:focus {
     border-color: var(--text-tertiary);
 }
 
-.btn-outline-pill {
-    background: transparent;
-    border: 1.5px solid var(--border-color);
-    color: var(--text-primary);
-    padding: 0.35rem 1rem;
-    font-size: 0.85rem;
-    border-radius: 999px;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    font-weight: 500;
-    font-family: inherit;
-    cursor: pointer;
-}
-
-.btn-outline-pill:hover {
-    border-color: var(--primary-color);
-    color: var(--primary-color);
-    background-color: var(--primary-light);
-}
-
 .btn-danger {
     background-color: var(--error-color);
+    border-color: var(--error-color);
     color: #fff;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: var(--radius-md);
-    font-size: 0.875rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: opacity var(--transition-fast);
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
+    font-weight: 600;
 }
 
 .btn-danger:hover {
-    opacity: 0.9;
+    opacity: 0.88;
 }
 
-.btn-sm {
-    padding: 0.3rem 0.6rem;
-    font-size: 0.8rem;
+.btn-ghost {
+    background: transparent;
+    border-color: transparent;
+    color: var(--text-secondary);
 }
 
-.btn-sm .material-symbols-rounded {
-    font-size: 1rem;
+.btn-ghost:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+    color: var(--text-primary);
 }
 
+/* ── Icon-only button (standalone square control, not a .btn modifier) ── */
 .btn-icon-only {
     width: 32px;
     height: 32px;
@@ -948,11 +963,13 @@ select.form-control:focus {
     border-radius: var(--radius-md);
     color: var(--text-secondary);
     cursor: pointer;
-    transition: background-color var(--transition-fast), color var(--transition-fast);
+    flex-shrink: 0;
+    transition: background-color var(--transition-fast), color var(--transition-fast),
+                border-color var(--transition-fast);
 }
 
 .btn-icon-only:hover {
-    background-color: rgba(0, 0, 0, 0.03);
+    background-color: rgba(0, 0, 0, 0.04);
     color: var(--text-primary);
 }
 
@@ -960,6 +977,13 @@ select.form-control:focus {
     background-color: rgba(239, 68, 68, 0.1);
     color: var(--error-color);
     border-color: rgba(239, 68, 68, 0.3);
+}
+
+.btn-icon-only:disabled,
+.btn-icon-only[disabled] {
+    opacity: 0.35;
+    cursor: not-allowed;
+    pointer-events: none;
 }
 
 .forgot-password {

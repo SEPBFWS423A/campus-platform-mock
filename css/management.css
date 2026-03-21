@@ -644,12 +644,6 @@ body.dark-mode .type-badge.lehrveranstaltung {
     border-left: 1px solid var(--border-color-subtle);
 }
 
-.btn-icon-only:disabled,
-.btn-icon-only[disabled] {
-    opacity: 0.3;
-    cursor: not-allowed;
-    pointer-events: none;
-}
 
 .bar-chart-container {
     display: flex;
@@ -972,6 +966,30 @@ body.dark-mode .type-badge.lehrveranstaltung {
     margin-bottom: 0.25rem;
     text-transform: uppercase;
     letter-spacing: 0.03em;
+}
+
+/* Field-width distribution inside inline-editor-form */
+.inline-editor-field-name     { flex: 2 1 160px; }
+.inline-editor-field-type     { flex: 1 1 140px; }
+.inline-editor-field-duration { flex: 0 0 90px; }
+
+/*
+ * Normalize inputs and button to the same box model.
+ * Specificity (0,2,0) beats .btn-sm, .btn, .form-input (each 0,1,0).
+ */
+.inline-editor-form .form-input,
+.inline-editor-form .btn {
+    font-size: 0.875rem;
+    line-height: 1.5;
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
+    box-sizing: border-box;
+}
+
+/* Icon must not exceed line-height of its parent — prevents button from growing */
+.inline-editor-form .btn .material-symbols-rounded {
+    font-size: 1em;
+    line-height: 1;
 }
 
 .modal-section-heading {

@@ -312,30 +312,10 @@
     justify-content: flex-end;
 }
 
+/* Modifier: adds overflow clip for the ripple/glow effect on top of .btn.btn-primary.btn-sm */
 .btn-action-glow {
     position: relative;
     overflow: hidden;
-    transition: all 0.2s ease;
-    border: none;
-    background: var(--primary-color);
-    color: white;
-    padding: 0.4rem 1rem;
-    font-size: 0.8rem;
-    border-radius: var(--radius-md);
-    cursor: pointer;
-    font-family: inherit;
-    font-weight: 600;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.3rem;
-}
-
-.btn-action-glow .material-symbols-rounded {
-    font-size: 1rem;
-}
-
-.btn-action-glow:hover {
-    background: var(--primary-hover);
 }
 
 .empty-state {

@@ -229,20 +229,20 @@ function buildEditSeriesBody(data, series) {
                 Veranstaltung hinzuf\u00fcgen
             </h4>
             <div class="inline-editor-form">
-                <div class="form-group" style="flex: 1; min-width: 160px;">
+                <div class="form-group inline-editor-field-name">
                     <label>Name</label>
                     <input type="text" id="modal-new-event-name" class="form-input" placeholder="z.\u00a0B. Vorlesung 1" />
                 </div>
-                <div class="form-group">
+                <div class="form-group inline-editor-field-type">
                     <label>Typ</label>
                     <select id="modal-new-event-type" class="form-input">
                         <option value="Lehrveranstaltung">Lehrveranstaltung</option>
                         <option value="Klausur">Klausur</option>
                     </select>
                 </div>
-                <div class="form-group">
+                <div class="form-group inline-editor-field-duration">
                     <label>Dauer (min)</label>
-                    <input type="number" id="modal-new-event-duration" class="form-input" value="90" min="1" style="width: 100px;" />
+                    <input type="number" id="modal-new-event-duration" class="form-input" value="90" min="1" />
                 </div>
                 <button class="btn btn-sm btn-primary" id="modal-btn-add-event" type="button">
                     <span class="material-symbols-rounded">add</span> Hinzuf\u00fcgen
