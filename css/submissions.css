@@ -168,48 +168,7 @@
     text-overflow: ellipsis;
 }
 
-.status-badge {
-    position: static;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.3rem;
-    padding: 0.2rem 0.6rem;
-    border-radius: var(--radius-sm);
-    font-size: 0.7rem;
-    font-weight: 600;
-    white-space: nowrap;
-    flex-shrink: 0;
-    letter-spacing: 0.01em;
-    width: 110px;
-    justify-content: center;
-}
-
-.status-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background-color: currentColor;
-}
-
-.status-badge.success {
-    color: var(--success-color-dark);
-    background-color: rgba(16, 185, 129, 0.12);
-}
-
-.status-badge.warning {
-    color: var(--warning-color-dark);
-    background-color: rgba(245, 158, 11, 0.12);
-}
-
-.status-badge.info {
-    color: var(--primary-color);
-    background-color: rgba(37, 99, 235, 0.12);
-}
-
-.status-badge.neutral {
-    color: var(--text-secondary);
-    background-color: var(--bg-color);
-}
+/* .status-dot, .status-pill — defined in style.css */
 
 .submission-right {
     display: flex;
@@ -338,11 +297,6 @@ body.dark-mode .submission-card:hover {
     border-color: var(--primary-color);
 }
 
-body.dark-mode .status-badge.info {
-    color: #60A5FA;
-    background-color: rgba(59, 130, 246, 0.1);
-}
-
 @media (max-width: 768px) {
     .submissions-controls {
         flex-direction: column;
@@ -390,8 +344,7 @@ body.dark-mode .status-badge.info {
         width: auto;
     }
 
-    .status-badge {
-        width: auto;
+    .status-pill {
         font-size: 0.65rem;
         padding: 0.15rem 0.5rem;
     }

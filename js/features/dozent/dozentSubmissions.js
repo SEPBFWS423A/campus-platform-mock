@@ -124,7 +124,7 @@ function renderSubmissionCards(submissions, filter) {
                         ${sub.dateSubmitted ? `<span style="font-size: 0.75rem; color: var(--text-tertiary);">Eingereicht: ${formatDateDE(sub.dateSubmitted)}</span>` : ''}
                         ${sub.dueDate ? `<span style="font-size: 0.75rem; color: var(--text-tertiary);">Fällig: ${formatDateDE(sub.dueDate)}</span>` : ''}
                     </div>
-                    <div class="status-badge ${statusClass}">
+                    <div class="status-pill ${statusClass}">
                         <span class="status-dot"></span>
                         ${statusLabel}
                     </div>

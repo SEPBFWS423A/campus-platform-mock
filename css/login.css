@@ -210,29 +210,25 @@
     transition: color var(--transition-fast) ease;
 }
 
-.input-wrapper input {
-    padding-left: 2.75rem !important;
+/* Higher specificity avoids !important */
+.login-card .input-wrapper input,
+.login-container .input-wrapper input {
+    padding-left: 2.75rem;
 }
 
 .input-wrapper:focus-within .input-icon {
     color: var(--primary-color);
 }
 
+/* Extends .btn.btn-primary.btn-block — only login-specific overrides here */
 .btn-login {
-    margin-top: 0.5rem;
-    padding: 0.85rem 1.5rem;
-    font-size: 0.95rem;
-    justify-content: center;
-    gap: 0.5rem;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-top: var(--space-2);
+    padding: 0.85rem var(--space-6);
+    font-size: var(--text-base);
 }
 
 .btn-login .btn-icon {
     font-size: 1.15rem;
-}
-
-.btn-login:hover .btn-icon {
-    color: inherit;
 }
 
 .btn-login.btn-loading {
@@ -412,58 +408,69 @@
     color: var(--text-tertiary);
 }
 
-@media (max-width: 480px) {
+/* ── Mobile-first login overrides ── */
+
+/* Small phones: tighter layout */
+.login-page {
+    align-items: flex-start;
+    padding-top: 5vh;
+}
+
+.login-card {
+    padding: 2rem 1.5rem 1.5rem;
+    border-radius: var(--radius-xl);
+    max-width: 100%;
+}
+
+.credentials-panel {
+    min-width: 280px;
+}
+
+.credentials-toggle-label {
+    display: none;
+}
+
+.credentials-toggle-btn {
+    width: 44px;
+    padding: 0;
+}
+
+.login-header h1 {
+    font-size: 1.5rem;
+}
+
+.login-logo {
+    font-size: 2rem;
+}
+
+/* 481px+: center content, allow larger card */
+@media (min-width: 481px) {
     .login-page {
-        padding: 1rem;
-        align-items: flex-start;
-        padding-top: 5vh;
+        align-items: center;
+        padding-top: 1.5rem;
     }
 
     .login-card {
-        padding: 2rem 1.5rem 1.5rem;
-        border-radius: var(--radius-xl);
-        max-width: 100%;
-    }
-
-    .credentials-panel {
-        min-width: 280px;
+        padding: 2.5rem 2.5rem 2rem;
+        border-radius: var(--radius-2xl);
+        max-width: 440px;
     }
 
     .credentials-toggle-label {
-        display: none;
+        display: inline;
     }
 
     .credentials-toggle-btn {
-        width: 44px;
-        padding: 0;
+        width: auto;
+        padding: 0 0.85rem;
     }
 
     .login-header h1 {
-        font-size: 1.5rem;
+        font-size: 1.75rem;
     }
 
     .login-logo {
-        font-size: 2rem;
-    }
-
-    .login-bg-circle--1 {
-        width: 300px;
-        height: 300px;
-    }
-
-    .login-bg-circle--2 {
-        width: 200px;
-        height: 200px;
-    }
-
-    .login-bg-circle--3 {
-        display: none;
-    }
-}
-
-@media (min-width: 481px) and (max-width: 860px) {
-    .login-card {
-        max-width: 440px;
+        font-size: 2.25rem;
     }
 }
 
@@ -472,11 +479,7 @@
         animation: none;
     }
 
-    .login-bg-circle {
-        animation: none !important;
-    }
-
-    .btn-login .btn-icon {
+.btn-login .btn-icon {
         transition: none;
     }
 

@@ -205,32 +205,7 @@
     font-size: 1.2rem;
 }
 
-.status-indicator {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.85rem;
-    font-weight: 500;
-}
-
-.status-indicator.passed {
-    color: var(--success-color);
-}
-
-.status-indicator.failed {
-    color: var(--error-color);
-}
-
-.status-indicator.pending {
-    color: var(--warning-color);
-}
-
-.status-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: currentColor;
-}
+/* .status-indicator, .status-dot — defined in style.css */
 
 .credits-pill {
     background-color: var(--bg-color);

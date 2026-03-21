@@ -254,45 +254,12 @@ body.dark-mode .pruefung-modal-dialog {
     box-shadow: var(--shadow-sm);
 }
 
+/* .filter-chip scoped variant is defined in style.css */
 .filter-bar-container .filter-bar {
-    display: flex;
     gap: 0.5rem;
     padding: 0;
-    margin-bottom: 0 !important;
-}
-
-.filter-bar-container .filter-chip {
-    padding: 0.5rem 1rem;
-    border-radius: var(--radius-md);
-    border: 1px solid transparent;
-    background: transparent;
-    color: var(--text-secondary);
-    font-size: 0.85rem;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    transition: all 0.2s ease;
-}
-
-.filter-bar-container .filter-chip .material-symbols-rounded {
-    font-size: 1.15rem;
-    opacity: 0.7;
-}
-
-.filter-bar-container .filter-chip:hover {
-    background: var(--bg-color-subtle, rgba(0, 0, 0, 0.03));
-    color: var(--text-primary);
-}
-
-.filter-bar-container .filter-chip.active {
-    background: var(--primary-light);
-    color: var(--primary-color);
-    border-color: rgba(37, 99, 235, 0.1);
-}
-
-.filter-bar-container .filter-chip.active .material-symbols-rounded {
-    opacity: 1;
+    margin-bottom: 0;
+    padding-bottom: 0;
 }
 
 .pruefung-card {

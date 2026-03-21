@@ -1013,8 +1013,9 @@ body.dark-mode .type-badge.lehrveranstaltung {
     margin-top: 1.25rem;
 }
 
-.room-hidden {
-    display: none !important;
+/* Higher specificity removes need for !important */
+#app .room-hidden {
+    display: none;
 }
 
 .room-alert-visible {
@@ -1635,8 +1636,8 @@ body.dark-mode .room-utilization-legend {
     margin-bottom: 1.5rem;
 }
 
-.mgmt-hidden {
-    display: none !important;
+#app .mgmt-hidden {
+    display: none;
 }
 
 .mgmt-desc-text {
@@ -2238,8 +2239,8 @@ body.dark-mode .room-utilization-legend {
 .form-group--wide { min-width: 260px; }
 
 /* Narrow number input */
-.input-narrow {
-    width: 6rem !important;
+.form-group .input-narrow {
+    width: 6rem;
 }
 
 /* Small inline icon in series card subtitle */
@@ -2255,11 +2256,11 @@ body.dark-mode .room-utilization-legend {
     margin: 0.5rem 0;
 }
 
-/* Empty-state cell inside a management table */
-.table-empty-cell {
+/* Higher specificity overrides .management-table td rules */
+.management-table .table-empty-cell {
     text-align: center;
-    color: var(--text-secondary) !important;
-    padding: 2rem 1rem !important;
+    color: var(--text-secondary);
+    padding: 2rem 1rem;
     font-size: 0.875rem;
 }
 

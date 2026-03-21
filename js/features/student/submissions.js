@@ -152,7 +152,7 @@ function renderList() {
                     </div>
                 </div>
                 <div class="submission-right">
-                    <div class="status-badge ${statusClass}">
+                    <div class="status-pill ${statusClass}">
                         <span class="status-dot"></span>
                         ${statusLabel}
                     </div>
