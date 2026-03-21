@@ -20,9 +20,12 @@
     font-size: 0.875rem;
     font-weight: 500;
     padding: 0.4rem 0.85rem;
-    background: var(--surface-color);
+    background-color: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
     border-radius: var(--radius-md);
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
 }
 
 .current-date .material-symbols-rounded {
@@ -56,6 +59,19 @@
     position: relative;
     overflow: hidden;
     min-height: 100px;
+    /* Glass treatment */
+    background-color: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-color: var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    will-change: transform;
+    transition: transform 0.25s var(--ease-spring), box-shadow 0.25s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--glass-shadow), var(--shadow-md);
 }
 
 
@@ -182,6 +198,8 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--glass-border);
 }
 
 .card-header h3 {
@@ -255,21 +273,29 @@
     background-color: var(--primary-color);
     border-color: rgba(59, 130, 246, 0.3);
     box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+    animation: markerPulse 2.5s ease-in-out infinite;
+}
+
+@keyframes markerPulse {
+    0%, 100% { box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2); }
+    50%       { box-shadow: 0 0 0 8px rgba(59, 130, 246, 0.08); }
 }
 
 .timeline-item .content {
-    background-color: var(--bg-color);
+    background-color: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
     padding: 1rem 1.25rem;
     border-radius: var(--radius-lg);
     flex: 1;
     position: relative;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
-    border: 1px solid transparent;
+    border: 1px solid var(--glass-border);
 }
 
 .timeline-item .content:hover {
     box-shadow: var(--shadow-sm);
-    border-color: var(--border-color);
+    border-color: rgba(59, 130, 246, 0.2);
 }
 
 .timeline-item.current .content {
@@ -382,11 +408,13 @@
     justify-content: center;
     gap: 0.5rem;
     padding: 1.15rem;
-    background-color: var(--bg-color);
-    border: 1px solid var(--border-color-subtle);
+    background-color: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
     border-radius: var(--radius-lg);
     cursor: pointer;
-    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.25s var(--ease-smooth);
     color: var(--text-primary);
     font-family: inherit;
     font-size: 0.85rem;
@@ -408,20 +436,6 @@
     color: var(--primary-hover);
 }
 
-body.dark-mode .timeline-item .content {
-    background-color: rgba(15, 23, 42, 0.4);
-    border-color: var(--glass-border);
-}
-
-body.dark-mode .btn-action {
-    background-color: rgba(15, 23, 42, 0.4);
-    border-color: var(--glass-border);
-}
-
-body.dark-mode .btn-action:hover {
-    background-color: rgba(59, 130, 246, 0.08);
-    border-color: rgba(59, 130, 246, 0.2);
-}
 
 .admin-overview {
     padding: 0;
@@ -698,5 +712,16 @@ body.dark-mode .btn-action:hover {
     .btn-action {
         padding: 0.75rem 0.4rem;
         font-size: 0.8rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .stat-card {
+        transition: none;
+        will-change: auto;
+    }
+
+    .timeline-item.current .marker {
+        animation: none;
     }
 }

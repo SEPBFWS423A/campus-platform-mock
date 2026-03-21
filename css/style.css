@@ -61,6 +61,15 @@
     --glass-blur: blur(12px) saturate(160%);
     --glass-shadow: 0 8px 32px rgba(37, 99, 235, 0.08);
 
+    /* ── Background Gradient ── */
+    /* Clean diagonal: pale blue top-left → transparent → pale lavender bottom-right */
+    --bg-gradient: linear-gradient(
+        135deg,
+        rgba(214, 228, 255, 0.20) 0%,
+        transparent 48%,
+        rgba(232, 224, 254, 0.12) 100%
+    );
+
     /* ── Spacing Scale ── */
     --space-1: 0.25rem;
     --space-2: 0.5rem;
@@ -133,6 +142,15 @@ body.dark-mode {
     --glass-border: rgba(100, 130, 200, 0.12);
     --glass-blur: blur(8px) saturate(150%);
     --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+
+    /* ── Background Gradient (Dark) ── */
+    /* Deep blue top-left → transparent → deep indigo bottom-right */
+    --bg-gradient: linear-gradient(
+        135deg,
+        rgba(30, 58, 138, 0.16) 0%,
+        transparent 48%,
+        rgba(76, 29, 149, 0.10) 100%
+    );
 
     /* ── Focus ── */
     --focus-ring: 0 0 0 3px rgba(59, 130, 246, 0.35);
@@ -343,6 +361,7 @@ html {
 body {
     font-family: var(--font-family);
     background-color: var(--bg-color);
+    background-image: var(--bg-gradient);
     color: var(--text-primary);
     transition: background-color var(--transition-speed), color var(--transition-speed);
     line-height: 1.6;
@@ -423,17 +442,17 @@ body {
     right: 0;
     z-index: 50;
     box-shadow: var(--shadow-xs);
-    backdrop-filter: blur(16px) saturate(180%);
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
-    background-color: rgba(255, 255, 255, 0.82);
+    /* Mobile-safe blur via token; desktop upgrades to blur(16px) via dark-mode@769px */
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    background-color: rgba(255, 255, 255, 0.85);
     transition: box-shadow var(--transition-fast), background-color var(--transition-speed);
 }
 
 body.dark-mode .navbar {
-    background-color: rgba(8, 14, 30, 0.7);
+    background-color: rgba(8, 14, 30, 0.75);
     border-bottom-color: var(--glass-border);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    /* --glass-blur is already upgraded to blur(16px) at min-width: 769px */
 }
 
 .nav-brand {
@@ -444,11 +463,11 @@ body.dark-mode .navbar {
     font-size: 1.2rem;
     color: var(--primary-color);
     letter-spacing: -0.035em;
-    transition: opacity 0.15s ease;
+    transition: color var(--transition-fast) ease;
 }
 
 .nav-brand:hover {
-    opacity: 0.8;
+    color: var(--primary-hover);
 }
 
 .nav-brand .material-symbols-rounded {
@@ -820,6 +839,26 @@ body.dark-mode .card:hover {
     box-shadow: var(--shadow-lg);
 }
 
+/* ── Backdrop-filter fallback ─────────────────────────────────────────────────
+ * For browsers without backdrop-filter support (older Android WebViews).
+ * Replaces glass transparency with a fully opaque elevated surface so the UI
+ * remains readable even without the blur effect.
+ * ─────────────────────────────────────────────────────────────────────────── */
+@supports not (backdrop-filter: blur(1px)) {
+    .card-glass,
+    .stat-card,
+    .exam-card-enhanced,
+    .grade-stat,
+    .submission-card,
+    .chat-panel,
+    .sidebar,
+    .navbar {
+        background-color: var(--surface-elevated);
+        backdrop-filter: none;
+        -webkit-backdrop-filter: none;
+    }
+}
+
 .full-width {
     grid-column: 1 / -1;
 }
@@ -888,12 +927,14 @@ body.dark-mode .card:hover {
     width: 100%;
     padding: 0.8rem 1rem;
     border-radius: var(--radius-md);
-    border: 1.5px solid var(--border-color);
-    background-color: var(--bg-color);
+    border: 1.5px solid var(--glass-border);
+    background-color: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
     color: var(--text-primary);
     font-family: inherit;
     font-size: 0.95rem;
-    transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
 
 .form-group input:hover {
@@ -904,7 +945,6 @@ body.dark-mode .card:hover {
     outline: none;
     border-color: var(--primary-color);
     box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
-    background-color: var(--surface-color);
 }
 
 /* ── Shared select base (DRY) ── */
@@ -912,11 +952,13 @@ body.dark-mode .card:hover {
 select.form-control {
     width: 100%;
     border-radius: var(--radius-md);
-    border: 1.5px solid var(--border-color);
-    background-color: var(--bg-color);
+    border: 1.5px solid var(--glass-border);
+    background-color: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
     color: var(--text-primary);
     font-family: inherit;
-    transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
     appearance: none;
     -webkit-appearance: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
@@ -947,7 +989,6 @@ select.form-control:focus {
     outline: none;
     border-color: var(--primary-color);
     box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
-    background-color: var(--surface-color);
 }
 
 /* ── Button base ─────────────────────────────────────────────────────────── */
@@ -1429,14 +1470,18 @@ body.dark-mode .status-pill.info { color: #60A5FA; background-color: rgba(59, 13
     gap: var(--space-2);
     padding: 0.45rem var(--space-5);
     border-radius: var(--radius-full);
-    background-color: var(--surface-color);
-    border: 1.5px solid var(--border-color);
+    background-color: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1.5px solid var(--glass-border);
     color: var(--text-secondary);
     font-size: var(--text-sm);
     font-weight: 500;
     cursor: pointer;
     white-space: nowrap;
-    transition: all var(--transition-fast) var(--ease-smooth);
+    transition: background-color var(--transition-fast) ease,
+                border-color var(--transition-fast) ease,
+                color var(--transition-fast) ease;
     font-family: inherit;
 }
 
@@ -1469,7 +1514,7 @@ body.dark-mode .status-pill.info { color: #60A5FA; background-color: rgba(59, 13
 }
 
 .filter-bar-container .filter-chip:hover:not(.active) {
-    background: rgba(0, 0, 0, 0.03);
+    background: var(--surface-overlay);
     color: var(--text-primary);
     border-color: transparent;
 }
@@ -1710,7 +1755,11 @@ body.dark-mode .status-pill.info { color: #60A5FA; background-color: rgba(59, 13
     left: -100%;
     width: var(--sidebar-width);
     height: 100%;
-    background-color: var(--surface-color);
+    /* Glass in both modes — tokens handle light/dark automatically */
+    background-color: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-right: 1px solid var(--glass-border);
     z-index: 100;
     transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: var(--shadow-xl);
@@ -1721,13 +1770,6 @@ body.dark-mode .status-pill.info { color: #60A5FA; background-color: rgba(59, 13
 
 .sidebar.active {
     left: 0;
-}
-
-body.dark-mode .sidebar {
-    background-color: var(--glass-bg);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
-    border-right: 1px solid var(--glass-border);
 }
 
 .sidebar-header {
@@ -1873,6 +1915,10 @@ address.contact-list a:hover {
 
 /* Enhance glass-morphism on desktop (mobile base is already set in body.dark-mode) */
 @media (min-width: 769px) {
+    body {
+        background-attachment: fixed;
+    }
+
     body.dark-mode {
         --glass-blur: blur(16px) saturate(180%);
         --glass-bg: rgba(15, 23, 42, 0.6);
@@ -1955,6 +2001,35 @@ address.contact-list a:hover {
 
     .nav-item .material-symbols-rounded {
         font-size: 1.35rem;
+    }
+
+    /* Active indicator — animated bottom line, slides from center */
+    .nav-links .nav-item::after {
+        content: '';
+        position: absolute;
+        bottom: 2px;
+        left: 50%;
+        right: 50%;
+        height: 2px;
+        background: var(--primary-color);
+        border-radius: var(--radius-full);
+        opacity: 0;
+        transition:
+            left var(--transition-fast) var(--ease-spring),
+            right var(--transition-fast) var(--ease-spring),
+            opacity var(--transition-fast) ease;
+    }
+
+    .nav-links .nav-item:hover::after {
+        left: 30%;
+        right: 30%;
+        opacity: 0.35;
+    }
+
+    .nav-links .nav-item.active::after {
+        left: var(--space-2);
+        right: var(--space-2);
+        opacity: 1;
     }
 
     /* Main content */
@@ -2100,6 +2175,12 @@ address.contact-list a:hover {
 
     .nav-item .material-symbols-rounded {
         font-size: 1.2rem;
+    }
+
+    /* Adjust indicator offsets to match wider padding at full-label size */
+    .nav-links .nav-item.active::after {
+        left: 0.75rem;
+        right: 0.75rem;
     }
 }
 

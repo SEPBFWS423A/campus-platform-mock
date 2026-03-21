@@ -6,20 +6,24 @@
 }
 
 .exam-card-enhanced {
-    background-color: var(--surface-color);
+    background-color: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
     border-radius: var(--radius-xl);
-    border: 1px solid var(--border-color-subtle);
-    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s, border-color 0.25s;
+    transition: transform 0.25s var(--ease-spring), box-shadow 0.25s ease, border-color 0.25s ease;
     position: relative;
+    will-change: transform;
 }
 
 .exam-card-enhanced:hover {
-    box-shadow: var(--shadow-md);
-    border-color: var(--border-color);
+    transform: translateY(-3px);
+    box-shadow: var(--glass-shadow), var(--shadow-md);
+    border-color: rgba(59, 130, 246, 0.25);
 }
 
 .exam-card-enhanced::before {
@@ -57,14 +61,15 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: var(--bg-color);
+    /* Nested in glass card — use solid overlay, no stacked blur */
+    background-color: var(--surface-overlay);
     border-radius: var(--radius-lg);
     padding: 0.75rem;
     min-width: 80px;
     height: fit-content;
     text-align: center;
-    border: 1px solid var(--border-color-subtle);
-    transition: background-color 0.2s;
+    border: 1px solid var(--glass-border);
+    transition: background-color 0.2s ease;
 }
 
 .exam-card-enhanced:hover .exam-date-box {
@@ -107,12 +112,12 @@
     font-size: 0.65rem;
     padding: 3px 8px;
     border-radius: 999px;
-    background-color: var(--bg-color);
+    background-color: var(--surface-overlay);
     color: var(--text-secondary);
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    border: 1px solid var(--border-color-subtle);
+    border: 1px solid var(--glass-border);
 }
 
 .exam-title {
@@ -145,8 +150,8 @@
 
 .exam-footer {
     padding: 0.85rem 1.5rem;
-    background-color: var(--bg-color);
-    border-top: 1px solid var(--border-color-subtle);
+    background-color: var(--surface-overlay);
+    border-top: 1px solid var(--glass-border);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -188,23 +193,16 @@
     margin-bottom: var(--space-6);
 }
 
-body.dark-mode .exam-card-enhanced:hover {
-    border-color: rgba(100, 130, 200, 0.2);
-}
 
-body.dark-mode .exam-date-box {
-    background-color: rgba(8, 14, 30, 0.5);
-    border-color: var(--glass-border);
-}
+@media (prefers-reduced-motion: reduce) {
+    .exam-card-enhanced {
+        transition: none;
+        will-change: auto;
+    }
 
-body.dark-mode .exam-footer {
-    background-color: rgba(8, 14, 30, 0.4);
-    border-top-color: var(--glass-border);
-}
-
-body.dark-mode .filter-chip {
-    background-color: rgba(15, 23, 42, 0.5);
-    border-color: var(--glass-border);
+    .exam-card-enhanced:hover {
+        transform: none;
+    }
 }
 
 @media (max-width: 1024px) {

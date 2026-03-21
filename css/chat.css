@@ -42,10 +42,12 @@
     z-index: 999;
     width: 380px;
     max-height: 520px;
-    background: var(--surface-color);
-    border: 1px solid var(--border-color);
+    background-color: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
     border-radius: var(--radius-2xl);
-    box-shadow: var(--shadow-xl);
+    box-shadow: var(--glass-shadow), var(--shadow-xl);
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -126,7 +128,7 @@
 
 .chat-msg.bot {
     align-self: flex-start;
-    background: var(--bg-color);
+    background: var(--surface-overlay);
     color: var(--text-primary);
     border-bottom-left-radius: var(--radius-sm);
 }
@@ -160,12 +162,14 @@
     padding: 0.35rem 0.75rem;
     font-size: 0.8rem;
     font-family: inherit;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--glass-border);
     border-radius: 999px;
-    background: var(--surface-color);
+    background-color: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
     color: var(--primary-color);
     cursor: pointer;
-    transition: background var(--transition-fast), border-color var(--transition-fast);
+    transition: background-color var(--transition-fast), border-color var(--transition-fast);
     white-space: nowrap;
 }
 
@@ -185,12 +189,14 @@
 
 .chat-input {
     flex: 1;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--glass-border);
     border-radius: var(--radius-xl);
     padding: 0.55rem 1rem;
     font-size: 0.875rem;
     font-family: inherit;
-    background: var(--bg-color);
+    background-color: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
     color: var(--text-primary);
     outline: none;
     transition: border-color var(--transition-fast);
@@ -235,7 +241,7 @@
     align-items: center;
     padding: 0.65rem 1rem;
     align-self: flex-start;
-    background: var(--bg-color);
+    background: var(--surface-overlay);
     border-radius: var(--radius-xl);
     border-bottom-left-radius: var(--radius-sm);
 }

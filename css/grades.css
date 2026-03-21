@@ -6,19 +6,23 @@
 }
 
 .grade-stat {
-    background-color: var(--surface-color);
+    background-color: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
     padding: 1.5rem;
     border-radius: var(--radius-xl);
-    border: 1px solid var(--border-color-subtle);
-    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
     display: flex;
     align-items: center;
     gap: 1rem;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.25s var(--ease-spring), box-shadow 0.25s ease;
+    will-change: transform;
 }
 
 .grade-stat:hover {
-    box-shadow: var(--shadow-md);
+    transform: translateY(-3px);
+    box-shadow: var(--glass-shadow), var(--shadow-md);
 }
 
 .grade-stat-icon {
@@ -29,7 +33,7 @@
     align-items: center;
     justify-content: center;
     font-size: 1.4rem;
-    background-color: var(--bg-color);
+    background-color: var(--surface-overlay);
     color: var(--text-secondary);
 }
 
@@ -120,10 +124,12 @@
 }
 
 .grades-card {
-    background-color: var(--surface-color);
+    background-color: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
     border-radius: var(--radius-xl);
-    box-shadow: var(--shadow-sm);
-    border: 1px solid var(--border-color-subtle);
+    box-shadow: var(--glass-shadow);
+    border: 1px solid var(--glass-border);
     overflow-x: auto;
 }
 
@@ -200,7 +206,7 @@
 
 /* 5.0 */
 .grade-badge.pending {
-    background-color: var(--bg-color);
+    background-color: var(--surface-overlay);
     color: var(--text-secondary);
     font-size: 1.2rem;
 }
@@ -208,13 +214,13 @@
 /* .status-indicator, .status-dot — defined in style.css */
 
 .credits-pill {
-    background-color: var(--bg-color);
+    background-color: var(--surface-overlay);
     padding: 0.25rem 0.75rem;
     border-radius: 999px;
     font-size: 0.8rem;
     font-weight: 600;
     color: var(--text-secondary);
-    border: 1px solid var(--border-color-subtle);
+    border: 1px solid var(--glass-border);
 }
 
 .attempt-badge {
@@ -228,6 +234,17 @@
 body.dark-mode .grade-badge.good {
     background-color: rgba(59, 130, 246, 0.12);
     color: #60A5FA;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .grade-stat {
+        transition: none;
+        will-change: auto;
+    }
+
+    .grade-stat:hover {
+        transform: none;
+    }
 }
 
 @media (max-width: 768px) {
@@ -289,8 +306,8 @@ body.dark-mode .grade-badge.good {
     .grades-table tr {
         display: flex;
         flex-direction: column;
-        background-color: var(--surface-color);
-        border: 1px solid var(--border-color);
+        background-color: var(--surface-overlay);
+        border: 1px solid var(--glass-border);
         border-radius: var(--radius-md);
         padding: 1rem;
         position: relative;
@@ -337,8 +354,8 @@ body.dark-mode .grade-badge.good {
     .credits-pill {
         padding: 0.1rem 0.5rem;
         font-size: 0.75rem;
-        background-color: var(--bg-color);
-        border: 1px solid var(--border-color);
+        background-color: var(--surface-overlay);
+        border: 1px solid var(--glass-border);
     }
 
     .grades-table td:nth-child(4) {

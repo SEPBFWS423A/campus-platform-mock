@@ -254,10 +254,10 @@ function buildStudiengruppenPanel(data) {
                         </button>
                     </div>
                 </div>
-                <div style="padding: 0.5rem 0; display: flex; gap: 0.4rem; flex-wrap: wrap;">
+                <div class="series-card-members">
                     ${members.length > 0
                         ? members.map(s => `<span class="student-chip">${escapeHTML(s.name)}</span>`).join('')
-                        : '<span style="color:var(--text-secondary);font-size:0.875rem;">Keine Mitglieder</span>'
+                        : '<span class="series-card-empty">Keine Mitglieder</span>'
                     }
                 </div>
             </div>`;

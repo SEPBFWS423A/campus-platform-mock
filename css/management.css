@@ -1,16 +1,20 @@
+/* ── Modal — Mobile-first: bottom-sheet on mobile, centered on desktop ─────── */
+
 .modal-overlay {
     position: fixed;
     inset: 0;
     z-index: 1000;
     display: flex;
-    align-items: center;
+    /* Mobile: anchor to bottom */
+    align-items: flex-end;
     justify-content: center;
     background-color: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.25s ease, visibility 0.25s ease;
-    padding: 1rem;
+    padding: 0;
 }
 
 .modal-overlay.active {
@@ -19,26 +23,72 @@
 }
 
 .modal-dialog {
-    background-color: var(--surface-color);
-    border-radius: var(--radius-xl);
+    background-color: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    /* Mobile: bottom-sheet — rounded top corners, full width, slides up */
+    border-radius: var(--radius-3xl) var(--radius-3xl) 0 0;
     box-shadow: var(--shadow-xl);
     width: 100%;
-    max-width: 560px;
-    max-height: 85vh;
+    max-width: 100%;
+    max-height: min(88dvh, 88vh);
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    transform: translateY(10px) scale(0.98);
-    transition: transform 0.25s ease;
+    transform: translateY(100%);
+    transition: transform 0.35s var(--ease-spring, cubic-bezier(0.16, 1, 0.3, 1));
     border: 1px solid var(--border-color-subtle);
+    border-bottom: none;
+}
+
+/* Drag handle — mobile visual cue */
+.modal-dialog::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 4px;
+    background: var(--border-color);
+    border-radius: var(--radius-full);
+    margin: 0.75rem auto 0;
+    flex-shrink: 0;
 }
 
 .modal-overlay.active .modal-dialog {
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
 }
 
-.modal-dialog.modal-lg {
-    max-width: 720px;
+/* Desktop: restore centered dialog */
+@media (min-width: 769px) {
+    .modal-overlay {
+        align-items: center;
+        padding: 1rem;
+    }
+
+    .modal-dialog {
+        max-width: 560px;
+        max-height: min(85dvh, 85vh);
+        border-radius: var(--radius-xl);
+        border-bottom: 1px solid var(--border-color-subtle);
+        transform: translateY(10px) scale(0.98);
+    }
+
+    .modal-dialog::before {
+        display: none;
+    }
+
+    .modal-overlay.active .modal-dialog {
+        transform: translateY(0) scale(1);
+    }
+
+    .modal-dialog.modal-lg {
+        max-width: 720px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .modal-dialog {
+        transition: none;
+    }
 }
 
 .modal-header {
@@ -113,18 +163,21 @@
     font-size: 1.15rem;
     color: var(--text-tertiary);
     pointer-events: none;
+    z-index: 1;
 }
 
 .user-search-input {
     width: 100%;
     padding: 0.6rem 0.85rem 0.6rem 2.5rem;
     border-radius: var(--radius-md);
-    border: 1.5px solid var(--border-color);
-    background-color: var(--bg-color);
+    border: 1.5px solid var(--glass-border);
+    background-color: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
     color: var(--text-primary);
     font-family: inherit;
     font-size: 0.875rem;
-    transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
     box-sizing: border-box;
 }
 
@@ -136,18 +189,19 @@
     outline: none;
     border-color: var(--primary-color);
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-    background-color: var(--surface-color);
 }
 
 .user-role-filter {
     padding: 0.6rem 2rem 0.6rem 0.85rem;
     border-radius: var(--radius-md);
-    border: 1.5px solid var(--border-color);
-    background-color: var(--bg-color);
+    border: 1.5px solid var(--glass-border);
+    background-color: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
     color: var(--text-primary);
     font-family: inherit;
     font-size: 0.875rem;
-    transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
     box-sizing: border-box;
     appearance: none;
     -webkit-appearance: none;
@@ -165,7 +219,6 @@
     outline: none;
     border-color: var(--primary-color);
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-    background-color: var(--surface-color);
 }
 
 .management-table {
@@ -188,8 +241,8 @@
     text-transform: uppercase;
     letter-spacing: 0.04em;
     color: var(--text-secondary);
-    background-color: var(--surface-color);
-    border-bottom: 2px solid var(--border-color);
+    background-color: var(--surface-overlay);
+    border-bottom: 2px solid var(--glass-border);
     white-space: nowrap;
 }
 
@@ -201,7 +254,7 @@
 }
 
 .management-table tbody tr:hover {
-    background-color: rgba(0, 0, 0, 0.03);
+    background-color: var(--surface-overlay);
 }
 
 .management-table .actions-cell {
@@ -237,12 +290,14 @@
 .inline-create-form select {
     padding: 0.6rem 0.85rem;
     border-radius: var(--radius-md);
-    border: 1.5px solid var(--border-color);
-    background-color: var(--bg-color);
+    border: 1.5px solid var(--glass-border);
+    background-color: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
     color: var(--text-primary);
     font-family: inherit;
     font-size: 0.875rem;
-    transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
     box-sizing: border-box;
     appearance: none;
     -webkit-appearance: none;
@@ -262,7 +317,6 @@
     outline: none;
     border-color: var(--primary-color);
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-    background-color: var(--surface-color);
 }
 
 select.form-input,
@@ -444,20 +498,72 @@ body.dark-mode .type-badge.lehrveranstaltung {
 }
 
 .series-card {
-    background: var(--surface-color);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-lg);
+    background-color: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--glass-shadow);
     overflow: hidden;
-    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+    transition: transform 0.25s var(--ease-spring), box-shadow 0.25s ease, border-color 0.25s ease;
+    will-change: transform;
 }
 
 .series-card:hover {
-    border-color: var(--text-tertiary);
+    transform: translateY(-2px);
+    box-shadow: var(--glass-shadow), var(--shadow-md);
+    border-color: rgba(59, 130, 246, 0.25);
 }
 
 .series-card.open {
     border-color: var(--primary-color);
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--glass-shadow), var(--shadow-md);
+}
+
+/* ── Studiengruppe card header (title + actions in one row) */
+.series-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 0.75rem;
+}
+
+.series-card-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+}
+
+.series-card-subtitle {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-top: 0.2rem;
+}
+
+.series-card-subtitle .material-symbols-rounded {
+    font-size: 0.9rem;
+    color: var(--text-tertiary);
+}
+
+/* ── Members list inside group cards */
+.series-card-members {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    padding-top: 0.75rem;
+    margin-top: 0.25rem;
+    border-top: 1px solid var(--glass-border);
+}
+
+.series-card-empty {
+    font-size: 0.85rem;
+    color: var(--text-tertiary);
+    font-style: italic;
 }
 
 /* ── Summary row (always visible) */
@@ -1214,17 +1320,6 @@ body.dark-mode .room-utilization-legend {
 }
 
 @media (max-width: 768px) {
-    .modal-dialog {
-        max-width: 100%;
-        max-height: 90vh;
-        margin: 0;
-        border-radius: var(--radius-lg);
-    }
-
-    .modal-dialog.modal-lg {
-        max-width: 100%;
-    }
-
 
 
     .management-form .form-row {
