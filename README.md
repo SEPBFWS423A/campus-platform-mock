@@ -2,6 +2,8 @@
 
 A mock web application for a student campus management platform.
 
+open test.campusplatform.de
+
 ### Features
 - **Dashboard**: Overview of upcoming tasks and events.
 - **Schedule**: Weekly class timetable.
